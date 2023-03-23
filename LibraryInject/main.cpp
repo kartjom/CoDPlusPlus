@@ -41,7 +41,6 @@ LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lPar
 {
 	ImGuiIO& io = ImGui::GetIO();
 	io.MouseDrawCursor = showImGui;
-	io.WantSetMousePos = showImGui;
 
 	if (showImGui)
 	{
@@ -259,6 +258,10 @@ DWORD WINAPI MainThread(LPVOID param)
 
 		Sleep(1);
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 
 	//FreeLibraryAndExitThread((HMODULE)param, 0);
 
