@@ -6,7 +6,7 @@
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
-#include "imgui_impl_opengl2.h"
+#include "imgui_impl_opengl3.h"
 
 HANDLE process;
 DWORD baseAddress;
@@ -84,7 +84,7 @@ void ExitStatus(bool* status, bool value)
 	if (status) *status = value;
 }
 
-void InitOpenGL2(HDC hDc)
+void InitOpenGL3(HDC hDc)
 {
 	if (WindowFromDC(hDc) == hWnd && initImGui) return;
 	bool tStatus = true;
@@ -95,7 +95,7 @@ void InitOpenGL2(HDC hDc)
 	if (initImGui)
 	{
 		ImGui_ImplWin32_Init(hWnd);
-		ImGui_ImplOpenGL2_Init();
+		ImGui_ImplOpenGL3_Init("#version 460");
 		return;
 	}
 
@@ -108,7 +108,7 @@ void InitOpenGL2(HDC hDc)
 	ImGui::CreateContext();
 
 	tStatus &= ImGui_ImplWin32_Init(hWnd);
-	tStatus &= ImGui_ImplOpenGL2_Init();
+	tStatus &= ImGui_ImplOpenGL3_Init("#version 460");
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -117,14 +117,14 @@ void InitOpenGL2(HDC hDc)
 	return ExitStatus(&initImGui, tStatus);
 }
 
-void RenderOpenGL2(HDC hDc, HGLRC WglContext)
+void RenderOpenGL3(HDC hDc, HGLRC WglContext)
 {
 	bool tStatus = true;
 
 	HGLRC o_WglContext = wglGetCurrentContext();
 	tStatus &= wglMakeCurrent(hDc, WglContext);
 
-	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
@@ -135,7 +135,7 @@ void RenderOpenGL2(HDC hDc, HGLRC WglContext)
 
 	ImGui::EndFrame();
 	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	tStatus &= wglMakeCurrent(hDc, o_WglContext);
 }
@@ -176,8 +176,8 @@ _declspec(naked) void LoadLibraryA_h()
 /// wglSwapBuffers ////////////////////////////////////////////////////
 BOOL __stdcall wglSwapBuffers_w(HDC hDc)
 {
-	InitOpenGL2(hDc);
-	RenderOpenGL2(hDc, g_WglContext);
+	InitOpenGL3(hDc);
+	RenderOpenGL3(hDc, g_WglContext);
 
 	return wglSwapBuffers_o(hDc);
 }

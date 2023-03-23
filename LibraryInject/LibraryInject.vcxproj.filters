@@ -42,7 +42,7 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_opengl2.cpp">
+    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +71,10 @@
     <ClInclude Include="ImGui\imgui_impl_win32.h">
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_opengl2.h">
+    <ClInclude Include="ImGui\imgui_impl_opengl3.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
