@@ -39,6 +39,8 @@ void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lParam)
 {
+	if (GetAsyncKeyState(VK_END) & 1) showImGui = !showImGui;
+
 	ImGuiIO& io = ImGui::GetIO();
 	io.MouseDrawCursor = showImGui;
 
@@ -70,9 +72,6 @@ LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lPar
 
 		// Alt
 		if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;
-
-		// If we want to disable movement with menu open
-		//return 0;
 	}
 
 	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
@@ -250,12 +249,6 @@ DWORD WINAPI MainThread(LPVOID param)
 
 	while (true)
 	{
-		if (GetAsyncKeyState(VK_END) & 1)
-		{
-			showImGui = !showImGui;
-			//ReadProcessMemory();
-		}
-
 		Sleep(1);
 	}
 
