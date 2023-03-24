@@ -69,10 +69,10 @@ LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lPar
 			io.MousePos.y = (signed short)(lParam >> 16);
 			return 0;
 		}
-
-		// Alt
-		if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;
 	}
+
+	// Alt Context Menu
+	if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;
 
 	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
 }
