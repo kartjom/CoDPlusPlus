@@ -10,10 +10,14 @@
 
 //#include "gentity.h"
 
+#define baseAddress 0x400000
 #define LoadFromDLL(dll, method) GetProcAddress(GetModuleHandleA(dll), method)
+#define SAFE_EXEC(code) \
+_asm {pushad} \
+code \
+_asm {popad}
 
 HANDLE process;
-DWORD baseAddress = 0x400000;
 DWORD uo_game_mp_x86;
 
 typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
@@ -26,16 +30,16 @@ bool showImGui = false;
 HWND hWnd = nullptr;
 
 typedef uint32_t(__cdecl* Scr_LoadScript_t)(const char* file);
-Scr_LoadScript_t Scr_LoadScript;
+Scr_LoadScript_t Scr_LoadScript = (Scr_LoadScript_t)(0x00480150);
 
 typedef uint32_t(__cdecl* Scr_GetFunctionHandle_t)(const char* file, const char* function);
-Scr_GetFunctionHandle_t Scr_GetFunctionHandle;
+Scr_GetFunctionHandle_t Scr_GetFunctionHandle = (Scr_GetFunctionHandle_t)(0x0047FE50);
 
 typedef uint32_t(__cdecl* Scr_ExecThread_t)(uint32_t scriptHandle, uint32_t argc);
-Scr_ExecThread_t Scr_ExecThread;
+Scr_ExecThread_t Scr_ExecThread = (Scr_ExecThread_t)(0x0048f3e0);
 
 typedef uint32_t(__cdecl* Scr_FreeThread_t)(uint32_t threadHandle);
-Scr_FreeThread_t Scr_FreeThread;
+Scr_FreeThread_t Scr_FreeThread = (Scr_FreeThread_t)(0x0048f640);
 
 uint32_t CodeCallback_Custom = 0;
 
@@ -296,9 +300,8 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 	{
 		push [s_callbacksetup]
 		mov eax, [s_callbacksetup]
-		mov edi, uo_game_mp_x86
-		add edi, 0x10ecd4
-		call [edi]
+		mov edi, 0x00480150
+		call edi
 		add esp, 0x4
 	}
 
@@ -307,9 +310,8 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 	{
 		push [s_PlayerConnect]
 		push [s_callbacksetup]
-		mov eax, uo_game_mp_x86
-		add eax, 0x0010ece0
-		call [eax]
+		mov eax, 0x0047FE50
+		call eax
 		mov CodeCallback_Custom, eax
 		add esp, 0x8
 	}
