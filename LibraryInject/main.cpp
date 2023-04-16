@@ -8,8 +8,12 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_opengl3.h"
 
+//#include "gentity.h"
+
+#define LoadFromDLL(dll, method) GetProcAddress(GetModuleHandleA(dll), method)
+
 HANDLE process;
-DWORD baseAddress;
+DWORD baseAddress = 0x400000;
 DWORD uo_game_mp_x86;
 
 typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
@@ -20,6 +24,40 @@ HGLRC g_WglContext;
 bool initImGui = false;
 bool showImGui = false;
 HWND hWnd = nullptr;
+
+typedef uint32_t(__cdecl* Scr_LoadScript_t)(const char* file);
+Scr_LoadScript_t Scr_LoadScript;
+
+typedef uint32_t(__cdecl* Scr_GetFunctionHandle_t)(const char* file, const char* function);
+Scr_GetFunctionHandle_t Scr_GetFunctionHandle;
+
+typedef uint32_t(__cdecl* Scr_ExecThread_t)(uint32_t scriptHandle, uint32_t argc);
+Scr_ExecThread_t Scr_ExecThread;
+
+typedef uint32_t(__cdecl* Scr_FreeThread_t)(uint32_t threadHandle);
+Scr_FreeThread_t Scr_FreeThread;
+
+uint32_t CodeCallback_Custom = 0;
+
+////////////////////////////////
+struct Vector3 {
+	float x, y, z;
+};
+
+class gentity_t
+{
+public:
+	char pad_0000[16]; //0x0000
+	int32_t time; //0x0010
+	char pad_0014[4]; //0x0014
+	Vector3 origin; //0x0018
+	char pad_0024[28]; //0x0024
+	Vector3 viewangles; //0x0040
+	char pad_004C[768]; //0x004C
+};
+
+gentity_t* g_entities;
+/// ////////////////////////////
 
 void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
 {
@@ -126,9 +164,38 @@ void RenderOpenGL3(HDC hDc, HGLRC WglContext)
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	if (showImGui)
+	if (showImGui && g_entities)
 	{
-		ImGui::ShowDemoWindow();
+		//ImGui::ShowDemoWindow();
+		ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
+		if (!ImGui::Begin("Example: Property editor"))
+		{
+			ImGui::End();
+			return;
+		}
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+		if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
+		{
+			for (int obj_i = 0; obj_i <= 1023; obj_i++)
+			{
+				gentity_t ent = g_entities[obj_i];
+
+				ImGui::PushID(obj_i);
+
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::AlignTextToFramePadding();
+				bool node_open = ImGui::TreeNode("Object", "%s_%u", "gentity_", obj_i);
+				ImGui::TableSetColumnIndex(1);
+				ImGui::Text("Time %d (%f, %f, %f)", ent.time, ent.origin.x, ent.origin.y, ent.origin.z);
+
+				ImGui::PopID();
+			}
+			ImGui::EndTable();
+		}
+		ImGui::PopStyleVar();
+		ImGui::End();
 	}
 
 	ImGui::EndFrame();
@@ -216,18 +283,89 @@ _declspec(naked) void SetPhysicalCursorPos_h()
 }
 ///////////////////////////////////////////////////////////////////////
 
-struct gentity
+/// SetPhysicalCursorPos //////////////////////////////////////////////
+DWORD GScr_LoadGameTypeScript_Ret;
+const char* s_callbacksetup = "maps/mp/gametypes/_callbacksetup";
+const char* s_PlayerConnect = "CodeCallback_Custom";
+_declspec(naked) void GScr_LoadGameTypeScript_h()
 {
-	BYTE unknown1[388];
-	const char* classname;
-};
+	_asm pushad
 
-typedef gentity* (__cdecl* G_Spawn_t)();
-G_Spawn_t G_Spawn;
+	// Scr_LoadScript
+	_asm
+	{
+		push [s_callbacksetup]
+		mov eax, [s_callbacksetup]
+		mov edi, uo_game_mp_x86
+		add edi, 0x10ecd4
+		call [edi]
+		add esp, 0x4
+	}
+
+	// Scr_GetFunctionHandle
+	_asm
+	{
+		push [s_PlayerConnect]
+		push [s_callbacksetup]
+		mov eax, uo_game_mp_x86
+		add eax, 0x0010ece0
+		call [eax]
+		mov CodeCallback_Custom, eax
+		add esp, 0x8
+	}
+
+	_asm popad
+	_asm
+	{
+		sub esp,0x44
+
+		mov eax, uo_game_mp_x86
+		add eax, 0x00082650
+
+		mov eax, [eax]
+		jmp [GScr_LoadGameTypeScript_Ret]
+	}
+}
+///////////////////////////////////////////////////////////////////////
+
+/// Shoot Callback ///////////////////////////////////////////////////
+DWORD ShootCallback_Ret;
+_declspec(naked) void ShootCallback_h()
+{
+	_asm pushad
+
+	_asm
+	{
+		push 0
+		push CodeCallback_Custom
+		mov eax, 0x0048f3e0
+		call eax // Scr_ExecThread
+
+		push eax
+		mov eax, 0x0048f640
+		call eax // Scr_FreeThread
+
+		add esp, 0xC
+	}
+
+	_asm popad
+
+	_asm
+	{
+		lea ecx, dword ptr ds : [ecx + eax * 0x4 + 0x334]
+		sub dword ptr ds : [ecx], esi
+
+		jmp [ShootCallback_Ret]
+	}
+}
+///////////////////////////////////////////////////////////////////////
 
 void OnAttach()
 {
-	G_Spawn = (G_Spawn_t)(uo_game_mp_x86 + 0x52e90);
+	g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
+
+	Detour(uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
+	Detour(uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
 }
 
 DWORD WINAPI MainThread(LPVOID param)
@@ -235,16 +373,16 @@ DWORD WINAPI MainThread(LPVOID param)
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
-	baseAddress = (DWORD)GetModuleHandleA(NULL);
+	//baseAddress = (DWORD)GetModuleHandleA(NULL);
 	process = GetCurrentProcess();
 
-	LoadLibrary_o = (LoadLibrary_t)GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
+	LoadLibrary_o = (LoadLibrary_t)LoadFromDLL("kernel32.dll", "LoadLibraryA");
 	Detour(baseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
 	
-	wglSwapBuffers_o = (wglSwapBuffers_t)GetProcAddress(GetModuleHandleA("opengl32.dll"), "wglSwapBuffers");
+	wglSwapBuffers_o = (wglSwapBuffers_t)LoadFromDLL("opengl32.dll", "wglSwapBuffers");
 	Detour(baseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
 	
-	SetPhysicalCursorPos_o = (SetPhysicalCursorPos_t)GetProcAddress(GetModuleHandleA("user32.dll"), "SetPhysicalCursorPos");
+	SetPhysicalCursorPos_o = (SetPhysicalCursorPos_t)LoadFromDLL("user32.dll", "SetPhysicalCursorPos");
 	Detour(baseAddress + 0x69C3B, SetPhysicalCursorPos_h, 6, &SetPhysicalCursorPos_Ret);
 
 	while (true)

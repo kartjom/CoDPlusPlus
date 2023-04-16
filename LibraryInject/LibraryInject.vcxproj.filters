@@ -77,5 +77,8 @@
     <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="gentity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
