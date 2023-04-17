@@ -336,18 +336,22 @@ _declspec(naked) void ShootCallback_h()
 {
 	_asm pushad
 
-	_asm
+	if (CodeCallback_Custom != 0)
 	{
-		push 0
-		push CodeCallback_Custom
-		mov eax, 0x0048f3e0
-		call eax // Scr_ExecThread
+		_asm
+		{
+			push 0
+			push CodeCallback_Custom
+			mov eax, 0x0048f3e0
+			call eax // Scr_ExecThread
 
-		push eax
-		mov eax, 0x0048f640
-		call eax // Scr_FreeThread
+			push eax
+			mov eax, 0x0048f640
+			call eax // Scr_FreeThread
 
-		add esp, 0xC
+			add esp, 0xC
+		}
+
 	}
 
 	_asm popad
