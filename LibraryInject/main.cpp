@@ -119,27 +119,23 @@ LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lPar
 	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
 }
 
-void ExitStatus(bool* status, bool value)
-{
-	if (status) *status = value;
-}
-
 void InitOpenGL3(HDC hDc)
 {
-	if (WindowFromDC(hDc) == hWnd && initImGui) return;
-	bool tStatus = true;
+	if (WindowFromDC(hDc) == hWnd) return; // Nothing changed, everything initialized
+
+	if (WindowFromDC(hDc) != hWnd && initImGui) // Window handle changed, need to re-init
+	{
+		std::cout << "[ImGui] - Window handle changed, destroying context" << std::endl;
+
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplWin32_Shutdown();
+		ImGui::DestroyContext();
+	}
 
 	hWnd = WindowFromDC(hDc);
 	LONG wLPTR = SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)h_WndProc);
 
-	if (initImGui)
-	{
-		ImGui_ImplWin32_Init(hWnd);
-		ImGui_ImplOpenGL3_Init("#version 460");
-		return;
-	}
-
-	if (!wLPTR) return ExitStatus(&initImGui, false);
+	if (!wLPTR) return;
 
 	o_WndProc = (WNDPROC)wLPTR;
 	g_WglContext = wglCreateContext(hDc);
@@ -147,22 +143,20 @@ void InitOpenGL3(HDC hDc)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
-	tStatus &= ImGui_ImplWin32_Init(hWnd);
-	tStatus &= ImGui_ImplOpenGL3_Init("#version 460");
+	ImGui_ImplWin32_Init(hWnd);
+	ImGui_ImplOpenGL3_Init("#version 460");
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	initImGui = true;
-	return ExitStatus(&initImGui, tStatus);
+	std::cout << "[ImGui] - Initialized" << std::endl;
 }
 
 void RenderOpenGL3(HDC hDc, HGLRC WglContext)
 {
-	bool tStatus = true;
-
 	HGLRC o_WglContext = wglGetCurrentContext();
-	tStatus &= wglMakeCurrent(hDc, WglContext);
+	wglMakeCurrent(hDc, WglContext);
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -206,7 +200,7 @@ void RenderOpenGL3(HDC hDc, HGLRC WglContext)
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	tStatus &= wglMakeCurrent(hDc, o_WglContext);
+	wglMakeCurrent(hDc, o_WglContext);
 }
 
 /// LoadLibrary ///////////////////////////////////////////////////////
