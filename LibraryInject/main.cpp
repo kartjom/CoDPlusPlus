@@ -1,14 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 
-#pragma comment(lib, "opengl32.lib")
-#include <gl/GL.h>
-
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_opengl3.h"
-
-//#include "gentity.h"
+#include "ImGuiManager.h"
 
 #define baseAddress 0x400000
 #define LoadFromDLL(dll, method) GetProcAddress(GetModuleHandleA(dll), method)
@@ -18,16 +11,10 @@ code \
 _asm {popad}
 
 HANDLE process;
-DWORD uo_game_mp_x86;
+DWORD uo_game_mp_x86 = 0;
 
 typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
 wglSwapBuffers_t wglSwapBuffers_o;
-
-WNDPROC o_WndProc;
-HGLRC g_WglContext;
-bool initImGui = false;
-bool showImGui = false;
-HWND hWnd = nullptr;
 
 typedef uint32_t(__cdecl* Scr_LoadScript_t)(const char* file);
 Scr_LoadScript_t Scr_LoadScript = (Scr_LoadScript_t)(0x00480150);
@@ -78,136 +65,49 @@ void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
 	VirtualProtect((void*)hookAddress, len, protection, &protection);
 }
 
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg,WPARAM wParam, LPARAM lParam)
-{
-	if (GetAsyncKeyState(VK_END) & 1) showImGui = !showImGui;
 
-	ImGuiIO& io = ImGui::GetIO();
-	io.MouseDrawCursor = showImGui;
-
-	if (showImGui)
-	{
-		if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-		{
-			return true;
-		}
-
-		switch (uMsg)
-		{
-		case WM_LBUTTONDOWN:
-			io.MouseDown[0] = !io.MouseDown[0];
-			return 0;
-		case WM_RBUTTONDOWN:
-			io.MouseDown[1] = !io.MouseDown[1];
-			return 0;
-		case WM_MBUTTONDOWN:
-			io.MouseDown[2] = !io.MouseDown[2];
-			return 0;
-		case WM_MOUSEWHEEL:
-			return 0;
-		case WM_MOUSEMOVE:
-			io.MousePos.x = (signed short)(lParam);
-			io.MousePos.y = (signed short)(lParam >> 16);
-			return 0;
-		}
-	}
-
-	// Alt Context Menu
-	if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;
-
-	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
-}
-
-void InitOpenGL3(HDC hDc)
-{
-	if (WindowFromDC(hDc) == hWnd) return; // Nothing changed, everything initialized
-
-	if (WindowFromDC(hDc) != hWnd && initImGui) // Window handle changed, need to re-init
-	{
-		std::cout << "[ImGui] - Window handle changed, destroying context" << std::endl;
-
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplWin32_Shutdown();
-		ImGui::DestroyContext();
-	}
-
-	hWnd = WindowFromDC(hDc);
-	LONG wLPTR = SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)h_WndProc);
-
-	if (!wLPTR) return;
-
-	o_WndProc = (WNDPROC)wLPTR;
-	g_WglContext = wglCreateContext(hDc);
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-
-	ImGui_ImplWin32_Init(hWnd);
-	ImGui_ImplOpenGL3_Init("#version 460");
-
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	initImGui = true;
-	std::cout << "[ImGui] - Initialized" << std::endl;
-}
-
-void RenderOpenGL3(HDC hDc, HGLRC WglContext)
-{
-	HGLRC o_WglContext = wglGetCurrentContext();
-	wglMakeCurrent(hDc, WglContext);
-
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	if (showImGui && g_entities)
-	{
-		//ImGui::ShowDemoWindow();
-		ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-		if (!ImGui::Begin("Example: Property editor"))
-		{
-			ImGui::End();
-			return;
-		}
-
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-		if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
-		{
-			for (int obj_i = 0; obj_i <= 1023; obj_i++)
-			{
-				gentity_t ent = g_entities[obj_i];
-
-				ImGui::PushID(obj_i);
-
-				ImGui::TableNextRow();
-				ImGui::TableSetColumnIndex(0);
-				ImGui::AlignTextToFramePadding();
-				bool node_open = ImGui::TreeNode("Object", "%s_%u", "gentity_", obj_i);
-				ImGui::TableSetColumnIndex(1);
-				ImGui::Text("Time %d (%f, %f, %f)", ent.time, ent.origin.x, ent.origin.y, ent.origin.z);
-
-				ImGui::PopID();
-			}
-			ImGui::EndTable();
-		}
-		ImGui::PopStyleVar();
-		ImGui::End();
-	}
-
-	ImGui::EndFrame();
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	wglMakeCurrent(hDc, o_WglContext);
-}
+//void ImGuiTick(HDC hDc, HGLRC WglContext)
+//{
+//	if (showImGui && g_entities)
+//	{
+//		//ImGui::ShowDemoWindow();
+//		ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
+//		if (!ImGui::Begin("Example: Property editor"))
+//		{
+//			ImGui::End();
+//			return;
+//		}
+//
+//		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+//		if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
+//		{
+//			for (int obj_i = 0; obj_i <= 1023; obj_i++)
+//			{
+//				gentity_t ent = g_entities[obj_i];
+//
+//				ImGui::PushID(obj_i);
+//
+//				ImGui::TableNextRow();
+//				ImGui::TableSetColumnIndex(0);
+//				ImGui::AlignTextToFramePadding();
+//				bool node_open = ImGui::TreeNode("Object", "%s_%u", "gentity_", obj_i);
+//				ImGui::TableSetColumnIndex(1);
+//				ImGui::Text("Time %d (%f, %f, %f)", ent.time, ent.origin.x, ent.origin.y, ent.origin.z);
+//
+//				ImGui::PopID();
+//			}
+//			ImGui::EndTable();
+//		}
+//		ImGui::PopStyleVar();
+//		ImGui::End();
+//	}
+//}
 
 /// LoadLibrary ///////////////////////////////////////////////////////
 typedef HMODULE(__stdcall* LoadLibrary_t)(LPCSTR lpLibFileName);
 LoadLibrary_t LoadLibrary_o;
 
-void OnAttach();
+void uo_game_mp_x86_OnAttach();
 HMODULE __stdcall LoadLibrary_w(LPCSTR lpLibFileName)
 {
 	std::string dllName(lpLibFileName);
@@ -217,9 +117,7 @@ HMODULE __stdcall LoadLibrary_w(LPCSTR lpLibFileName)
 	if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
 	{
 		uo_game_mp_x86 = (DWORD)handle;
-		OnAttach();
-
-		std::cout << "Code attached\n";
+		uo_game_mp_x86_OnAttach();
 	}
 
 	return handle;
@@ -236,11 +134,50 @@ _declspec(naked) void LoadLibraryA_h()
 }
 ///////////////////////////////////////////////////////////////////////
 
+/// LoadLibrary ///////////////////////////////////////////////////////
+typedef BOOL(__stdcall* FreeLibrary_t)(HMODULE hLibModule);
+FreeLibrary_t FreeLibrary_o;
+
+void uo_game_mp_x86_OnDetach();
+BOOL __stdcall FreeLibrary_w(HMODULE hLibModule)
+{
+	char buff[MAX_PATH];
+	GetModuleFileNameA(hLibModule, buff, MAX_PATH);
+
+	std::string dllName(buff);
+	std::cout << dllName << std::endl;
+
+	if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
+	{
+		uo_game_mp_x86_OnDetach();
+		uo_game_mp_x86 = 0;
+	}
+
+	return FreeLibrary_o(hLibModule);
+}
+
+DWORD FreeLibrary_Ret;
+_declspec(naked) void FreeLibrary_h()
+{
+	_asm
+	{
+		call dword ptr[FreeLibrary_w]
+		jmp [FreeLibrary_Ret]
+	}
+}
+///////////////////////////////////////////////////////////////////////
+
 /// wglSwapBuffers ////////////////////////////////////////////////////
 BOOL __stdcall wglSwapBuffers_w(HDC hDc)
 {
-	InitOpenGL3(hDc);
-	RenderOpenGL3(hDc, g_WglContext);
+	ImGuiManager::Initialize(hDc);
+
+	if (ImGuiManager::ShouldShow)
+	{
+		HGLRC o_WglContext = ImGuiManager::BeginFrame(hDc);
+		ImGuiManager::Tick();
+		ImGuiManager::EndFrame(hDc, o_WglContext);
+	}
 
 	return wglSwapBuffers_o(hDc);
 }
@@ -262,7 +199,7 @@ SetPhysicalCursorPos_t SetPhysicalCursorPos_o;
 
 BOOL __stdcall SetPhysicalCursorPos_w(int x, int y)
 {
-	if (showImGui)
+	if (ImGuiManager::ShouldShow)
 	{
 		return false;
 	}
@@ -311,6 +248,7 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 	}
 
 	_asm popad
+
 	_asm
 	{
 		sub esp,0x44
@@ -345,7 +283,6 @@ _declspec(naked) void ShootCallback_h()
 
 			add esp, 0xC
 		}
-
 	}
 
 	_asm popad
@@ -360,12 +297,17 @@ _declspec(naked) void ShootCallback_h()
 }
 ///////////////////////////////////////////////////////////////////////
 
-void OnAttach()
+void uo_game_mp_x86_OnAttach()
 {
 	g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 
 	Detour(uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
 	Detour(uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
+}
+
+void uo_game_mp_x86_OnDetach()
+{
+	g_entities = nullptr;
 }
 
 DWORD WINAPI MainThread(LPVOID param)
@@ -379,6 +321,9 @@ DWORD WINAPI MainThread(LPVOID param)
 	LoadLibrary_o = (LoadLibrary_t)LoadFromDLL("kernel32.dll", "LoadLibraryA");
 	Detour(baseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
 	
+	FreeLibrary_o = (FreeLibrary_t)LoadFromDLL("kernel32.dll", "FreeLibrary");
+	//Detour(baseAddress + 0x1c0c, FreeLibrary_h, 6, &FreeLibrary_Ret);
+	
 	wglSwapBuffers_o = (wglSwapBuffers_t)LoadFromDLL("opengl32.dll", "wglSwapBuffers");
 	Detour(baseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
 	
@@ -390,9 +335,7 @@ DWORD WINAPI MainThread(LPVOID param)
 		Sleep(1);
 	}
 
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
+	ImGuiManager::Dispose();
 
 	//FreeLibraryAndExitThread((HMODULE)param, 0);
 
