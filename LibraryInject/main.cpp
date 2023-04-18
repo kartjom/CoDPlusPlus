@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <iostream>
 
-#include "WinApiManager.h"
+#include "WinApiHelper.h"
 #include "ImGuiManager.h"
 #include "Hook.h"
 #include "CoDUO.h"
@@ -189,12 +189,12 @@ void uo_game_mp_x86_OnDetach()
 
 DWORD WINAPI MainThread(LPVOID param)
 {
-	WinApiManager::CreateConsole();
+	WinApiHelper::CreateConsole();
 
 	LoadLibrary_o = Hook::LoadFromDLL<LoadLibrary_t>("kernel32.dll", "LoadLibraryA");
 	Hook::Detour(Hook::BaseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
 	
-	FreeLibrary_o = Hook::LoadFromDLL<FreeLibrary_t>("kernel32.dll", "FreeLibrary");
+	//FreeLibrary_o = Hook::LoadFromDLL<FreeLibrary_t>("kernel32.dll", "FreeLibrary");
 	//Hook::Detour(Hook::BaseAddress + 0x1c0c, FreeLibrary_h, 6, &FreeLibrary_Ret);
 	
 	wglSwapBuffers_o = Hook::LoadFromDLL<wglSwapBuffers_t>("opengl32.dll", "wglSwapBuffers");

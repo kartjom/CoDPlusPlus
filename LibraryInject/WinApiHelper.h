@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 
-class WinApiManager
+class WinApiHelper
 {
 public:
 	static WNDPROC o_WndProc;

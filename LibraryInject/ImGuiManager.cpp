@@ -1,5 +1,5 @@
 #include "ImGuiManager.h"
-#include "WinApiManager.h"
+#include "WinApiHelper.h"
 
 #pragma comment(lib, "opengl32.lib")
 //#include <gl/GL.h>
@@ -30,11 +30,11 @@ void ImGuiManager::Initialize(HDC hDc)
 	}
 
 	hWnd = WindowFromDC(hDc);
-	LONG wLPTR = SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)WinApiManager::h_WndProc);
+	LONG wLPTR = SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)WinApiHelper::h_WndProc);
 
 	if (!wLPTR) return;
 
-	WinApiManager::o_WndProc = (WNDPROC)wLPTR;
+	WinApiHelper::o_WndProc = (WNDPROC)wLPTR;
 	ImGuiManager::wglContext = wglCreateContext(hDc);
 
 	IMGUI_CHECKVERSION();

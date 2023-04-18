@@ -1,4 +1,4 @@
-#include "WinApiManager.h"
+#include "WinApiHelper.h"
 #include "ImGuiManager.h"
 
 #include "imgui.h"
@@ -7,10 +7,10 @@
 
 #include <iostream>
 
-WNDPROC WinApiManager::o_WndProc = nullptr;
+WNDPROC WinApiHelper::o_WndProc = nullptr;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT CALLBACK WinApiManager::h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WinApiHelper::h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (GetAsyncKeyState(VK_END) & 1) ImGuiManager::Toggle();
 
@@ -50,7 +50,7 @@ LRESULT CALLBACK WinApiManager::h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wPa
 	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
 }
 
-void WinApiManager::CreateConsole()
+void WinApiHelper::CreateConsole()
 {
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
