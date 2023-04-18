@@ -6,19 +6,6 @@
 #include "Hook.h"
 
 DWORD uo_game_mp_x86 = 0;
-
-typedef uint32_t(__cdecl* Scr_LoadScript_t)(const char* file);
-Scr_LoadScript_t Scr_LoadScript = (Scr_LoadScript_t)(0x00480150);
-
-typedef uint32_t(__cdecl* Scr_GetFunctionHandle_t)(const char* file, const char* function);
-Scr_GetFunctionHandle_t Scr_GetFunctionHandle = (Scr_GetFunctionHandle_t)(0x0047FE50);
-
-typedef uint32_t(__cdecl* Scr_ExecThread_t)(uint32_t scriptHandle, uint32_t argc);
-Scr_ExecThread_t Scr_ExecThread = (Scr_ExecThread_t)(0x0048f3e0);
-
-typedef uint32_t(__cdecl* Scr_FreeThread_t)(uint32_t threadHandle);
-Scr_FreeThread_t Scr_FreeThread = (Scr_FreeThread_t)(0x0048f640);
-
 uint32_t CodeCallback_Custom = 0;
 
 ////////////////////////////////
@@ -161,31 +148,38 @@ _declspec(naked) void SetPhysicalCursorPos_h()
 
 /// SetPhysicalCursorPos //////////////////////////////////////////////
 DWORD GScr_LoadGameTypeScript_Ret;
-const char* s_callbacksetup = "maps/mp/gametypes/_callbacksetup";
-const char* s_PlayerConnect = "CodeCallback_Custom";
-_declspec(naked) void GScr_LoadGameTypeScript_h()
-{
-	_asm pushad
 
-	// Scr_LoadScript
+uint32_t Scr_LoadScript(const char* file)
+{
 	_asm
 	{
-		push [s_callbacksetup]
-		mov eax, [s_callbacksetup]
+		push [file]
+		mov eax, [file]
 		mov edi, 0x00480150
 		call edi
 		add esp, 0x4
 	}
+}
 
-	// Scr_GetFunctionHandle
+uint32_t Scr_GetFunctionHandle(const char* file, const char* method)
+{
 	_asm
 	{
-		push [s_PlayerConnect]
-		push [s_callbacksetup]
+		push [method]
+		push [file]
 		mov eax, 0x0047FE50
 		call eax
-		mov CodeCallback_Custom, eax
 		add esp, 0x8
+	}
+}
+
+_declspec(naked) void GScr_LoadGameTypeScript_h()
+{
+	_asm pushad
+
+	if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
+	{
+		CodeCallback_Custom = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_Custom");
 	}
 
 	_asm popad
@@ -204,6 +198,23 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 ///////////////////////////////////////////////////////////////////////
 
 /// Shoot Callback ///////////////////////////////////////////////////
+uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc)
+{
+	_asm
+	{
+		push argc
+		push scriptHandle
+		mov eax, 0x0048f3e0
+		call eax // Scr_ExecThread
+
+		push eax
+		mov eax, 0x0048f640
+		call eax // Scr_FreeThread
+
+		add esp, 0xC
+	}
+}
+
 DWORD ShootCallback_Ret;
 _declspec(naked) void ShootCallback_h()
 {
@@ -211,19 +222,7 @@ _declspec(naked) void ShootCallback_h()
 
 	if (CodeCallback_Custom != 0)
 	{
-		_asm
-		{
-			push 0
-			push CodeCallback_Custom
-			mov eax, 0x0048f3e0
-			call eax // Scr_ExecThread
-
-			push eax
-			mov eax, 0x0048f640
-			call eax // Scr_FreeThread
-
-			add esp, 0xC
-		}
+		Scr_RunScript(CodeCallback_Custom, 0);
 	}
 
 	_asm popad
