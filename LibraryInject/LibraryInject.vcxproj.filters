@@ -56,6 +56,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Entry Point</Filter>
     </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imstb_truetype.h">
@@ -89,6 +92,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WinApiManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

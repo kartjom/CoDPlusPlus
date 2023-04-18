@@ -3,14 +3,9 @@
 
 #include "WinApiManager.h"
 #include "ImGuiManager.h"
-
-#define baseAddress 0x400000
-#define LoadFromDLL(dll, method) GetProcAddress(GetModuleHandleA(dll), method)
+#include "Hook.h"
 
 DWORD uo_game_mp_x86 = 0;
-
-typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
-wglSwapBuffers_t wglSwapBuffers_o;
 
 typedef uint32_t(__cdecl* Scr_LoadScript_t)(const char* file);
 Scr_LoadScript_t Scr_LoadScript = (Scr_LoadScript_t)(0x00480150);
@@ -44,60 +39,7 @@ public:
 };
 
 gentity_t* g_entities;
-/// ////////////////////////////
-
-void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
-{
-	*ret = hookAddress + len;
-
-	DWORD protection;
-	VirtualProtect((void*)hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
-
-	DWORD relativeAddress = ((DWORD)jumpTo - hookAddress) - 5;
-
-	*(BYTE*)hookAddress = 0xE9; // JMP
-	*(DWORD*)(hookAddress + 1) = relativeAddress;
-
-	VirtualProtect((void*)hookAddress, len, protection, &protection);
-}
-
-
-//void ImGuiTick(HDC hDc, HGLRC WglContext)
-//{
-//	if (showImGui && g_entities)
-//	{
-//		//ImGui::ShowDemoWindow();
-//		ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-//		if (!ImGui::Begin("Example: Property editor"))
-//		{
-//			ImGui::End();
-//			return;
-//		}
-//
-//		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-//		if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
-//		{
-//			for (int obj_i = 0; obj_i <= 1023; obj_i++)
-//			{
-//				gentity_t ent = g_entities[obj_i];
-//
-//				ImGui::PushID(obj_i);
-//
-//				ImGui::TableNextRow();
-//				ImGui::TableSetColumnIndex(0);
-//				ImGui::AlignTextToFramePadding();
-//				bool node_open = ImGui::TreeNode("Object", "%s_%u", "gentity_", obj_i);
-//				ImGui::TableSetColumnIndex(1);
-//				ImGui::Text("Time %d (%f, %f, %f)", ent.time, ent.origin.x, ent.origin.y, ent.origin.z);
-//
-//				ImGui::PopID();
-//			}
-//			ImGui::EndTable();
-//		}
-//		ImGui::PopStyleVar();
-//		ImGui::End();
-//	}
-//}
+////////////////////////////////
 
 /// LoadLibrary ///////////////////////////////////////////////////////
 typedef HMODULE(__stdcall* LoadLibrary_t)(LPCSTR lpLibFileName);
@@ -164,6 +106,9 @@ _declspec(naked) void FreeLibrary_h()
 ///////////////////////////////////////////////////////////////////////
 
 /// wglSwapBuffers ////////////////////////////////////////////////////
+typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
+wglSwapBuffers_t wglSwapBuffers_o;
+
 BOOL __stdcall wglSwapBuffers_w(HDC hDc)
 {
 	ImGuiManager::Initialize(hDc);
@@ -297,8 +242,8 @@ void uo_game_mp_x86_OnAttach()
 {
 	g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 
-	Detour(uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
-	Detour(uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
+	Hook::Detour(uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
+	Hook::Detour(uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
 }
 
 void uo_game_mp_x86_OnDetach()
@@ -310,17 +255,17 @@ DWORD WINAPI MainThread(LPVOID param)
 {
 	WinApiManager::CreateConsole();
 
-	LoadLibrary_o = (LoadLibrary_t)LoadFromDLL("kernel32.dll", "LoadLibraryA");
-	Detour(baseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
+	LoadLibrary_o = Hook::LoadFromDLL<LoadLibrary_t>("kernel32.dll", "LoadLibraryA");
+	Hook::Detour(Hook::BaseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
 	
-	FreeLibrary_o = (FreeLibrary_t)LoadFromDLL("kernel32.dll", "FreeLibrary");
-	//Detour(baseAddress + 0x1c0c, FreeLibrary_h, 6, &FreeLibrary_Ret);
+	FreeLibrary_o = Hook::LoadFromDLL<FreeLibrary_t>("kernel32.dll", "FreeLibrary");
+	//Hook::Detour(Hook::BaseAddress + 0x1c0c, FreeLibrary_h, 6, &FreeLibrary_Ret);
 	
-	wglSwapBuffers_o = (wglSwapBuffers_t)LoadFromDLL("opengl32.dll", "wglSwapBuffers");
-	Detour(baseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
+	wglSwapBuffers_o = Hook::LoadFromDLL<wglSwapBuffers_t>("opengl32.dll", "wglSwapBuffers");
+	Hook::Detour(Hook::BaseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
 	
-	SetPhysicalCursorPos_o = (SetPhysicalCursorPos_t)LoadFromDLL("user32.dll", "SetPhysicalCursorPos");
-	Detour(baseAddress + 0x69C3B, SetPhysicalCursorPos_h, 6, &SetPhysicalCursorPos_Ret);
+	SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
+	Hook::Detour(Hook::BaseAddress + 0x69C3B, SetPhysicalCursorPos_h, 6, &SetPhysicalCursorPos_Ret);
 
 	while (true)
 	{
