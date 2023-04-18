@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoDUO.cpp" />
     <ClCompile Include="Hook.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -165,6 +166,8 @@
     <ClCompile Include="WinApiManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoDUO.h" />
+    <ClInclude Include="coduo_structs.h" />
     <ClInclude Include="Hook.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />

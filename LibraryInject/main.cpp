@@ -4,29 +4,7 @@
 #include "WinApiManager.h"
 #include "ImGuiManager.h"
 #include "Hook.h"
-
-DWORD uo_game_mp_x86 = 0;
-uint32_t CodeCallback_Custom = 0;
-
-////////////////////////////////
-struct Vector3 {
-	float x, y, z;
-};
-
-class gentity_t
-{
-public:
-	char pad_0000[16]; //0x0000
-	int32_t time; //0x0010
-	char pad_0014[4]; //0x0014
-	Vector3 origin; //0x0018
-	char pad_0024[28]; //0x0024
-	Vector3 viewangles; //0x0040
-	char pad_004C[768]; //0x004C
-};
-
-gentity_t* g_entities;
-////////////////////////////////
+#include "CoDUO.h"
 
 /// LoadLibrary ///////////////////////////////////////////////////////
 typedef HMODULE(__stdcall* LoadLibrary_t)(LPCSTR lpLibFileName);
@@ -41,7 +19,7 @@ HMODULE __stdcall LoadLibrary_w(LPCSTR lpLibFileName)
 
 	if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
 	{
-		uo_game_mp_x86 = (DWORD)handle;
+		CoDUO::uo_game_mp_x86 = (DWORD)handle;
 		uo_game_mp_x86_OnAttach();
 	}
 
@@ -75,7 +53,7 @@ BOOL __stdcall FreeLibrary_w(HMODULE hLibModule)
 	if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
 	{
 		uo_game_mp_x86_OnDetach();
-		uo_game_mp_x86 = 0;
+		CoDUO::uo_game_mp_x86 = 0;
 	}
 
 	return FreeLibrary_o(hLibModule);
@@ -149,37 +127,13 @@ _declspec(naked) void SetPhysicalCursorPos_h()
 /// SetPhysicalCursorPos //////////////////////////////////////////////
 DWORD GScr_LoadGameTypeScript_Ret;
 
-uint32_t Scr_LoadScript(const char* file)
-{
-	_asm
-	{
-		push [file]
-		mov eax, [file]
-		mov edi, 0x00480150
-		call edi
-		add esp, 0x4
-	}
-}
-
-uint32_t Scr_GetFunctionHandle(const char* file, const char* method)
-{
-	_asm
-	{
-		push [method]
-		push [file]
-		mov eax, 0x0047FE50
-		call eax
-		add esp, 0x8
-	}
-}
-
 _declspec(naked) void GScr_LoadGameTypeScript_h()
 {
 	_asm pushad
 
-	if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
+	if (CoDUO::Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 	{
-		CodeCallback_Custom = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_Custom");
+		CoDUO::CodeCallback_Custom = CoDUO::Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_Custom");
 	}
 
 	_asm popad
@@ -188,7 +142,7 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 	{
 		sub esp,0x44
 
-		mov eax, uo_game_mp_x86
+		mov eax, CoDUO::uo_game_mp_x86
 		add eax, 0x00082650
 
 		mov eax, [eax]
@@ -198,31 +152,14 @@ _declspec(naked) void GScr_LoadGameTypeScript_h()
 ///////////////////////////////////////////////////////////////////////
 
 /// Shoot Callback ///////////////////////////////////////////////////
-uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc)
-{
-	_asm
-	{
-		push argc
-		push scriptHandle
-		mov eax, 0x0048f3e0
-		call eax // Scr_ExecThread
-
-		push eax
-		mov eax, 0x0048f640
-		call eax // Scr_FreeThread
-
-		add esp, 0xC
-	}
-}
-
 DWORD ShootCallback_Ret;
 _declspec(naked) void ShootCallback_h()
 {
 	_asm pushad
 
-	if (CodeCallback_Custom != 0)
+	if (CoDUO::CodeCallback_Custom != 0)
 	{
-		Scr_RunScript(CodeCallback_Custom, 0);
+		CoDUO::Scr_RunScript(CoDUO::CodeCallback_Custom, 0);
 	}
 
 	_asm popad
@@ -239,15 +176,15 @@ _declspec(naked) void ShootCallback_h()
 
 void uo_game_mp_x86_OnAttach()
 {
-	g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
+	CoDUO::g_entities = (gentity_t*)(CoDUO::uo_game_mp_x86 + 0x00118d40);
 
-	Hook::Detour(uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
-	Hook::Detour(uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
+	Hook::Detour(CoDUO::uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
+	Hook::Detour(CoDUO::uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
 }
 
 void uo_game_mp_x86_OnDetach()
 {
-	g_entities = nullptr;
+	CoDUO::g_entities = nullptr;
 }
 
 DWORD WINAPI MainThread(LPVOID param)

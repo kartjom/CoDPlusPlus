@@ -59,6 +59,9 @@
     <ClCompile Include="Hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoDUO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imstb_truetype.h">
@@ -95,6 +98,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDUO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="coduo_structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
