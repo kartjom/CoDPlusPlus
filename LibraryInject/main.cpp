@@ -1,16 +1,12 @@
 #include <Windows.h>
 #include <iostream>
 
+#include "WinApiManager.h"
 #include "ImGuiManager.h"
 
 #define baseAddress 0x400000
 #define LoadFromDLL(dll, method) GetProcAddress(GetModuleHandleA(dll), method)
-#define SAFE_EXEC(code) \
-_asm {pushad} \
-code \
-_asm {popad}
 
-HANDLE process;
 DWORD uo_game_mp_x86 = 0;
 
 typedef BOOL(__stdcall* wglSwapBuffers_t)(HDC hDc);
@@ -312,11 +308,7 @@ void uo_game_mp_x86_OnDetach()
 
 DWORD WINAPI MainThread(LPVOID param)
 {
-	AllocConsole();
-	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-
-	//baseAddress = (DWORD)GetModuleHandleA(NULL);
-	process = GetCurrentProcess();
+	WinApiManager::CreateConsole();
 
 	LoadLibrary_o = (LoadLibrary_t)LoadFromDLL("kernel32.dll", "LoadLibraryA");
 	Detour(baseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);

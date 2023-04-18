@@ -5,6 +5,8 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_opengl3.h"
 
+#include <iostream>
+
 WNDPROC WinApiManager::o_WndProc = nullptr;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -46,4 +48,10 @@ LRESULT CALLBACK WinApiManager::h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wPa
 	if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;
 
 	return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
+}
+
+void WinApiManager::CreateConsole()
+{
+	AllocConsole();
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 }
