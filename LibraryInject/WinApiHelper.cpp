@@ -5,6 +5,9 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_opengl3.h"
 
+#include "Hook.h"
+#include "Detours.h"
+
 #include <iostream>
 
 WNDPROC WinApiHelper::o_WndProc = nullptr;
@@ -54,4 +57,13 @@ void WinApiHelper::CreateConsole()
 {
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+}
+
+void WinApiHelper::CreateDetours()
+{
+	Detours::LoadLibraryA_o = Hook::LoadFromDLL<LoadLibraryA_t>("kernel32.dll", "LoadLibraryA");
+	DetourRet(Hook::BaseAddress + 0x6B8FB, Detours::LoadLibraryA, 6);
+
+	Detours::SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
+	DetourRet(Hook::BaseAddress + 0x69C3B, Detours::SetPhysicalCursorPos, 6);
 }
