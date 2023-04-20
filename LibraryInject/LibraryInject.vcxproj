@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CoDUO.cpp" />
+    <ClCompile Include="Detours_CoDUO.cpp" />
     <ClCompile Include="Hook.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="CoDUO.h" />
     <ClInclude Include="coduo_structs.h" />
+    <ClInclude Include="Detours.h" />
     <ClInclude Include="Hook.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="ImGui\imconfig.h" />

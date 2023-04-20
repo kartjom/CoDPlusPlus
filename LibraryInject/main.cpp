@@ -4,6 +4,7 @@
 #include "WinApiHelper.h"
 #include "ImGuiManager.h"
 #include "Hook.h"
+#include "Detours.h"
 #include "CoDUO.h"
 
 /// LoadLibrary ///////////////////////////////////////////////////////
@@ -124,62 +125,12 @@ _declspec(naked) void SetPhysicalCursorPos_h()
 }
 ///////////////////////////////////////////////////////////////////////
 
-/// SetPhysicalCursorPos //////////////////////////////////////////////
-DWORD GScr_LoadGameTypeScript_Ret;
-
-_declspec(naked) void GScr_LoadGameTypeScript_h()
-{
-	_asm pushad
-
-	if (CoDUO::Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
-	{
-		CoDUO::CodeCallback_Custom = CoDUO::Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_Custom");
-	}
-
-	_asm popad
-
-	_asm
-	{
-		sub esp,0x44
-
-		mov eax, CoDUO::uo_game_mp_x86
-		add eax, 0x00082650
-
-		mov eax, [eax]
-		jmp [GScr_LoadGameTypeScript_Ret]
-	}
-}
-///////////////////////////////////////////////////////////////////////
-
-/// Shoot Callback ///////////////////////////////////////////////////
-DWORD ShootCallback_Ret;
-_declspec(naked) void ShootCallback_h()
-{
-	_asm pushad
-
-	if (CoDUO::CodeCallback_Custom != 0)
-	{
-		CoDUO::Scr_RunScript(CoDUO::CodeCallback_Custom, 0);
-	}
-
-	_asm popad
-
-	_asm
-	{
-		lea ecx, dword ptr ds : [ecx + eax * 0x4 + 0x334]
-		sub dword ptr ds : [ecx], esi
-
-		jmp [ShootCallback_Ret]
-	}
-}
-///////////////////////////////////////////////////////////////////////
-
 void uo_game_mp_x86_OnAttach()
 {
 	CoDUO::g_entities = (gentity_t*)(CoDUO::uo_game_mp_x86 + 0x00118d40);
 
-	Hook::Detour(CoDUO::uo_game_mp_x86 + 0x000361c0, GScr_LoadGameTypeScript_h, 8, &GScr_LoadGameTypeScript_Ret);
-	Hook::Detour(CoDUO::uo_game_mp_x86 + 0x122A6, ShootCallback_h, 9, &ShootCallback_Ret);
+	DetourRet(CoDUO::uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript_h, 8);
+	DetourRet(CoDUO::uo_game_mp_x86 + 0x122A6, Detours::ShootCallback_h, 9);
 }
 
 void uo_game_mp_x86_OnDetach()
@@ -192,16 +143,16 @@ DWORD WINAPI MainThread(LPVOID param)
 	WinApiHelper::CreateConsole();
 
 	LoadLibrary_o = Hook::LoadFromDLL<LoadLibrary_t>("kernel32.dll", "LoadLibraryA");
-	Hook::Detour(Hook::BaseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
+	Hook::DetourA(Hook::BaseAddress + 0x6B8FB, LoadLibraryA_h, 6, &LoadLibraryA_Ret);
 	
 	//FreeLibrary_o = Hook::LoadFromDLL<FreeLibrary_t>("kernel32.dll", "FreeLibrary");
 	//Hook::Detour(Hook::BaseAddress + 0x1c0c, FreeLibrary_h, 6, &FreeLibrary_Ret);
 	
 	wglSwapBuffers_o = Hook::LoadFromDLL<wglSwapBuffers_t>("opengl32.dll", "wglSwapBuffers");
-	Hook::Detour(Hook::BaseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
+	Hook::DetourA(Hook::BaseAddress + 0xF6723, wglSwapBuffers_h, 6, &wglSwapBuffers_Ret);
 	
 	SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
-	Hook::Detour(Hook::BaseAddress + 0x69C3B, SetPhysicalCursorPos_h, 6, &SetPhysicalCursorPos_Ret);
+	Hook::DetourA(Hook::BaseAddress + 0x69C3B, SetPhysicalCursorPos_h, 6, &SetPhysicalCursorPos_Ret);
 
 	while (true)
 	{

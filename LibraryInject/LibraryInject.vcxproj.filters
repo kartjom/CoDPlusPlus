@@ -24,6 +24,9 @@
     <Filter Include="Vendor\ImGui\src">
       <UniqueIdentifier>{c6c8d737-75f9-460a-9a79-76b7a26c3a40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Detours">
+      <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="CoDUO.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_CoDUO.cpp">
+      <Filter>Detours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +111,9 @@
     </ClInclude>
     <ClInclude Include="coduo_structs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours.h">
+      <Filter>Detours</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
