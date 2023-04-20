@@ -1,6 +1,7 @@
 #include "Detours.h"
 #include "CoDUO.h"
 
+#pragma region GScr_LoadGameTypeScript
 ImplementDetour(GScr_LoadGameTypeScript)
 {
 	SAFE_CALL
@@ -23,7 +24,9 @@ ImplementDetour(GScr_LoadGameTypeScript)
 
 	JumpBack(GScr_LoadGameTypeScript)
 }
+#pragma endregion
 
+#pragma region ShootCallback
 ImplementDetour(ShootCallback)
 {
 	SAFE_CALL
@@ -42,3 +45,4 @@ ImplementDetour(ShootCallback)
 
 	JumpBack(ShootCallback)
 }
+#pragma endregion

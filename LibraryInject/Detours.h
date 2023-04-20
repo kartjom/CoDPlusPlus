@@ -1,28 +1,20 @@
 #pragma once
+#include "Detours_defines.h"
 #include <wtypes.h>
 
-#define DeclareDetour(fn) \
-static DWORD fn##_Ret; \
-static void fn##_t()
+DeclareTypeArg1(HMODULE, __stdcall, LoadLibraryA, LPCSTR lpLibFileName);
+DeclareTypeArg2(BOOL, __stdcall, SetPhysicalCursorPos, int x, int y);
 
-#define ImplementDetour(fn) \
-DWORD Detours::fn##_Ret; \
-_declspec(naked) void Detours::fn##_t()
-
-#define SAFE_CALL(code) \
-_asm {pushad} \
-{ \
-code \
-} \
-_asm {popad}
-
-#define _restore _asm
-#define JumpBack(name) _asm jmp [name##_Ret]
+DeclareTypeArg1(BOOL, __stdcall, wglSwapBuffers, HDC hDc);
 
 class Detours
 {
 public:
+	DeclareOverrideArg1(HMODULE, __stdcall, LoadLibraryA, LPCSTR lpLibFileName);
+	DeclareOverrideArg2(BOOL, __stdcall, SetPhysicalCursorPos, int x, int y);
+
+	DeclareOverrideArg1(BOOL, __stdcall, wglSwapBuffers, HDC hDc);
+
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(ShootCallback);
 };
-
