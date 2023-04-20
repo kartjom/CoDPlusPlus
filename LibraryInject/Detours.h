@@ -3,7 +3,7 @@
 
 #define DeclareDetour(fn) \
 static DWORD fn##_Ret; \
-static void fn##_t();
+static void fn##_t()
 
 #define ImplementDetour(fn) \
 DWORD Detours::fn##_Ret; \
@@ -22,7 +22,7 @@ _asm {popad}
 class Detours
 {
 public:
-	DeclareDetour(GScr_LoadGameTypeScript)
-	DeclareDetour(ShootCallback)
+	DeclareDetour(GScr_LoadGameTypeScript);
+	DeclareDetour(ShootCallback);
 };
 
