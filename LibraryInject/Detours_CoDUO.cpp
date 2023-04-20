@@ -35,7 +35,8 @@ ImplementDetour(ShootCallback)
 	if (CoDUO::CodeCallback_PlayerShoot != 0)
 	{
 		CoDUO::Scr_AddEntity(0);
-		CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 1);
+		CoDUO::Scr_AddVector((float*)&CoDUO::g_entities[0].viewangles);
+		CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 2);
 	}
 
 	_asm popad
