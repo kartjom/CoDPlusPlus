@@ -129,8 +129,8 @@ void uo_game_mp_x86_OnAttach()
 {
 	CoDUO::g_entities = (gentity_t*)(CoDUO::uo_game_mp_x86 + 0x00118d40);
 
-	DetourRet(CoDUO::uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript_h, 8);
-	DetourRet(CoDUO::uo_game_mp_x86 + 0x122A6, Detours::ShootCallback_h, 9);
+	DetourRet(CoDUO::uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
+	DetourRet(CoDUO::uo_game_mp_x86 + 0x122A6, Detours::ShootCallback, 9);
 }
 
 void uo_game_mp_x86_OnDetach()

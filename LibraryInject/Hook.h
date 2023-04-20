@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 
-#define DetourRet(hookAddress, jumpTo, len) Hook::DetourA(hookAddress, jumpTo, len, &jumpTo##_Ret)
+#define DetourRet(hookAddress, jumpTo, len) Hook::DetourA(hookAddress, jumpTo##_t, len, &jumpTo##_Ret)
 
 class Hook
 {

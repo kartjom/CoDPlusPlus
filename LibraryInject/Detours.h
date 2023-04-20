@@ -3,11 +3,11 @@
 
 #define DeclareDetour(fn) \
 static DWORD fn##_Ret; \
-static void fn();
+static void fn##_t();
 
 #define ImplementDetour(fn) \
 DWORD Detours::fn##_Ret; \
-_declspec(naked) void Detours::fn()
+_declspec(naked) void Detours::fn##_t()
 
 #define SAFE_CALL(code) \
 _asm {pushad} \
@@ -22,7 +22,7 @@ _asm {popad}
 class Detours
 {
 public:
-	DeclareDetour(GScr_LoadGameTypeScript_h)
-	DeclareDetour(ShootCallback_h)
+	DeclareDetour(GScr_LoadGameTypeScript)
+	DeclareDetour(ShootCallback)
 };
 

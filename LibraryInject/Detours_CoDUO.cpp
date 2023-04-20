@@ -1,7 +1,7 @@
 #include "Detours.h"
 #include "CoDUO.h"
 
-ImplementDetour(GScr_LoadGameTypeScript_h)
+ImplementDetour(GScr_LoadGameTypeScript)
 {
 	SAFE_CALL
 	(
@@ -21,10 +21,10 @@ ImplementDetour(GScr_LoadGameTypeScript_h)
 		mov eax, [eax]
 	}
 
-	JumpBack(GScr_LoadGameTypeScript_h)
+	JumpBack(GScr_LoadGameTypeScript)
 }
 
-ImplementDetour(ShootCallback_h)
+ImplementDetour(ShootCallback)
 {
 	SAFE_CALL
 	(
@@ -40,5 +40,5 @@ ImplementDetour(ShootCallback_h)
 		sub dword ptr ds : [ecx] , esi
 	}
 
-	JumpBack(ShootCallback_h)
+	JumpBack(ShootCallback)
 }
