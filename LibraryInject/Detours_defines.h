@@ -24,13 +24,6 @@ _declspec(naked) void Detours::fn##_t()
 fn##_t Detours::fn##_o = nullptr; \
 retType callConv Detours::fn##_w
 
-#define SAFE_CALL(code) \
-_asm {pushad} \
-{ \
-code \
-} \
-_asm {popad}
-
 #define _restore _asm
 #define JumpBack(name) _asm jmp [name##_Ret]
 #define Original(fn) fn##_o

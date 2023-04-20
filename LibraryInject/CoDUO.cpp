@@ -3,7 +3,7 @@
 #include "Detours.h"
 
 DWORD CoDUO::uo_game_mp_x86 = 0;
-uint32_t CoDUO::CodeCallback_Custom = 0;
+uint32_t CoDUO::CodeCallback_PlayerShoot = 0;
 
 gentity_t* CoDUO::g_entities = nullptr;
 
@@ -45,6 +45,55 @@ uint32_t CoDUO::Scr_RunScript(uint32_t scriptHandle, uint32_t argc)
 		call eax // Scr_FreeThread
 
 		add esp, 0xC
+	}
+}
+
+void CoDUO::Scr_AddInt(int value)
+{
+	_asm
+	{
+		push value
+		mov eax, 0x00490670
+		call eax
+
+		add esp, 0x4
+	}
+}
+
+void CoDUO::Scr_AddVector(float* value)
+{
+	_asm
+	{
+		push value
+		mov eax, 0x004908C0
+		call eax
+
+		add esp, 0x4
+	}
+}
+
+void CoDUO::Scr_AddString(const char* str)
+{
+	_asm
+	{
+		push [str]
+		mov eax, 0x004907F0
+		call eax
+
+		add esp, 0x4
+	}
+}
+
+void CoDUO::Scr_AddEntity(int index)
+{
+	_asm
+	{
+		push 0x0
+		push index
+		mov eax, 0x00490720
+		call eax
+
+		add esp, 0x8
 	}
 }
 

@@ -1,6 +1,11 @@
 #pragma once
 struct Vector3 {
 	float x, y, z;
+
+	operator float* ()
+	{
+		return &x;
+	}
 };
 
 class gentity_t

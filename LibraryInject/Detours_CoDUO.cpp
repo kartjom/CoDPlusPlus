@@ -4,13 +4,14 @@
 #pragma region GScr_LoadGameTypeScript
 ImplementDetour(GScr_LoadGameTypeScript)
 {
-	SAFE_CALL
-	(
-		if (CoDUO::Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
-		{
-			CoDUO::CodeCallback_Custom = CoDUO::Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_Custom");
-		}
-	)
+	_asm pushad
+
+	if (CoDUO::Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
+	{
+		CoDUO::CodeCallback_PlayerShoot = CoDUO::Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
+	}
+
+	_asm popad
 
 	_restore
 	{
@@ -29,13 +30,15 @@ ImplementDetour(GScr_LoadGameTypeScript)
 #pragma region ShootCallback
 ImplementDetour(ShootCallback)
 {
-	SAFE_CALL
-	(
-		if (CoDUO::CodeCallback_Custom != 0)
-		{
-			CoDUO::Scr_RunScript(CoDUO::CodeCallback_Custom, 0);
-		}
-	)
+	_asm pushad
+
+	if (CoDUO::CodeCallback_PlayerShoot != 0)
+	{
+		CoDUO::Scr_AddEntity(0);
+		CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 1);
+	}
+
+	_asm popad
 
 	_restore
 	{
