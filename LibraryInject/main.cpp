@@ -10,8 +10,8 @@
 DWORD WINAPI MainThread(LPVOID param)
 {
 	WinApiHelper::CreateConsole();
-	WinApiHelper::CreateDetours();
 
+	WinApiHelper::CreateDetours();
 	OpenGLHelper::CreateDetours();
 
 	while (true)
