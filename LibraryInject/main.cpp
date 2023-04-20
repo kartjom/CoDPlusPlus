@@ -4,8 +4,6 @@
 #include "WinApiHelper.h"
 #include "OpenGLHelper.h"
 #include "ImGuiManager.h"
-#include "Hook.h"
-#include "Detours.h"
 
 DWORD WINAPI MainThread(LPVOID param)
 {
