@@ -60,7 +60,7 @@ void CoDUO::Scr_AddInt(int value)
 	}
 }
 
-void CoDUO::Scr_AddVector(float* value)
+void CoDUO::Scr_AddVector(void* value)
 {
 	_asm
 	{
@@ -72,11 +72,11 @@ void CoDUO::Scr_AddVector(float* value)
 	}
 }
 
-void CoDUO::Scr_AddString(const char* str)
+void CoDUO::Scr_AddString(const char* string)
 {
 	_asm
 	{
-		push [str]
+		push [string]
 		mov eax, 0x004907F0
 		call eax
 
@@ -102,7 +102,7 @@ void CoDUO::uo_game_mp_x86_OnAttach()
 	CoDUO::g_entities = (gentity_t*)(CoDUO::uo_game_mp_x86 + 0x00118d40);
 
 	DetourRet(CoDUO::uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
-	DetourRet(CoDUO::uo_game_mp_x86 + 0x122A6, Detours::ShootCallback, 9);
+	DetourRet(CoDUO::uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
 }
 
 void CoDUO::uo_game_mp_x86_OnDetach()

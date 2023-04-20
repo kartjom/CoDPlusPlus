@@ -34,17 +34,29 @@ ImplementDetour(ShootCallback)
 
 	if (CoDUO::CodeCallback_PlayerShoot != 0)
 	{
-		CoDUO::Scr_AddEntity(0);
-		CoDUO::Scr_AddVector((float*)&CoDUO::g_entities[0].viewangles);
-		CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 2);
+		gentity_t* ent;
+		const char* weaponName;
+
+		_asm
+		{
+			mov ent, edi
+			push edx
+			mov edx, [edx + 4]
+			mov weaponName, edx
+			pop edx
+		}
+
+		CoDUO::Scr_AddString(weaponName);
+		CoDUO::Scr_AddVector(&ent->viewangles);
+		CoDUO::Scr_AddEntity(ent->number);
+		CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 3);
 	}
 
 	_asm popad
 
 	_restore
 	{
-		lea ecx, dword ptr ds : [ecx + eax * 0x4 + 0x334]
-		sub dword ptr ds : [ecx] , esi
+		mov eax, dword ptr ss:[ebp + 0x160]
 	}
 
 	JumpBack(ShootCallback)

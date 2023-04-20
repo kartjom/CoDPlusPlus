@@ -17,8 +17,8 @@ public:
 	static uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
 
 	static void Scr_AddInt(int value);
-	static void Scr_AddVector(float* value);
-	static void Scr_AddString(const char* str);
+	static void Scr_AddVector(void* value);
+	static void Scr_AddString(const char* string);
 	static void Scr_AddEntity(int index);
 
 	static void uo_game_mp_x86_OnAttach();
