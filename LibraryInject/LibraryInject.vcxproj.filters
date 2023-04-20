@@ -27,6 +27,9 @@
     <Filter Include="Detours">
       <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Structs">
+      <UniqueIdentifier>{e811e7a4-7d33-4d01-8b04-e90bade1605b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
@@ -66,6 +69,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Detours_CoDUO.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_OpenGL.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_WinAPI.cpp">
       <Filter>Detours</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,11 +121,17 @@
     <ClInclude Include="CoDUO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="coduo_structs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Detours.h">
       <Filter>Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours_defines.h">
+      <Filter>Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="coduo_structs.h">
+      <Filter>Structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
