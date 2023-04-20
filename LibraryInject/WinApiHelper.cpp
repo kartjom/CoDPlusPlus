@@ -59,7 +59,7 @@ void WinApiHelper::CreateConsole()
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 }
 
-void WinApiHelper::CreateDetours()
+void WinApiHelper::InjectDetours()
 {
 	Detours::LoadLibraryA_o = Hook::LoadFromDLL<LoadLibraryA_t>("kernel32.dll", "LoadLibraryA");
 	DetourRet(Hook::BaseAddress + 0x6B8FB, Detours::LoadLibraryA, 6);

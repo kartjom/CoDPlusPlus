@@ -9,5 +9,5 @@ public:
 	static LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	static void CreateConsole();
-	static void CreateDetours();
+	static void InjectDetours();
 };

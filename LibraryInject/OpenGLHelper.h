@@ -2,5 +2,5 @@
 class OpenGLHelper
 {
 public:
-	static void CreateDetours();
+	static void InjectDetours();
 };
