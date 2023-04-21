@@ -45,6 +45,7 @@ ImplementDetour(ShootCallback)
 			mov weaponName, edx
 			pop edx
 		}
+
 		if (player && weaponName)
 		{
 			CoDUO::Scr_AddString(weaponName);

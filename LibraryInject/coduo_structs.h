@@ -1,4 +1,6 @@
 #pragma once
+#define GENTITY_SIZE 0x34C
+
 struct Vector3 {
 	float x, y, z;
 
@@ -11,13 +13,17 @@ struct Vector3 {
 class gentity_t
 {
 public:
-	int32_t number;
-	char pad_0000[12]; //0x0000
+	int32_t number; //0x0000
+	char pad_0004[12]; //0x0004
 	int32_t time; //0x0010
 	char pad_0014[4]; //0x0014
 	Vector3 origin; //0x0018
 	Vector3 velocity; //0x0024
 	char pad_0030[12]; //0x0030
 	Vector3 viewangles; //0x003C
-	char pad_0048[813]; //0x0048
-}; //Size: 0x0375
+	char pad_0048[348]; //0x0048
+	uint32_t frames; //0x01A4
+	char pad_01A8[152]; //0x01A8
+	int32_t health; //0x0240
+	char pad_0244[264]; //0x0244
+}; //Size: 0x034C
