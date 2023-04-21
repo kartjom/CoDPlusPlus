@@ -25,7 +25,9 @@ public:
 	int16_t classname; //0x0184
 	char pad_0186[30]; //0x0186
 	uint32_t frames; //0x01A4
-	char pad_01A8[152]; //0x01A8
+	char pad_01A8[62]; //0x01A8
+	int16_t targetname; //0x01E6
+	char pad_01E8[88]; //0x01E8
 	int32_t health; //0x0240
 	char pad_0244[264]; //0x0244
 }; //Size: 0x034C
