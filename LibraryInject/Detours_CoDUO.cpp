@@ -1,5 +1,6 @@
 #include "Detours.h"
 #include "CoDUO.h"
+#include <stdio.h>
 
 #pragma region GScr_LoadGameTypeScript
 ImplementDetour(GScr_LoadGameTypeScript)

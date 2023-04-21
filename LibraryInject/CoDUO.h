@@ -21,6 +21,8 @@ public:
 	static void Scr_AddString(const char* string);
 	static void Scr_AddEntity(int index);
 
+	static const char* SL_ConvertToString(int32_t index);
+
 	static void uo_game_mp_x86_OnAttach();
 	static void uo_game_mp_x86_OnDetach();
 };

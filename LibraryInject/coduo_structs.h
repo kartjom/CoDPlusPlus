@@ -21,7 +21,9 @@ public:
 	Vector3 velocity; //0x0024
 	char pad_0030[12]; //0x0030
 	Vector3 viewangles; //0x003C
-	char pad_0048[348]; //0x0048
+	char pad_0048[316]; //0x0048
+	int16_t classname; //0x0184
+	char pad_0186[30]; //0x0186
 	uint32_t frames; //0x01A4
 	char pad_01A8[152]; //0x01A8
 	int32_t health; //0x0240

@@ -97,6 +97,18 @@ void CoDUO::Scr_AddEntity(int index)
 	}
 }
 
+const char* CoDUO::SL_ConvertToString(int32_t index)
+{
+	_asm
+	{
+		push index
+		mov eax, 0x00482290
+		call eax
+
+		add esp, 0x4
+	}
+}
+
 void CoDUO::uo_game_mp_x86_OnAttach()
 {
 	CoDUO::g_entities = (gentity_t*)(CoDUO::uo_game_mp_x86 + 0x00118d40);
