@@ -1,5 +1,7 @@
 #pragma once
-#define GENTITY_SIZE 0x34C
+#define GENTITY_SIZE 0x34C // 844
+#define GENTITY_MAX 1021
+#define WORLDSPAWN 1022
 
 struct Vector3 {
 	float x, y, z;
