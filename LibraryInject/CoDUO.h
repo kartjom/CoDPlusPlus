@@ -16,7 +16,10 @@ public:
 	static uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
 	static uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
 
+	static void Scr_AddUndefined();
+	static void Scr_AddBool(bool value);
 	static void Scr_AddInt(int value);
+	static void Scr_AddFloat(float value);
 	static void Scr_AddVector(void* value);
 	static void Scr_AddString(const char* string);
 	static void Scr_AddEntity(int index);

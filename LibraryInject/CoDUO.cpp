@@ -48,12 +48,45 @@ uint32_t CoDUO::Scr_RunScript(uint32_t scriptHandle, uint32_t argc)
 	}
 }
 
+void CoDUO::Scr_AddUndefined()
+{
+	_asm
+	{
+		mov eax, 0x004906d0
+		call eax
+	}
+}
+
+void CoDUO::Scr_AddBool(bool value)
+{
+	_asm
+	{
+		push value
+		mov eax, 0x00490650
+		call eax
+
+		add esp, 0x4
+	}
+}
+
 void CoDUO::Scr_AddInt(int value)
 {
 	_asm
 	{
 		push value
 		mov eax, 0x00490670
+		call eax
+
+		add esp, 0x4
+	}
+}
+
+void CoDUO::Scr_AddFloat(float value)
+{
+	_asm
+	{
+		push value
+		mov eax, 0x00490690
 		call eax
 
 		add esp, 0x4
