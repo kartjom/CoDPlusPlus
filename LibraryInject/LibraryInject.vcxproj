@@ -104,6 +104,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\Jakub\source\repos\LibraryInject\LibraryInject\Lua542\include;C:\Users\Jakub\source\repos\LibraryInject\LibraryInject\ImGui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
