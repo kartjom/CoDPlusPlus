@@ -3,15 +3,14 @@
 static DWORD fn##_r; \
 static void fn##_n() noexcept
 
-#define DeclareTypeArg1(retType, callConv, fn, arg1) typedef retType(callConv* fn##_t)(arg1)
-#define DeclareTypeArg2(retType, callConv, fn, arg1, arg2) typedef retType(callConv* fn##_t)(arg1, arg2)
+#define DeclareType(callConv, retType, fn) typedef retType(callConv* fn##_t)
 
-#define DeclareOverrideArg1(retType, callConv, fn, arg1) \
+#define DeclareOverrideArg1(callConv, retType, fn, arg1) \
 static fn##_t fn##_o; \
 static retType callConv fn##_w(arg1); \
 DeclareDetour(fn)
 
-#define DeclareOverrideArg2(retType, callConv, fn, arg1, arg2) \
+#define DeclareOverrideArg2(callConv, retType, fn, arg1, arg2) \
 static fn##_t fn##_o; \
 static retType callConv fn##_w(arg1, arg2); \
 DeclareDetour(fn)

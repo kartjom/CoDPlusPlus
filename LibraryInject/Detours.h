@@ -2,18 +2,18 @@
 #include "Detours_defines.h"
 #include <wtypes.h>
 
-DeclareTypeArg1(HMODULE, __stdcall, LoadLibraryA, LPCSTR lpLibFileName);
-DeclareTypeArg2(BOOL, __stdcall, SetPhysicalCursorPos, int x, int y);
+DeclareType(__stdcall, HMODULE, LoadLibraryA)(LPCSTR lpLibFileName);
+DeclareType(__stdcall, BOOL, SetPhysicalCursorPos)(int x, int y);
 
-DeclareTypeArg1(BOOL, __stdcall, wglSwapBuffers, HDC hDc);
+DeclareType(__stdcall, BOOL, wglSwapBuffers)(HDC hDc);
 
 class Detours
 {
 public:
-	DeclareOverrideArg1(HMODULE, __stdcall, LoadLibraryA, LPCSTR lpLibFileName);
-	DeclareOverrideArg2(BOOL, __stdcall, SetPhysicalCursorPos, int x, int y);
+	DeclareOverrideArg1(__stdcall, HMODULE, LoadLibraryA, LPCSTR lpLibFileName);
+	DeclareOverrideArg2(__stdcall, BOOL, SetPhysicalCursorPos, int x, int y);
 
-	DeclareOverrideArg1(BOOL, __stdcall, wglSwapBuffers, HDC hDc);
+	DeclareOverrideArg1(__stdcall, BOOL, wglSwapBuffers, HDC hDc);
 
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(ShootCallback);
