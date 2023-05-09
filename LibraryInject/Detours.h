@@ -7,9 +7,8 @@ DeclareType(__stdcall, BOOL, SetPhysicalCursorPos)(int x, int y);
 
 DeclareType(__stdcall, BOOL, wglSwapBuffers)(HDC hDc);
 
-class Detours
+namespace Detours
 {
-public:
 	DeclareOverrideArg1(__stdcall, HMODULE, LoadLibraryA, LPCSTR lpLibFileName);
 	DeclareOverrideArg2(__stdcall, BOOL, SetPhysicalCursorPos, int x, int y);
 
