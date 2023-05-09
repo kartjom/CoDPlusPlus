@@ -1,6 +1,6 @@
 #include "Hook.h"
 
-void Hook::DetourA(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
+void Hook::Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
 {
 	*ret = hookAddress + len;
 
