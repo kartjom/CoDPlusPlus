@@ -1,7 +1,7 @@
 #pragma once
 #define DeclareDetour(fn) \
 static DWORD fn##_r; \
-static void fn##_t() noexcept
+static void fn##_n() noexcept
 
 #define DeclareTypeArg1(retType, callConv, fn, arg1) typedef retType(callConv* fn##_t)(arg1)
 #define DeclareTypeArg2(retType, callConv, fn, arg1, arg2) typedef retType(callConv* fn##_t)(arg1, arg2)
@@ -18,7 +18,7 @@ DeclareDetour(fn)
 
 #define ImplementDetour(fn) \
 DWORD Detours::fn##_r; \
-_declspec(naked) void Detours::fn##_t() noexcept
+_declspec(naked) void Detours::fn##_n() noexcept
 
 #define ImplementOverride(retType, callConv, fn) \
 fn##_t Detours::fn##_o = nullptr; \
