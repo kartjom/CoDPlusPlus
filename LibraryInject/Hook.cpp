@@ -1,16 +1,19 @@
 #include "Hook.h"
 
-void Hook::Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
+namespace Hook
 {
-	*ret = hookAddress + len;
+	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
+	{
+		*ret = hookAddress + len;
 
-	DWORD protection;
-	VirtualProtect((void*)hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
+		DWORD protection;
+		VirtualProtect((void*)hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
 
-	DWORD relativeAddress = ((DWORD)jumpTo - hookAddress) - 5;
+		DWORD relativeAddress = ((DWORD)jumpTo - hookAddress) - 5;
 
-	*(BYTE*)hookAddress = 0xE9; // JMP
-	*(DWORD*)(hookAddress + 1) = relativeAddress;
+		*(BYTE*)hookAddress = 0xE9; // JMP
+		*(DWORD*)(hookAddress + 1) = relativeAddress;
 
-	VirtualProtect((void*)hookAddress, len, protection, &protection);
+		VirtualProtect((void*)hookAddress, len, protection, &protection);
+	}
 }

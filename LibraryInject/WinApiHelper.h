@@ -1,13 +1,12 @@
 #pragma once
 #include <Windows.h>
 
-class WinApiHelper
+namespace WinApiHelper
 {
-public:
-	static WNDPROC o_WndProc;
+	inline WNDPROC o_WndProc = nullptr;
 
-	static LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	static void CreateConsole();
-	static void InjectDetours();
+	void CreateConsole();
+	void InjectDetours();
 };

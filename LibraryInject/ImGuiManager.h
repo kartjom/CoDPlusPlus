@@ -1,24 +1,23 @@
 #pragma once
 #include <Windows.h>
 
-class ImGuiManager
+namespace ImGuiManager
 {
-public:
-    static HWND hWnd;
-    static HGLRC wglContext;
+    inline HWND hWnd = nullptr;
+    inline HGLRC wglContext = nullptr;
 
-    static bool IsInitialized;
-    static bool ShouldShow;
+    inline bool IsInitialized = false;
+    inline bool ShouldShow = false;
 
-    static void Initialize(HDC hDc);
+    void Initialize(HDC hDc);
 
-    static HGLRC BeginFrame(HDC hDc);
-    static void Tick();
-    static void EndFrame(HDC hDc, HGLRC o_WglContext);
+    HGLRC BeginFrame(HDC hDc);
+    void Tick();
+    void EndFrame(HDC hDc, HGLRC o_WglContext);
 
-    static void Dispose();
+    void Dispose();
 
-    static bool Toggle();
-    static bool Show();
-    static bool Hide();
+    bool Toggle();
+    bool Show();
+    bool Hide();
 };

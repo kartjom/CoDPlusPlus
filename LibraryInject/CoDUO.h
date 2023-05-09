@@ -4,28 +4,27 @@
 
 #include "coduo_structs.h"
 
-class CoDUO
+namespace CoDUO
 {
-public:
-	static DWORD uo_game_mp_x86;
-	static uint32_t CodeCallback_PlayerShoot;
+	inline DWORD uo_game_mp_x86 = 0;
+	inline uint32_t CodeCallback_PlayerShoot = 0;
 
-	static gentity_t* g_entities;
+	inline gentity_t* g_entities = nullptr;
 
-	static uint32_t Scr_LoadScript(const char* file);
-	static uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
-	static uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
+	uint32_t Scr_LoadScript(const char* file);
+	uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
+	uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
 
-	static void Scr_AddUndefined();
-	static void Scr_AddBool(bool value);
-	static void Scr_AddInt(int value);
-	static void Scr_AddFloat(float value);
-	static void Scr_AddVector(void* value);
-	static void Scr_AddString(const char* string);
-	static void Scr_AddEntity(int index);
+	void Scr_AddUndefined();
+	void Scr_AddBool(bool value);
+	void Scr_AddInt(int value);
+	void Scr_AddFloat(float value);
+	void Scr_AddVector(void* value);
+	void Scr_AddString(const char* string);
+	void Scr_AddEntity(int index);
 
-	static const char* SL_ConvertToString(int32_t index);
+	const char* SL_ConvertToString(int32_t index);
 
-	static void uo_game_mp_x86_OnAttach();
-	static void uo_game_mp_x86_OnDetach();
+	void uo_game_mp_x86_OnAttach();
+	void uo_game_mp_x86_OnDetach();
 };

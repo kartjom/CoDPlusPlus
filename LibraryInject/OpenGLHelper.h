@@ -1,6 +1,5 @@
 #pragma once
-class OpenGLHelper
+namespace OpenGLHelper
 {
-public:
-	static void InjectDetours();
+	void InjectDetours();
 };
