@@ -7,7 +7,7 @@
 
 DWORD WINAPI MainThread(LPVOID param)
 {
-	WinApiHelper::CreateConsole();
+	WinApiHelper::CreateConsole("Console");
 
 	WinApiHelper::InjectDetours();
 	OpenGLHelper::InjectDetours();

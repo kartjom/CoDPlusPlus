@@ -7,6 +7,6 @@ namespace WinApiHelper
 
 	LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void CreateConsole();
+	void CreateConsole(const char* title);
 	void InjectDetours();
 };

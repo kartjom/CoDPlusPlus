@@ -54,10 +54,12 @@ namespace WinApiHelper
 		return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
 	}
 
-	void CreateConsole()
+	void CreateConsole(const char* title)
 	{
 		AllocConsole();
 		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+
+		SetConsoleTitleA(title);
 	}
 
 	void InjectDetours()
