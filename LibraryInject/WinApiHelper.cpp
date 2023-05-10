@@ -69,5 +69,8 @@ namespace WinApiHelper
 
 		Detours::SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
 		DetourRet(Hook::BaseAddress + 0x69C3B, Detours::SetPhysicalCursorPos, 6);
+
+		Detours::FreeLibrary_kernelbase = Hook::LoadFromDLL<DWORD>("kernelbase.dll", "FreeLibrary");
+		DetourRet(Hook::LoadFromDLL<DWORD>("kernel32.dll", "FreeLibrary") + 6, Detours::FreeLibrary, 6);
 	}
 }

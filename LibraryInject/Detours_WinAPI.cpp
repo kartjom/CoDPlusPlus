@@ -32,6 +32,46 @@ namespace Detours
 		JumpBack(LoadLibraryA)
 	}
 
+	ImplementDetour(FreeLibrary)
+	{
+		_asm pushad
+
+		_asm
+		{
+			push ebp
+			mov	ebp, esp
+			sub esp, 0x4
+		}
+
+		DWORD moduleAddr;
+		_asm
+		{
+			mov moduleAddr, edx
+		}
+
+		if (moduleAddr)
+		{
+			if (moduleAddr == uo_game_mp_x86)
+			{
+				uo_game_mp_x86 = 0;
+				uo_game_mp_x86_OnDetach();
+			}
+		}
+
+		_asm
+		{
+			add esp, 0x4
+			pop ebp
+		}
+
+		_asm popad
+
+		_restore
+		{
+			jmp [Detours::FreeLibrary_kernelbase]
+		}
+	}
+
 	ImplementOverride(BOOL, __stdcall, SetPhysicalCursorPos)(int x, int y)
 	{
 		if (ImGuiManager::ShouldShow)

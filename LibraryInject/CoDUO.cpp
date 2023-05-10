@@ -2,6 +2,8 @@
 #include "Hook.h"
 #include "Detours.h"
 
+#include <iostream>
+
 namespace CoDUO
 {
 	uint32_t Scr_LoadScript(const char* file)
@@ -145,10 +147,14 @@ namespace CoDUO
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
+
+		std::cout << "[uo_game_mp_x86] - OnAttach" << std::endl;
 	}
 
 	void uo_game_mp_x86_OnDetach()
 	{
 		g_entities = nullptr;
+
+		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}
 }

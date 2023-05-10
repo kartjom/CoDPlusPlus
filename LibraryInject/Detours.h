@@ -14,6 +14,9 @@ namespace Detours
 
 	DeclareOverrideArg1(__stdcall, BOOL, wglSwapBuffers, HDC hDc);
 
+	inline DWORD FreeLibrary_kernelbase = 0;
+	DeclareDetour(FreeLibrary);
+
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(ShootCallback);
 };
