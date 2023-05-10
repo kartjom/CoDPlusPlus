@@ -3,6 +3,8 @@
 #include "CoDUO.h"
 #include <string>
 
+using namespace CoDUO;
+
 namespace Detours
 {
 	ImplementOverride(HMODULE, __stdcall, LoadLibraryA)(LPCSTR lpLibFileName)
@@ -13,8 +15,8 @@ namespace Detours
 
 		if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
 		{
-			CoDUO::uo_game_mp_x86 = (DWORD)handle;
-			CoDUO::uo_game_mp_x86_OnAttach();
+			uo_game_mp_x86 = (DWORD)handle;
+			uo_game_mp_x86_OnAttach();
 		}
 
 		return handle;

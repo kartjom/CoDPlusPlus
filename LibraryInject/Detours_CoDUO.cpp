@@ -2,15 +2,17 @@
 #include "CoDUO.h"
 #include <stdio.h>
 
+using namespace CoDUO;
+
 namespace Detours
 {
 	ImplementDetour(GScr_LoadGameTypeScript)
 	{
 		_asm pushad
 
-		if (CoDUO::Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
+		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 		{
-			CoDUO::CodeCallback_PlayerShoot = CoDUO::Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
+			CodeCallback_PlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
 		}
 
 		_asm popad
@@ -19,7 +21,7 @@ namespace Detours
 		{
 			sub esp, 0x44
 
-			mov eax, CoDUO::uo_game_mp_x86
+			mov eax, uo_game_mp_x86
 			add eax, 0x00082650
 
 			mov eax,[eax]
@@ -32,7 +34,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CoDUO::CodeCallback_PlayerShoot != 0)
+		if (CodeCallback_PlayerShoot != 0)
 		{
 			gentity_t* player = nullptr;
 			const char* weaponName = nullptr;
@@ -48,10 +50,10 @@ namespace Detours
 
 			if (player && weaponName)
 			{
-				CoDUO::Scr_AddString(weaponName);
-				CoDUO::Scr_AddVector(&player->viewangles);
-				CoDUO::Scr_AddEntity(player->number);
-				CoDUO::Scr_RunScript(CoDUO::CodeCallback_PlayerShoot, 3);
+				Scr_AddString(weaponName);
+				Scr_AddVector(&player->viewangles);
+				Scr_AddEntity(player->number);
+				Scr_RunScript(CodeCallback_PlayerShoot, 3);
 			}
 		}
 
