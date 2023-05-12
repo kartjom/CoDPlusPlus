@@ -48,10 +48,10 @@ namespace Detours
 				pop edx
 			}
 
-			if (player && weaponName)
+			if (player && weaponName && player->client)
 			{
 				Scr_AddString(weaponName);
-				Scr_AddVector(&player->viewangles);
+				Scr_AddVector(&player->client->viewangles);
 				Scr_AddEntity(player->number);
 				Scr_RunScript(CodeCallback_PlayerShoot, 3);
 			}
