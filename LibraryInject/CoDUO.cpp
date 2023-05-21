@@ -141,6 +141,14 @@ namespace CoDUO
 		}
 	}
 
+	void RuntimePatch()
+	{
+		BYTE cheatBuffer[] = { 0xEB };
+		Hook::Patch(0x0043DD86, cheatBuffer, 1); // Read Only
+		Hook::Patch(0x0043DDA3, cheatBuffer, 1); // Write Protected
+		Hook::Patch(0x0043DDC1, cheatBuffer, 1); // Cheat Protected
+	}
+
 	void uo_game_mp_x86_OnAttach()
 	{
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);

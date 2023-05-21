@@ -16,4 +16,14 @@ namespace Hook
 
 		VirtualProtect((void*)hookAddress, len, protection, &protection);
 	}
+
+	void Patch(DWORD patchAddress, void* buffer, int len)
+	{
+		DWORD protection;
+		VirtualProtect((void*)patchAddress, len, PAGE_EXECUTE_READWRITE, &protection);
+
+		memcpy((void*)patchAddress, buffer, len);
+
+		VirtualProtect((void*)patchAddress, len, protection, &protection);
+	}
 }

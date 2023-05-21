@@ -4,6 +4,7 @@
 #include "WinApiHelper.h"
 #include "OpenGLHelper.h"
 #include "ImGuiManager.h"
+#include "CoDUO.h"
 
 DWORD WINAPI MainThread(LPVOID param)
 {
@@ -11,6 +12,7 @@ DWORD WINAPI MainThread(LPVOID param)
 
 	WinApiHelper::InjectDetours();
 	OpenGLHelper::InjectDetours();
+	CoDUO::RuntimePatch();
 
 	while (true)
 	{

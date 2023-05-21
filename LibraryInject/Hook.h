@@ -9,6 +9,7 @@ namespace Hook
 	constexpr DWORD BaseAddress = 0x400000;
 
 	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret);
+	void Patch(DWORD patchAddress, void* buffer, int len);
 	
 	template<typename T>
 	T LoadFromDLL(const char* dll, const char* method);

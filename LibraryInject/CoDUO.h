@@ -25,6 +25,7 @@ namespace CoDUO
 
 	const char* SL_ConvertToString(int32_t index);
 
+	void RuntimePatch();
 	void uo_game_mp_x86_OnAttach();
 	void uo_game_mp_x86_OnDetach();
 };
