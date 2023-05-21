@@ -10,6 +10,7 @@ namespace CoDUO
 	inline uint32_t CodeCallback_PlayerShoot = 0;
 
 	inline gentity_t* g_entities = nullptr;
+	inline cvarTable_t* gameCvarTable = nullptr;
 
 	uint32_t Scr_LoadScript(const char* file);
 	uint32_t Scr_GetFunctionHandle(const char* file, const char* method);

@@ -57,3 +57,24 @@ public:
 	char pad_4614[8]; //0x4614
 	int32_t noclip; //0x461C
 };
+
+#define MAX_CVAR_VALUE_STRING 256
+#define GAME_CVAR_TABLE_SIZE 132
+
+typedef struct {
+	int handle;
+	int modificationCount;
+	float value;
+	int integer;
+	char string[MAX_CVAR_VALUE_STRING];
+} vmCvar_t;
+
+typedef struct {
+	vmCvar_t* vmCvar;
+	char* cvarName;
+	char* defaultString;
+	int cvarFlags;
+	int modificationCount;          // for tracking changes
+	int trackChange;           // track this variable, and announce if changed, boolean
+	//int teamShader;      // track and if changed, update shader state, boolean
+} cvarTable_t;
