@@ -12,7 +12,8 @@ DWORD WINAPI MainThread(LPVOID param)
 
 	WinApiHelper::InjectDetours();
 	OpenGLHelper::InjectDetours();
-	CoDUO::RuntimePatch();
+
+	CoDUO::BaseAttach();
 
 	while (true)
 	{

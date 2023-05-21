@@ -141,12 +141,43 @@ namespace CoDUO
 		}
 	}
 
-	void RuntimePatch()
+	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags)
 	{
-		BYTE cheatBuffer[] = { 0xEB };
+		_asm
+		{
+			push flags
+			push var_value
+			push var_name
+			mov eax, 0x0043D9E0
+			call eax
+
+			add esp, 0xC
+		}
+	}
+
+	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force)
+	{
+		_asm
+		{
+			push force
+			push value
+			push var_name
+			mov eax, 0x0043DC50
+			call eax
+
+			add esp, 0xC
+		}
+	}
+
+	void BaseAttach()
+	{
+		BYTE cheatBuffer[] = { 0xEB }; // Console cvars
 		Hook::Patch(0x0043DD86, cheatBuffer, 1); // Read Only
 		Hook::Patch(0x0043DDA3, cheatBuffer, 1); // Write Protected
 		Hook::Patch(0x0043DDC1, cheatBuffer, 1); // Cheat Protected
+
+		cvar_indexes = (cvar_t*)(0x009987A0);
+		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
 	}
 
 	void uo_game_mp_x86_OnAttach()

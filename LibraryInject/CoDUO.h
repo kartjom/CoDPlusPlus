@@ -11,6 +11,7 @@ namespace CoDUO
 
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
+	inline cvar_t* cvar_indexes = nullptr;
 
 	uint32_t Scr_LoadScript(const char* file);
 	uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
@@ -26,7 +27,10 @@ namespace CoDUO
 
 	const char* SL_ConvertToString(int32_t index);
 
-	void RuntimePatch();
+	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);
+	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force);
+
+	void BaseAttach();
 	void uo_game_mp_x86_OnAttach();
 	void uo_game_mp_x86_OnDetach();
 };
