@@ -3,8 +3,9 @@
 typedef uint32_t qboolean;
 
 #define GENTITY_SIZE 0x34C // 844
-#define GENTITY_MAX 1021
+#define GENTITY_COUNT 1022
 #define WORLDSPAWN 1022
+#define NO_GENTITY 1023
 
 #define MAX_CVAR_VALUE_STRING 256
 #define GAME_CVAR_TABLE_SIZE 132

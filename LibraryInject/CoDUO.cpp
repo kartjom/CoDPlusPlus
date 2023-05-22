@@ -178,6 +178,8 @@ namespace CoDUO
 
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
+
+		std::cout << "[CoDUOMP] - BaseAttach" << std::endl;
 	}
 
 	void uo_game_mp_x86_OnAttach()

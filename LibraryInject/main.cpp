@@ -6,6 +6,8 @@
 #include "ImGuiManager.h"
 #include "CoDUO.h"
 
+using namespace CoDUO;
+
 DWORD WINAPI MainThread(LPVOID param)
 {
 	WinApiHelper::CreateConsole("Console");
