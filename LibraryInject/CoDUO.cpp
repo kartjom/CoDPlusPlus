@@ -141,6 +141,18 @@ namespace CoDUO
 		}
 	}
 
+	cvar_t* Cvar_FindVar(const char* var_name)
+	{
+		_asm
+		{
+			push var_name
+			mov eax, 0x0043D8F0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+	
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags)
 	{
 		_asm
@@ -171,10 +183,10 @@ namespace CoDUO
 
 	void BaseAttach()
 	{
-		BYTE cheatBuffer[] = { 0xEB }; // Console cvars
-		Hook::Patch(0x0043DD86, cheatBuffer, 1); // Read Only
-		Hook::Patch(0x0043DDA3, cheatBuffer, 1); // Write Protected
-		Hook::Patch(0x0043DDC1, cheatBuffer, 1); // Cheat Protected
+		BYTE payloadBuffer[] = { 0xEB }; // Console cvars
+		Hook::Patch(0x0043DD86, payloadBuffer, 1); // Read Only
+		Hook::Patch(0x0043DDA3, payloadBuffer, 1); // Write Protected
+		Hook::Patch(0x0043DDC1, payloadBuffer, 1); // Cheat Protected
 
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken

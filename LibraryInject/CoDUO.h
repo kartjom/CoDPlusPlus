@@ -27,6 +27,7 @@ namespace CoDUO
 
 	const char* SL_ConvertToString(int32_t index);
 
+	cvar_t* Cvar_FindVar(const char* var_name);
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);
 	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force);
 
