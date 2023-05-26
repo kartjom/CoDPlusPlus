@@ -1,4 +1,6 @@
 #pragma once
+#include "stdint.h"
+#include "Vector3.h"
 
 typedef uint32_t qboolean;
 
@@ -30,15 +32,6 @@ typedef uint32_t qboolean;
 #define CVAR_CHEAT          512 // can not be changed if cheats are disabled
 #define CVAR_NORESTART      1024    // do not clear when a cvar_restart is issued
 #define CVAR_WOLFINFO       2048    // DHM - NERVE :: Like userinfo, but for wolf multiplayer info
-
-struct Vector3 {
-	float x, y, z;
-
-	operator float* ()
-	{
-		return &x;
-	}
-};
 
 class gentity_t
 {
@@ -117,3 +110,10 @@ typedef struct cvar_s {
 	struct cvar_s* next;
 	struct cvar_s* hashNext;
 } cvar_t;
+
+typedef struct {
+	int x, y, width, height;
+	float fov_x, fov_y;
+	Vector3 vieworg;
+	Vector3 viewaxis[3];        // transformation matrix
+} refdef_t;

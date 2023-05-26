@@ -188,6 +188,7 @@ namespace CoDUO
 		Hook::Patch(0x0043DDA3, payloadBuffer, 1); // Write Protected
 		Hook::Patch(0x0043DDC1, payloadBuffer, 1); // Cheat Protected
 
+		refdef = (refdef_t*)(0x0489A100);
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
 

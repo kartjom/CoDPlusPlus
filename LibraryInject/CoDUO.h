@@ -9,6 +9,7 @@ namespace CoDUO
 	inline DWORD uo_game_mp_x86 = 0;
 	inline uint32_t CodeCallback_PlayerShoot = 0;
 
+	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
