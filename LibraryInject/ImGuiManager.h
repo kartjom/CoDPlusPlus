@@ -12,8 +12,10 @@ namespace ImGuiManager
     void Initialize(HDC hDc);
 
     HGLRC BeginFrame(HDC hDc);
-    void Tick();
     void EndFrame(HDC hDc, HGLRC o_WglContext);
+
+    void InteractiveTick();
+    void Tick();
 
     void Dispose();
 

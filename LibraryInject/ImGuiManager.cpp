@@ -9,6 +9,12 @@
 #include "imgui_impl_opengl3.h"
 
 #include <iostream>
+#include "Vector3.h"
+#include "OpenGLHelper.h"
+#include "CoDUO.h"
+
+using namespace OpenGLHelper;
+using namespace CoDUO;
 
 namespace ImGuiManager
 {
@@ -78,8 +84,37 @@ namespace ImGuiManager
 	bool Show() { return ShouldShow = true; }
 	bool Hide() { return ShouldShow = false; }
 
+	void InteractiveTick()
+	{
+		//ImGui::ShowDemoWindow();
+	}
+
 	void Tick()
 	{
-		ImGui::ShowDemoWindow();
+		static bool shouldShow = false;
+		if (GetAsyncKeyState(VK_DELETE) & 1) shouldShow = !shouldShow;
+
+		if (!uo_game_mp_x86 || !shouldShow) return;
+
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		ImGui::SetNextWindowSize(ImVec2(refdef->width, refdef->height));
+		ImGui::Begin("", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
+
+		for (int i = 0; i <= GENTITY_COUNT; i++)
+		{
+			gentity_t* ent = &g_entities[i];
+			if (!ent->classname) continue;
+
+			const char* classname = SL_ConvertToString(ent->classname);
+			if (!classname) continue;
+
+			Vector3 screen;
+			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef))
+			{
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(255.f, 255.f, 255.f, 255.f), classname);
+			}
+		}
+
+		ImGui::End();
 	}
 }
