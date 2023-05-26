@@ -19,9 +19,9 @@ namespace OpenGLHelper
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
-    bool IsOnScreen(Vector3 vec, refdef_t* refdef)
+    bool IsOnScreen(Vector3 vec, int width, int height)
     {
-        return vec.x > 0 && vec.y > 0 && vec.x <= refdef->width && vec.y <= refdef->height;
+        return vec.x > 0 && vec.y > 0 && vec.x <= width && vec.y <= height;
     }
 
     bool WorldToScreen(Vector3 src, Vector3 dst, Vector3& screen, float fovx, float fovy, float windowWidth, float windowHeight, Vector3 left, Vector3 up, Vector3 forward)

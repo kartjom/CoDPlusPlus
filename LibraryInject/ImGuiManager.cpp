@@ -109,7 +109,7 @@ namespace ImGuiManager
 			if (!classname) continue;
 
 			Vector3 screen;
-			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef))
+			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(255.f, 255.f, 255.f, 255.f), classname);
 			}
