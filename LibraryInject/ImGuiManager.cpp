@@ -9,6 +9,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include <iostream>
+#include <format>
 #include "Vector3.h"
 #include "OpenGLHelper.h"
 #include "CoDUO.h"
@@ -98,7 +99,7 @@ namespace ImGuiManager
 
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		ImGui::SetNextWindowSize(ImVec2(refdef->width, refdef->height));
-		ImGui::Begin("", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
+		ImGui::Begin("Canvas", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
 
 		for (int i = 0; i <= GENTITY_COUNT; i++)
 		{
@@ -107,11 +108,15 @@ namespace ImGuiManager
 
 			const char* classname = SL_ConvertToString(ent->classname);
 			if (!classname) continue;
+			
+			const char* targetname = nullptr;
+			if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
 
 			Vector3 screen;
 			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
-				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(255.f, 255.f, 255.f, 255.f), classname);
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(255.f, 255.f, 255.f, 255.f), std::format("[{}] {} {}", i, classname, targetname ? targetname : "").c_str());
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(170.f, 170.f, 170.f, 255.f), std::format("{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z).c_str());
 			}
 		}
 

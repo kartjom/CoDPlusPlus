@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Detours.h"
 #include "ImGuiManager.h"
 
@@ -19,7 +20,7 @@ namespace Detours
 		}
 		catch (...)
 		{
-
+			std::cout << "[wglSwapBuffers] - Exception" << std::endl;
 		}
 
 		return Original(wglSwapBuffers)(hDc);
