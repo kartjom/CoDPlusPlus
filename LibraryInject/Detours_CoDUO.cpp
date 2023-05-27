@@ -4,11 +4,21 @@
 
 using namespace CoDUO;
 
-void* GetCustomCallback(const char* value)
+void* GetFunctionCallback(const char* value)
 {
 	if (gsc_functions.find(value) != gsc_functions.end())
 	{
 		return gsc_functions[value].callback;
+	}
+
+	return 0;
+}
+
+void* GetMethodCallback(const char* value)
+{
+	if (gsc_methods.find(value) != gsc_methods.end())
+	{
+		return gsc_methods[value].callback;
 	}
 
 	return 0;
@@ -87,7 +97,7 @@ namespace Detours
 			mov eax, [esp + 0x28]
 			mov eax, [eax]
 			push eax
-			call GetCustomCallback
+			call GetFunctionCallback
 			add esp, 0x4
 
 			mov [esp + 0x20], eax
@@ -99,7 +109,7 @@ namespace Detours
 		{
 			pop eax
 			cmp eax, 0
-			jne found
+			jne function_found
 		}
 
 		_restore
@@ -112,7 +122,48 @@ namespace Detours
 
 		_asm
 		{
-			found:
+			function_found:
+			ret
+		}
+	}
+
+	ImplementDetour(LoadMethodMP)
+	{
+
+		_asm sub esp, 0x4
+		_asm pushad
+			
+		_asm
+		{
+			mov eax, [esp + 0x28]
+			mov eax, [eax]
+			push eax
+			call GetMethodCallback
+			add esp, 0x4
+
+			mov [esp + 0x20], eax
+		}
+
+		_asm popad
+		
+		_asm
+		{
+			pop eax
+			cmp eax, 0
+			jne method_found
+		}
+
+		_restore
+		{
+			mov eax, dword ptr ss:[esp + 0x8]
+			mov edx, dword ptr ss:[esp + 0x4]
+		}
+
+		JumpBack(LoadMethodMP)
+
+		_asm
+		{
+			method_found:
 			ret
 		}
 	}

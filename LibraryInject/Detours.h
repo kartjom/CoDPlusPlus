@@ -21,4 +21,5 @@ namespace Detours
 	DeclareDetour(ShootCallback);
 
 	DeclareDetour(LoadFunctionMP);
+	DeclareDetour(LoadMethodMP);
 };

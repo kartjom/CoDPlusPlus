@@ -6,13 +6,16 @@
 
 #include "coduo_structs.h"
 
-void __cdecl Scr_PrintFromCpp();
+#define gsc_function(name, callback) { name, { name, callback, 0 } }
 
 namespace CoDUO
 {
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
-		{ "printfromcpp", gsc_function_t{ "printfromcpp", Scr_PrintFromCpp, 0 } }
+	};
+
+	inline std::unordered_map<std::string, gsc_function_t> gsc_methods
+	{
 	};
 
 	inline DWORD uo_game_mp_x86 = 0;
