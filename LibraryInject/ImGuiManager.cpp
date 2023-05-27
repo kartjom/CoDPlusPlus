@@ -92,8 +92,12 @@ namespace ImGuiManager
 
 	void Tick()
 	{
-		static bool shouldShow = false;
-		if (GetAsyncKeyState(VK_DELETE) & 1) shouldShow = !shouldShow;
+		static int shouldShow = 0;
+		if (GetAsyncKeyState(VK_DELETE) & 1)
+		{
+			shouldShow = (++shouldShow) % 3;
+			std::cout << shouldShow << std::endl;
+		}
 
 		if (!uo_game_mp_x86 || !shouldShow) return;
 
@@ -101,6 +105,7 @@ namespace ImGuiManager
 		ImGui::SetNextWindowSize(ImVec2(refdef->width, refdef->height));
 		ImGui::Begin("Canvas", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
 
+		int entsOnList = 0;
 		for (int i = 0; i <= GENTITY_COUNT; i++)
 		{
 			gentity_t* ent = &g_entities[i];
@@ -115,8 +120,22 @@ namespace ImGuiManager
 			Vector3 screen;
 			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
-				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), std::format("[{}] {} {}", i, classname, targetname ? targetname : "").c_str());
-				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), std::format("{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z).c_str());
+				std::string ct_formatted = std::format("[{}] {} {}", i, classname, targetname ? targetname : "");
+				std::string origin_formatted = std::format("{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z);
+
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted.c_str());
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted.c_str());
+			
+				if (shouldShow > 1 && entsOnList < 20)
+				{
+					ImGui::SetNextWindowPos(ImVec2(10, 20));
+					ImGui::SetNextWindowSize(ImVec2(600, 350));
+					ImGui::Begin("List", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs);
+						std::string text = std::format("{} |  {}", ct_formatted, origin_formatted);
+						ImGui::Text(text.c_str());
+						entsOnList++;
+					ImGui::End();
+				}
 			}
 		}
 
