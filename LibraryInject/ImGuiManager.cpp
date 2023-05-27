@@ -96,7 +96,6 @@ namespace ImGuiManager
 		if (GetAsyncKeyState(VK_DELETE) & 1)
 		{
 			shouldShow = (++shouldShow) % 3;
-			std::cout << shouldShow << std::endl;
 		}
 
 		if (!uo_game_mp_x86 || !shouldShow) return;
