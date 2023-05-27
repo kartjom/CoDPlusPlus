@@ -1,23 +1,10 @@
 #pragma once
-#include <string>
-#include <unordered_map>
 #include <cstdint>
 #include <wtypes.h>
-
-#include "coduo_structs.h"
-
-#define gsc_function(name, callback) { name, { name, callback, 0 } }
+#include "CoDUO_Callbacks.h"
 
 namespace CoDUO
 {
-	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
-	{
-	};
-
-	inline std::unordered_map<std::string, gsc_function_t> gsc_methods
-	{
-	};
-
 	inline DWORD uo_game_mp_x86 = 0;
 	inline uint32_t CodeCallback_PlayerShoot = 0;
 

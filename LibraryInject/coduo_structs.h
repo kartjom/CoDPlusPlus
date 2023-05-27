@@ -119,6 +119,7 @@ typedef struct {
 } refdef_t;
 
 // GSC
+#define gsc_function(name, callback) { name, { name, callback, 0 } }
 typedef struct {
 	const char* name;
 	void* callback;

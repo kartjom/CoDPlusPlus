@@ -80,6 +80,9 @@
     <ClCompile Include="Detours_WinAPI.cpp">
       <Filter>Detours</Filter>
     </ClCompile>
+    <ClCompile Include="CoDUO_Callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imstb_truetype.h">
@@ -135,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="Vector3.h">
       <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDUO_Callbacks.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

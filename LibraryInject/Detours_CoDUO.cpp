@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 using namespace CoDUO;
+using namespace CoDUO::Gsc;
 
 void* GetFunctionCallback(const char* value)
 {
