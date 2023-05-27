@@ -19,4 +19,6 @@ namespace Detours
 
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(ShootCallback);
+
+	DeclareDetour(LoadFunctionMP);
 };

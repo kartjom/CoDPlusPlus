@@ -4,6 +4,16 @@
 
 using namespace CoDUO;
 
+void* GetCustomCallback(const char* value)
+{
+	if (gsc_functions.find(value) != gsc_functions.end())
+	{
+		return gsc_functions[value].callback;
+	}
+
+	return 0;
+}
+
 namespace Detours
 {
 	ImplementDetour(GScr_LoadGameTypeScript)
@@ -65,5 +75,45 @@ namespace Detours
 		}
 
 		JumpBack(ShootCallback)
+	}
+	
+	ImplementDetour(LoadFunctionMP)
+	{
+		_asm sub esp, 0x4
+		_asm pushad
+
+		_asm
+		{
+			mov eax, [esp + 0x28]
+			mov eax, [eax]
+			push eax
+			call GetCustomCallback
+			add esp, 0x4
+
+			mov [esp + 0x20], eax
+		}
+
+		_asm popad
+
+		_asm
+		{
+			pop eax
+			cmp eax, 0
+			jne found
+		}
+
+		_restore
+		{
+			mov eax, dword ptr ss:[esp + 0x4]
+			mov edx, dword ptr ds:[eax]
+		}
+
+		JumpBack(LoadFunctionMP)
+
+		_asm
+		{
+			found:
+			ret
+		}
 	}
 }

@@ -4,6 +4,11 @@
 
 #include <iostream>
 
+void Scr_PrintFromCpp()
+{
+	std::cout << "This message was printed from GSC (C++ callback)" << std::endl;
+}
+
 namespace CoDUO
 {
 	uint32_t Scr_LoadScript(const char* file)
@@ -202,6 +207,8 @@ namespace CoDUO
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
+
+		DetourRet(uo_game_mp_x86 + 0x3D230, Detours::LoadFunctionMP, 6);
 
 		std::cout << "[uo_game_mp_x86] - OnAttach" << std::endl;
 	}

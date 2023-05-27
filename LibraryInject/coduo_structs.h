@@ -117,3 +117,10 @@ typedef struct {
 	Vector3 vieworg;
 	Vector3 viewaxis[3];        // transformation matrix
 } refdef_t;
+
+// GSC
+typedef struct {
+	const char* name;
+	void* callback;
+	int developer;
+} gsc_function_t;
