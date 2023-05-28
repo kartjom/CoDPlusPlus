@@ -17,6 +17,14 @@ namespace CoDUO
 	uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
 	uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
 
+	uint32_t Scr_GetNumParam();
+	uint32_t Scr_GetType(int param);
+	uint32_t Scr_GetInt(int param);
+	float Scr_GetFloat(int param);
+	void Scr_GetVector(int param, void* destination);
+	uint32_t Scr_GetConstString(int param);
+	gentity_t* Scr_GetEntity(int param);
+
 	void Scr_AddUndefined();
 	void Scr_AddBool(bool value);
 	void Scr_AddInt(int value);

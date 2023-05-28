@@ -47,6 +47,90 @@ namespace CoDUO
 		}
 	}
 
+	uint32_t Scr_GetNumParam()
+	{
+		_asm
+		{
+			mov eax, 0x00490640
+			call eax
+		}
+	}
+
+	uint32_t Scr_GetType(int param)
+	{
+		_asm
+		{
+			push param
+			mov eax, 0x00490530
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	uint32_t Scr_GetInt(int param)
+	{
+		_asm
+		{
+			push param
+			mov eax, 0x0048FC00
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	float Scr_GetFloat(int param)
+	{
+		_asm
+		{
+			push param
+			mov eax, 0x0048FF00
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	void Scr_GetVector(int param, void* destination)
+	{
+		_asm
+		{
+			push destination
+			push param
+			mov eax, 0x004902A0
+			call eax
+
+			add esp, 0x8
+		}
+	}
+
+	uint32_t Scr_GetConstString(int param)
+	{
+		_asm
+		{
+			push param
+			mov eax, 0x0048FFA0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	gentity_t* Scr_GetEntity(int param)
+	{
+		_asm
+		{
+			push param
+			mov esi, param
+			mov eax, uo_game_mp_x86
+			add eax, 0x4E1E0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
 	void Scr_AddUndefined()
 	{
 		_asm
