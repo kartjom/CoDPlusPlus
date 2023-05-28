@@ -225,6 +225,20 @@ namespace CoDUO
 		}
 	}
 
+	void trap_SendConsoleCommand(int exec_when, const char* text)
+	{
+		_asm
+		{
+			push text
+			push exec_when
+			push 0x17
+			mov eax, 0x004685A0
+			call eax
+
+			add esp, 0xC
+		}
+	}
+
 	void Cmd_AddCommand(const char* cmd_name, void* function)
 	{
 		_asm

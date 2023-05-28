@@ -35,6 +35,7 @@ namespace CoDUO
 
 	const char* SL_ConvertToString(int32_t index);
 
+	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	cvar_t* Cvar_FindVar(const char* var_name);
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);

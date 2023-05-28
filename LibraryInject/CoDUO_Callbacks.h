@@ -5,10 +5,13 @@
 
 namespace CoDUO::Gsc
 {
+	void Scr_StringToCmd();
+
 	void Scr_GetViewAngles(int entId);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
+		gsc_function("console", Scr_StringToCmd)
 	};
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_methods
