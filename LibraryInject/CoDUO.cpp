@@ -225,6 +225,19 @@ namespace CoDUO
 		}
 	}
 
+	void Cmd_AddCommand(const char* cmd_name, void* function)
+	{
+		_asm
+		{
+			push function
+			push cmd_name
+			mov eax, 0x0042C3B0
+			call eax
+
+			add esp, 0x8
+		}
+	}
+
 	cvar_t* Cvar_FindVar(const char* var_name)
 	{
 		_asm
