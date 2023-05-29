@@ -73,7 +73,15 @@ public:
 	Vector3 viewangles; //0x00E8
 	char pad_00F4[48]; //0x00F4
 	int32_t maxhealth; //0x0124
-	char pad_0128[17612]; //0x0128
+	char pad_0128[1076]; //0x0128
+	Vector3 mins; //0x055C
+	Vector3 maxs; //0x0568
+	int32_t viewheight_prone; //0x0574
+	int32_t viewheight_crouched; //0x0578
+	int32_t viewheight_standing; //0x057C
+	char pad_0580[48]; //0x0580
+	float stamina; //0x05B0
+	char pad_05B4[16448]; //0x05B4
 	char name[32]; //0x45F4
 	char pad_4614[8]; //0x4614
 	int32_t noclip; //0x461C
