@@ -8,7 +8,7 @@ namespace CoDUO::Gsc
 {
 	void Scr_StringToCmd()
 	{
-		const char* str = SL_ConvertToString( Scr_GetConstString(0) );		
+		const char* str = Scr_GetString(0);
 		std::string cmd = std::format("{}\n", str);
 
 		trap_SendConsoleCommand(EXEC_APPEND, cmd.c_str());

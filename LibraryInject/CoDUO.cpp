@@ -105,6 +105,14 @@ namespace CoDUO
 		}
 	}
 
+	Vector3 Scr_GetVector(int param)
+	{
+		Vector3 vec;
+		Scr_GetVector(param, &vec);
+
+		return vec;
+	}
+
 	uint32_t Scr_GetConstString(int param)
 	{
 		_asm
@@ -115,6 +123,12 @@ namespace CoDUO
 
 			add esp, 0x4
 		}
+	}
+
+	const char* Scr_GetString(int param)
+	{
+		int str_id = Scr_GetConstString(param);
+		return SL_ConvertToString(str_id);
 	}
 
 	gentity_t* Scr_GetEntity(int param)

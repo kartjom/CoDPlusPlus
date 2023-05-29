@@ -22,6 +22,8 @@ namespace CoDUO
 	uint32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
 	void Scr_GetVector(int param, void* destination);
+	Vector3 Scr_GetVector(int param);
+	const char* Scr_GetString(int param);
 	uint32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
 
