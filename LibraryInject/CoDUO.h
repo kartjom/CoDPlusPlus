@@ -13,18 +13,18 @@ namespace CoDUO
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
 
-	uint32_t Scr_LoadScript(const char* file);
-	uint32_t Scr_GetFunctionHandle(const char* file, const char* method);
-	uint32_t Scr_RunScript(uint32_t scriptHandle, uint32_t argc);
+	int32_t Scr_LoadScript(const char* file);
+	int32_t Scr_GetFunctionHandle(const char* file, const char* method);
+	int32_t Scr_RunScript(int32_t scriptHandle, uint32_t argc);
 
-	uint32_t Scr_GetNumParam();
-	uint32_t Scr_GetType(int param);
-	uint32_t Scr_GetInt(int param);
+	int32_t Scr_GetNumParam();
+	int32_t Scr_GetType(int param);
+	int32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
 	void Scr_GetVector(int param, void* destination);
 	Vector3 Scr_GetVector(int param);
 	const char* Scr_GetString(int param);
-	uint32_t Scr_GetConstString(int param);
+	int32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
 
 	void Scr_AddUndefined();
