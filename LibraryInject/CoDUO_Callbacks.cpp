@@ -41,9 +41,10 @@ namespace CoDUO::Gsc
 		if (ent && ent->client)
 		{
 			Scr_AddVector(&ent->client->viewangles);
-			return;
 		}
-
-		Scr_AddUndefined();
+		else
+		{
+			Scr_AddUndefined();
+		}
 	}
 }
