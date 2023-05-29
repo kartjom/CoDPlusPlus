@@ -239,6 +239,65 @@ namespace CoDUO
 		}
 	}
 
+	void trap_GetUserinfo(int num, char* buffer, int bufferSize)
+	{
+		_asm
+		{
+			push bufferSize
+			push buffer
+			push num
+			push 0x21
+			mov eax, syscall
+			call eax
+
+			add esp, 0x10
+		}
+	}
+
+	void trap_SetUserinfo(int num, const char* buffer)
+	{
+		_asm
+		{
+			push buffer
+			push num
+			push 0x22
+			mov eax, syscall
+			call eax
+
+			add esp, 0xC
+		}
+	}
+
+	const char* Info_ValueForKey(const char* buffer, const char* key)
+	{
+		_asm
+		{
+			mov ebx, key
+			mov ecx, buffer
+
+			mov eax, uo_game_mp_x86
+			add eax, 0x00058180
+			call eax
+		}
+	}
+
+	void Info_SetValueForKey(char* buffer, const char* key, const char* value)
+	{
+		_asm
+		{
+			mov edx, buffer
+			push value
+			push buffer
+			mov ecx, key
+
+			mov eax, uo_game_mp_x86
+			add eax, 0x00058560
+			call eax
+
+			add esp, 0x8
+		}
+	}
+
 	void trap_SendConsoleCommand(int exec_when, const char* text)
 	{
 		_asm
@@ -246,7 +305,7 @@ namespace CoDUO
 			push text
 			push exec_when
 			push 0x17
-			mov eax, 0x004685A0
+			mov eax, syscall
 			call eax
 
 			add esp, 0xC

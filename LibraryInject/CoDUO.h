@@ -5,6 +5,8 @@
 
 namespace CoDUO
 {
+	inline DWORD syscall = 0x004685A0;
+
 	inline DWORD uo_game_mp_x86 = 0;
 	inline uint32_t CodeCallback_PlayerShoot = 0;
 
@@ -36,6 +38,11 @@ namespace CoDUO
 	void Scr_AddEntity(int index);
 
 	const char* SL_ConvertToString(int32_t index);
+
+	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
+	void trap_SetUserinfo(int num, const char* buffer);
+	const char* Info_ValueForKey(const char* buffer, const char* key);
+	void Info_SetValueForKey(char* buffer, const char* key, const char* value);
 
 	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);

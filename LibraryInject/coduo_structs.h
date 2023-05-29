@@ -12,6 +12,7 @@ typedef uint32_t qboolean;
 #define MAX_CVAR_VALUE_STRING 256
 #define GAME_CVAR_TABLE_SIZE 132
 #define MAX_CVARS 2048
+#define MAX_STRING_CHARS 1024
 
 #define CVAR_ARCHIVE        1   // set to cause it to be saved to vars.rc
 // used for system variables, not for player
