@@ -40,7 +40,7 @@ namespace CoDUO::Gsc
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
 		{
-			Scr_AddVector(&ent->client->viewangles);
+			Scr_AddVector(ent->client->viewangles);
 		}
 		else
 		{

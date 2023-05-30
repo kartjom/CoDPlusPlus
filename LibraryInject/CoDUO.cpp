@@ -190,7 +190,7 @@ namespace CoDUO
 		}
 	}
 
-	void Scr_AddVector(void* value)
+	void Scr_AddVector(float* value)
 	{
 		_asm
 		{

@@ -72,7 +72,7 @@ namespace Detours
 			if (player && weaponName && player->client)
 			{
 				Scr_AddString(weaponName);
-				Scr_AddVector(&player->client->viewangles);
+				Scr_AddVector(player->client->viewangles);
 				Scr_AddEntity(player->number);
 				Scr_RunScript(CodeCallback_PlayerShoot, 3);
 			}

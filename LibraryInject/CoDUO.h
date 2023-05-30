@@ -33,7 +33,7 @@ namespace CoDUO
 	void Scr_AddBool(bool value);
 	void Scr_AddInt(int value);
 	void Scr_AddFloat(float value);
-	void Scr_AddVector(void* value);
+	void Scr_AddVector(float* value);
 	void Scr_AddString(const char* string);
 	void Scr_AddEntity(int index);
 
