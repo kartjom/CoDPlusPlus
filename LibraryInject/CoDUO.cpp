@@ -214,7 +214,7 @@ namespace CoDUO
 		}
 	}
 
-	void Scr_AddEntity(int index)
+	void Scr_AddEntityNum(int index)
 	{
 		_asm
 		{
@@ -224,6 +224,24 @@ namespace CoDUO
 			call eax
 
 			add esp, 0x8
+		}
+	}
+
+	void Scr_MakeArray()
+	{
+		_asm
+		{
+			mov eax, 0x00490910
+			call eax
+		}
+	}
+
+	void Scr_AddArray()
+	{
+		_asm
+		{
+			mov eax, 0x00490960
+			call eax
 		}
 	}
 

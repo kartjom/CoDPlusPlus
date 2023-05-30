@@ -35,7 +35,9 @@ namespace CoDUO
 	void Scr_AddFloat(float value);
 	void Scr_AddVector(float* value);
 	void Scr_AddString(const char* string);
-	void Scr_AddEntity(int index);
+	void Scr_AddEntityNum(int index);
+	void Scr_MakeArray();
+	void Scr_AddArray();
 
 	const char* SL_ConvertToString(int32_t index);
 	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
