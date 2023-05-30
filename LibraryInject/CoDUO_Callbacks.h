@@ -9,6 +9,7 @@ namespace CoDUO::Gsc
 
 	void Scr_ForceRename(int param);
 	void Scr_GetViewAngles(int param);
+	void Scr_GetViewOrigin(int param);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
@@ -19,5 +20,6 @@ namespace CoDUO::Gsc
 	{
 		gsc_function("rename", Scr_ForceRename),
 		gsc_function("getviewangles", Scr_GetViewAngles),
+		gsc_function("getvieworigin", Scr_GetViewOrigin),
 	};
 }

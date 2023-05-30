@@ -38,6 +38,7 @@ namespace CoDUO
 	void Scr_AddEntity(int index);
 
 	const char* SL_ConvertToString(int32_t index);
+	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
 
 	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
 	void trap_SetUserinfo(int num, const char* buffer);

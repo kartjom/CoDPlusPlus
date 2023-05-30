@@ -239,6 +239,18 @@ namespace CoDUO
 		}
 	}
 
+	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination)
+	{
+		_asm
+		{
+			mov esi, destination
+			mov edi, ent
+			mov eax, uo_game_mp_x86
+			add eax, 0x000563b0
+			call eax
+		}
+	}
+
 	void trap_GetUserinfo(int num, char* buffer, int bufferSize)
 	{
 		_asm
