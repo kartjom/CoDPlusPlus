@@ -48,8 +48,10 @@ public:
 	char pad_0048[280]; //0x0048
 	class gclient_t* client; //0x0160
 	char pad_0164[32]; //0x0164
-	int16_t classname; //0x0184
-	char pad_0186[30]; //0x0186
+	int32_t classname; //0x0184
+	int32_t spawnflags; //0x0188
+	int32_t flags; //0x018C
+	char pad_0190[20]; //0x0190
 	uint32_t frames; //0x01A4
 	char pad_01A8[62]; //0x01A8
 	int16_t targetname; //0x01E6
