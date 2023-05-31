@@ -245,6 +245,29 @@ namespace CoDUO
 		}
 	}
 
+	void Scr_AddArrayStringIndexed(int32_t str_index)
+	{
+		_asm
+		{
+			push str_index
+			mov eax, 0x004909E0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	int32_t G_NewString(const char* string)
+	{
+		_asm
+		{
+			mov edi, string
+			mov eax, uo_game_mp_x86
+			add eax, 0x0004dbc0
+			call eax
+		}
+	}
+
 	const char* SL_ConvertToString(int32_t index)
 	{
 		_asm
