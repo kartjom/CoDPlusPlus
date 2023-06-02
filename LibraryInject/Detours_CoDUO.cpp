@@ -63,10 +63,8 @@ namespace Detours
 			_asm
 			{
 				mov player, edi
-				push edx
 				mov edx, [edx + 4]
 				mov weaponName, edx
-				pop edx
 			}
 
 			if (player && weaponName && player->client)
@@ -135,7 +133,6 @@ namespace Detours
 
 	ImplementDetour(LoadMethodMP)
 	{
-
 		_asm sub esp, 0x4
 		_asm pushad
 			

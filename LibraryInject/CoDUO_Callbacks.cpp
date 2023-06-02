@@ -8,13 +8,6 @@ namespace CoDUO::Gsc
 {
 	void Scr_Sandbox()
 	{
-		Scr_MakeArray();
-
-		Scr_AddInt(69);
-		Scr_AddArrayStringIndexed(G_NewString("health"));
-
-		Scr_AddString("kartjom");
-		Scr_AddArrayStringIndexed(G_NewString("name"));
 	}
 
 	void Scr_StringToCmd()
