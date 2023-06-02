@@ -73,8 +73,13 @@ namespace Detours
 			{
 				Scr_AddString(weaponName);
 				Scr_AddVector(player->client->viewangles);
+
+				Vector3 vieworigin;
+				G_GetPlayerViewOrigin(player, vieworigin);
+				Scr_AddVector(vieworigin);
+
 				Scr_AddEntityNum(player->number);
-				Scr_RunScript(CodeCallback_PlayerShoot, 3);
+				Scr_RunScript(CodeCallback_PlayerShoot, 4);
 			}
 		}
 
