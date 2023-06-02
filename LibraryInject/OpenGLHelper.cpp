@@ -1,7 +1,7 @@
 #include "OpenGLHelper.h"
 #include "Hook.h"
 #include "Detours.h"
-#include "Vector3.h"
+#include "vec3_t.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -14,19 +14,19 @@ namespace OpenGLHelper
 		DetourRet(Hook::BaseAddress + 0xF6723, Detours::wglSwapBuffers, 6);
 	}
 
-    float DotProduct(Vector3 v1, Vector3 v2)
+    float DotProduct(vec3_t v1, vec3_t v2)
     {
         return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
-    bool IsOnScreen(Vector3 vec, int width, int height)
+    bool IsOnScreen(vec3_t vec, int width, int height)
     {
         return vec.x > 0 && vec.y > 0 && vec.x <= width && vec.y <= height;
     }
 
-    bool WorldToScreen(Vector3 src, Vector3 dst, Vector3& screen, float fovx, float fovy, float windowWidth, float windowHeight, Vector3 left, Vector3 up, Vector3 forward)
+    bool WorldToScreen(vec3_t src, vec3_t dst, vec3_t& screen, float fovx, float fovy, float windowWidth, float windowHeight, vec3_t left, vec3_t up, vec3_t forward)
     {
-        Vector3 transform;
+        vec3_t transform;
         float xc, yc;
         float px, py;
         float z;
@@ -52,7 +52,7 @@ namespace OpenGLHelper
         return true;
     }
 
-    bool WorldToScreen(Vector3 dst, Vector3& screen, refdef_t* refdef)
+    bool WorldToScreen(vec3_t dst, vec3_t& screen, refdef_t* refdef)
     {
         return WorldToScreen(refdef->vieworg, dst, screen, refdef->fov_x, refdef->fov_y, refdef->width, refdef->height, refdef->viewaxis[0], refdef->viewaxis[1], refdef->viewaxis[2]);
     }

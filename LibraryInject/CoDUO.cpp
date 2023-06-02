@@ -105,9 +105,9 @@ namespace CoDUO
 		}
 	}
 
-	Vector3 Scr_GetVector(int param)
+	vec3_t Scr_GetVector(int param)
 	{
-		Vector3 vec;
+		vec3_t vec;
 		Scr_GetVector(param, &vec);
 
 		return vec;

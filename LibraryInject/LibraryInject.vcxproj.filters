@@ -136,7 +136,7 @@
     <ClInclude Include="coduo_structs.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.h">
+    <ClInclude Include="vec3_t.h">
       <Filter>Structs</Filter>
     </ClInclude>
     <ClInclude Include="CoDUO_Callbacks.h">

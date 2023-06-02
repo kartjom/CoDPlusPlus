@@ -1,6 +1,6 @@
 #pragma once
 #include "stdint.h"
-#include "Vector3.h"
+#include "vec3_t.h"
 
 typedef uint32_t qboolean;
 
@@ -34,17 +34,23 @@ typedef uint32_t qboolean;
 #define CVAR_NORESTART      1024    // do not clear when a cvar_restart is issued
 #define CVAR_WOLFINFO       2048    // DHM - NERVE :: Like userinfo, but for wolf multiplayer info
 
-class gentity_t
+enum cbufExec_t
 {
-public:
+	EXEC_NOW,           // don't return until completed, a VM should NEVER use this because some commands might cause the VM to be unloaded...
+	EXEC_INSERT,        // insert at current position, but don't run yet
+	EXEC_APPEND         // add to end of the command buffer (normal case)
+};
+
+struct gentity_t
+{
 	int32_t number; //0x0000
 	char pad_0004[12]; //0x0004
 	int32_t time; //0x0010
 	char pad_0014[4]; //0x0014
-	Vector3 origin; //0x0018
-	Vector3 velocity; //0x0024
+	vec3_t origin; //0x0018
+	vec3_t velocity; //0x0024
 	char pad_0030[12]; //0x0030
-	Vector3 viewangles; //0x003C
+	vec3_t viewangles; //0x003C
 	char pad_0048[280]; //0x0048
 	class gclient_t* client; //0x0160
 	char pad_0164[32]; //0x0164
@@ -60,25 +66,24 @@ public:
 	char pad_0244[264]; //0x0244
 }; //Size: 0x034C
 
-class gclient_t
+struct gclient_t
 {
-public:
 	int32_t commandTime; //0x0000
 	int32_t pm_type; //0x0004
 	char pad_0008[12]; //0x0008
-	Vector3 origin; //0x0014
-	Vector3 velocity; //0x0020
+	vec3_t origin; //0x0014
+	vec3_t velocity; //0x0020
 	char pad_002C[24]; //0x002C
 	float leanf; //0x0044
 	char pad_0048[144]; //0x0048
 	int32_t weapon; //0x00D8
 	char pad_00DC[12]; //0x00DC
-	Vector3 viewangles; //0x00E8
+	vec3_t viewangles; //0x00E8
 	char pad_00F4[48]; //0x00F4
 	int32_t maxhealth; //0x0124
 	char pad_0128[1076]; //0x0128
-	Vector3 mins; //0x055C
-	Vector3 maxs; //0x0568
+	vec3_t mins; //0x055C
+	vec3_t maxs; //0x0568
 	int32_t viewheight_prone; //0x0574
 	int32_t viewheight_crouched; //0x0578
 	int32_t viewheight_standing; //0x057C
@@ -90,15 +95,17 @@ public:
 	int32_t noclip; //0x461C
 };
 
-typedef struct {
+struct vmCvar_t
+{
 	int handle;
 	int modificationCount;
 	float value;
 	int integer;
 	char string[MAX_CVAR_VALUE_STRING];
-} vmCvar_t;
+};
 
-typedef struct {
+struct cvarTable_t
+{
 	vmCvar_t* vmCvar;
 	char* cvarName;
 	char* defaultString;
@@ -106,9 +113,10 @@ typedef struct {
 	int modificationCount;          // for tracking changes
 	int trackChange;           // track this variable, and announce if changed, boolean
 	//int teamShader;      // track and if changed, update shader state, boolean
-} cvarTable_t;
+};
 
-typedef struct cvar_s {
+struct cvar_t
+{
 	char* name;
 	char* string;
 	char* resetString;       // cvar_restart will reset to this value
@@ -118,28 +126,23 @@ typedef struct cvar_s {
 	int modificationCount;          // incremented each time the cvar is changed
 	float value;                    // atof( string )
 	int integer;                    // atoi( string )
-	struct cvar_s* next;
-	struct cvar_s* hashNext;
-} cvar_t;
+	cvar_t* next;
+	cvar_t* hashNext;
+};
 
-typedef struct {
+struct refdef_t
+{
 	int x, y, width, height;
 	float fov_x, fov_y;
-	Vector3 vieworg;
-	Vector3 viewaxis[3];        // transformation matrix
-} refdef_t;
+	vec3_t vieworg;
+	vec3_t viewaxis[3];        // transformation matrix
+};
 
 // GSC
 #define gsc_function(name, callback) { name, { name, callback, 0 } }
-typedef struct {
+struct gsc_function_t
+{
 	const char* name;
 	void* callback;
 	int developer;
-} gsc_function_t;
-
-typedef enum {
-	EXEC_NOW,           // don't return until completed, a VM should NEVER use this,
-	// because some commands might cause the VM to be unloaded...
-	EXEC_INSERT,        // insert at current position, but don't run yet
-	EXEC_APPEND         // add to end of the command buffer (normal case)
-} cbufExec_t;
+};

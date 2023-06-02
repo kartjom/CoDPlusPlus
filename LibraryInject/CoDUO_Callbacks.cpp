@@ -49,7 +49,7 @@ namespace CoDUO::Gsc
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
 		{
-			Vector3 vieworigin;
+			vec3_t vieworigin;
 			G_GetPlayerViewOrigin(ent, vieworigin);
 
 			Scr_AddVector(vieworigin);

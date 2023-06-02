@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <format>
-#include "Vector3.h"
+#include "vec3_t.h"
 #include "OpenGLHelper.h"
 #include "CoDUO.h"
 
@@ -116,7 +116,7 @@ namespace ImGuiManager
 			const char* targetname = nullptr;
 			if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
 
-			Vector3 screen;
+			vec3_t screen;
 			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
 				char ct_formatted[72];
