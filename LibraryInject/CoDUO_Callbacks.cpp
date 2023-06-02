@@ -16,8 +16,13 @@ namespace CoDUO::Gsc
 
 		if (str)
 		{
-			std::string cmd = std::format("{}\n", str);
-			trap_SendConsoleCommand(EXEC_APPEND, cmd.c_str());
+			size_t strSize = strlen(str) + 1;
+
+			char* cmd = (char*)alloca(strSize + 1);
+			memcpy(cmd, str, strSize);
+			cmd[strSize] = '\n';
+
+			trap_SendConsoleCommand(EXEC_APPEND, cmd);
 		}
 	}
 

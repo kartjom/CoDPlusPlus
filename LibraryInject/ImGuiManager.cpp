@@ -119,19 +119,26 @@ namespace ImGuiManager
 			Vector3 screen;
 			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
-				std::string ct_formatted = std::format("[{}] {} {}", i, classname, targetname ? targetname : "");
-				std::string origin_formatted = std::format("{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z);
+				char ct_formatted[72];
+				const auto res1 = std::format_to_n(ct_formatted, 72, "[{}] {} {}", i, classname, targetname ? targetname : "");
+				*res1.out = '\0';
 
-				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted.c_str());
-				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted.c_str());
+				char origin_formatted[48];
+				const auto res2 = std::format_to_n(origin_formatted, 48, "{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z);
+				*res2.out = '\0';
+
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted);
+				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted);
 			
 				if (shouldShow > 1 && entsOnList < 20)
 				{
 					ImGui::SetNextWindowPos(ImVec2(10, 20));
 					ImGui::SetNextWindowSize(ImVec2(600, 350));
 					ImGui::Begin("List", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs);
-						std::string text = std::format("{} |  {}", ct_formatted, origin_formatted);
-						ImGui::Text(text.c_str());
+						char list_entry[120];
+						const auto res3 = std::format_to_n(list_entry, 120, "{} | {}", ct_formatted, origin_formatted);
+						*res3.out = '\0';
+						ImGui::Text(list_entry);
 						entsOnList++;
 					ImGui::End();
 				}
