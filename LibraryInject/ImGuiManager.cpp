@@ -117,14 +117,14 @@ namespace ImGuiManager
 			if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
 
 			vec3_t screen;
-			if (WorldToScreen(ent->origin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
+			if (WorldToScreen(ent->origin_f, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
 			{
 				char ct_formatted[72];
 				const auto res1 = std::format_to_n(ct_formatted, 72, "[{}] {} {}", i, classname, targetname ? targetname : "");
 				*res1.out = '\0';
 
 				char origin_formatted[48];
-				const auto res2 = std::format_to_n(origin_formatted, 48, "{:.2f} {:.2f} {:.2f}", ent->origin.x, ent->origin.y, ent->origin.z);
+				const auto res2 = std::format_to_n(origin_formatted, 48, "{:.2f} {:.2f} {:.2f}", ent->origin_f.x, ent->origin_f.y, ent->origin_f.z);
 				*res2.out = '\0';
 
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted);

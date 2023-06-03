@@ -47,11 +47,13 @@ struct gentity_t
 	char pad_0004[12]; //0x0004
 	int32_t time; //0x0010
 	char pad_0014[4]; //0x0014
-	vec3_t origin; //0x0018
+	vec3_t origin_i; //0x0018
 	vec3_t velocity; //0x0024
 	char pad_0030[12]; //0x0030
 	vec3_t viewangles; //0x003C
-	char pad_0048[280]; //0x0048
+	char pad_0048[244]; //0x0048
+	vec3_t origin_f; //0x013C
+	char pad_0148[24]; //0x0148
 	class gclient_t* client; //0x0160
 	char pad_0164[32]; //0x0164
 	int32_t classname; //0x0184
