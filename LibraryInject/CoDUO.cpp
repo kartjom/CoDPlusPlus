@@ -440,6 +440,7 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
+		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
 
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
@@ -454,6 +455,7 @@ namespace CoDUO
 
 		CodeCallback_OnPlayerShoot = 0;
 		CodeCallback_OnProjectileBounce = 0;
+		CodeCallback_OnProjectileExplode = 0;
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}

@@ -35,6 +35,7 @@ namespace Detours
 		{
 			CodeCallback_OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
 			CodeCallback_OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
+			CodeCallback_OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 		}
 
 		_asm popad
@@ -121,6 +122,38 @@ namespace Detours
 		}
 
 		JumpBack(ProjectileBounceCallback)
+	}
+
+	ImplementDetour(ProjectileExplodeCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback_OnProjectileExplode)
+		{
+			gentity_t* projectile = nullptr;
+
+			_asm
+			{
+				mov projectile, ebp
+			}
+
+			if (projectile)
+			{
+				Scr_AddEntityNum(projectile->number);
+				Scr_RunScript(CodeCallback_OnProjectileExplode, 1);
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			sub esp, 0x54
+			push ebx
+			push ebp
+		}
+
+		JumpBack(ProjectileExplodeCallback);
 	}
 	
 	ImplementDetour(LoadFunctionMP)

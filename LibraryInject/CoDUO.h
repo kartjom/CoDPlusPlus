@@ -10,6 +10,7 @@ namespace CoDUO
 	inline DWORD uo_game_mp_x86 = 0;
 	inline uint32_t CodeCallback_OnPlayerShoot = 0;
 	inline uint32_t CodeCallback_OnProjectileBounce = 0;
+	inline uint32_t CodeCallback_OnProjectileExplode = 0;
 
 	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;

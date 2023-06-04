@@ -20,6 +20,7 @@ namespace Detours
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(ShootCallback);
 	DeclareDetour(ProjectileBounceCallback);
+	DeclareDetour(ProjectileExplodeCallback);
 
 	DeclareDetour(LoadFunctionMP);
 	DeclareDetour(LoadMethodMP);
