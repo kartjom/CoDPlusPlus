@@ -8,7 +8,8 @@ namespace CoDUO
 	inline DWORD syscall = 0x004685A0;
 
 	inline DWORD uo_game_mp_x86 = 0;
-	inline uint32_t CodeCallback_PlayerShoot = 0;
+	inline uint32_t CodeCallback_OnPlayerShoot = 0;
+	inline uint32_t CodeCallback_OnProjectileBounce = 0;
 
 	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;

@@ -33,7 +33,8 @@ namespace Detours
 
 		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 		{
-			CodeCallback_PlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
+			CodeCallback_OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_PlayerShoot");
+			CodeCallback_OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 		}
 
 		_asm popad
@@ -55,7 +56,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback_PlayerShoot != 0)
+		if (CodeCallback_OnPlayerShoot != 0)
 		{
 			gentity_t* player = nullptr;
 			const char* weaponName = nullptr;
@@ -77,7 +78,7 @@ namespace Detours
 				Scr_AddVector(vieworigin);
 
 				Scr_AddEntityNum(player->number);
-				Scr_RunScript(CodeCallback_PlayerShoot, 4);
+				Scr_RunScript(CodeCallback_OnPlayerShoot, 4);
 			}
 		}
 
@@ -89,6 +90,37 @@ namespace Detours
 		}
 
 		JumpBack(ShootCallback)
+	}
+
+	ImplementDetour(ProjectileBounceCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback_OnProjectileBounce)
+		{
+			gentity_t* projectile = nullptr;
+
+			_asm
+			{
+				mov projectile, ebp
+			}
+
+			if (projectile)
+			{
+				Scr_AddEntityNum(projectile->number);
+				Scr_RunScript(CodeCallback_OnProjectileBounce, 1);
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			mov eax, dword ptr ss:[esp + 0x44]
+			push edi
+		}
+
+		JumpBack(ProjectileBounceCallback)
 	}
 	
 	ImplementDetour(LoadFunctionMP)
