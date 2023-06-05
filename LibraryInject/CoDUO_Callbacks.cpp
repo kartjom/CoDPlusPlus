@@ -72,4 +72,31 @@ namespace CoDUO::Gsc
 			Scr_AddUndefined();
 		}
 	}
+
+	void Scr_GetParent(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		if (ent && ent->parent)
+		{
+			Scr_AddEntityNum(ent->parent->number);
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
+
+	void Scr_GetOwner(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		if (ent && ent->ownerNum < 1023)
+		{
+			gentity_t* owner = &g_entities[ent->ownerNum];
+			Scr_AddEntityNum(owner->number);
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
 }

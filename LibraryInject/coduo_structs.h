@@ -53,7 +53,9 @@ struct gentity_t
 	vec3_t viewangles; //0x003C
 	char pad_0048[244]; //0x0048
 	vec3_t origin_f; //0x013C
-	char pad_0148[24]; //0x0148
+	char pad_0148[12]; //0x0148
+	int32_t ownerNum; //0x0154
+	char pad_0158[8]; //0x0158
 	class gclient_t* client; //0x0160
 	char pad_0164[32]; //0x0164
 	int32_t classname; //0x0184
@@ -61,7 +63,8 @@ struct gentity_t
 	int32_t flags; //0x018C
 	char pad_0190[20]; //0x0190
 	uint32_t frames; //0x01A4
-	char pad_01A8[62]; //0x01A8
+	class gentity_t* parent; //0x01A8
+	char pad_01AC[58]; //0x01AC
 	int16_t targetname; //0x01E6
 	char pad_01E8[88]; //0x01E8
 	int32_t health; //0x0240
