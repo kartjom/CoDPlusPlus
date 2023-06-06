@@ -34,6 +34,7 @@ namespace Detours
 		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 		{
 			CodeCallback_OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
+			CodeCallback_OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
 			CodeCallback_OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback_OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 		}
@@ -91,6 +92,50 @@ namespace Detours
 		}
 
 		JumpBack(ShootCallback)
+	}
+
+	ImplementDetour(MeleeCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback_OnPlayerMelee != 0)
+		{
+			gentity_t* player = nullptr;
+			int16_t target_num = -1;
+
+			_asm
+			{
+				mov player, ebp
+
+				mov eax, [esp + 0x8C]
+				mov target_num, ax
+			}
+
+			if (player)
+			{
+				if (target_num >= 0 && target_num < WORLDSPAWN)
+				{
+					Scr_AddEntityNum(g_entities[target_num].number);
+				}
+				else
+				{
+					Scr_AddUndefined();
+				}
+
+				Scr_AddEntityNum(player->number);
+				Scr_RunScript(CodeCallback_OnPlayerMelee, 2);
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			add esp, 0x2C
+			test al, 0x10
+		}
+
+		JumpBack(MeleeCallback)
 	}
 
 	ImplementDetour(ProjectileBounceCallback)

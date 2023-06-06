@@ -6,9 +6,10 @@
 namespace CoDUO
 {
 	inline DWORD syscall = 0x004685A0;
-
 	inline DWORD uo_game_mp_x86 = 0;
+
 	inline uint32_t CodeCallback_OnPlayerShoot = 0;
+	inline uint32_t CodeCallback_OnPlayerMelee = 0;
 	inline uint32_t CodeCallback_OnProjectileBounce = 0;
 	inline uint32_t CodeCallback_OnProjectileExplode = 0;
 
