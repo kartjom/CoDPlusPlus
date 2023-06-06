@@ -33,10 +33,10 @@ namespace Detours
 
 		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 		{
-			CodeCallback_OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
-			CodeCallback_OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
-			CodeCallback_OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
-			CodeCallback_OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
+			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
+			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
+			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
+			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 		}
 
 		_asm popad
@@ -58,7 +58,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback_OnPlayerShoot != 0)
+		if (CodeCallback.OnPlayerShoot != 0)
 		{
 			gentity_t* player = nullptr;
 			const char* weaponName = nullptr;
@@ -80,7 +80,7 @@ namespace Detours
 				Scr_AddVector(vieworigin);
 
 				Scr_AddEntityNum(player->number);
-				Scr_RunScript(CodeCallback_OnPlayerShoot, 4);
+				Scr_RunScript(CodeCallback.OnPlayerShoot, 4);
 			}
 		}
 
@@ -98,7 +98,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback_OnPlayerMelee != 0)
+		if (CodeCallback.OnPlayerMelee != 0)
 		{
 			gentity_t* player = nullptr;
 			int16_t target_num = -1;
@@ -123,7 +123,7 @@ namespace Detours
 				}
 
 				Scr_AddEntityNum(player->number);
-				Scr_RunScript(CodeCallback_OnPlayerMelee, 2);
+				Scr_RunScript(CodeCallback.OnPlayerMelee, 2);
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback_OnProjectileBounce)
+		if (CodeCallback.OnProjectileBounce)
 		{
 			gentity_t* projectile = nullptr;
 
@@ -154,7 +154,7 @@ namespace Detours
 			if (projectile)
 			{
 				Scr_AddEntityNum(projectile->number);
-				Scr_RunScript(CodeCallback_OnProjectileBounce, 1);
+				Scr_RunScript(CodeCallback.OnProjectileBounce, 1);
 			}
 		}
 
@@ -173,7 +173,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback_OnProjectileExplode)
+		if (CodeCallback.OnProjectileExplode)
 		{
 			gentity_t* projectile = nullptr;
 
@@ -185,7 +185,7 @@ namespace Detours
 			if (projectile)
 			{
 				Scr_AddEntityNum(projectile->number);
-				Scr_RunScript(CodeCallback_OnProjectileExplode, 1);
+				Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 			}
 		}
 
