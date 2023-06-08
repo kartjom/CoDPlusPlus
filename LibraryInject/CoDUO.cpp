@@ -454,10 +454,7 @@ namespace CoDUO
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
 
-		CodeCallback.OnPlayerShoot = 0;
-		CodeCallback.OnPlayerMelee = 0;
-		CodeCallback.OnProjectileBounce = 0;
-		CodeCallback.OnProjectileExplode = 0;
+		CodeCallback = {}; // Clear all callbacks
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}
