@@ -4,6 +4,7 @@
 #include "WinApiHelper.h"
 #include "OpenGLHelper.h"
 #include "ImGuiManager.h"
+#include "LuaState.h"
 #include "CoDUO.h"
 
 using namespace CoDUO;
@@ -11,6 +12,8 @@ using namespace CoDUO;
 DWORD WINAPI MainThread(LPVOID param)
 {
 	WinApiHelper::CreateConsole("Console");
+
+	LuaState::Init();
 
 	WinApiHelper::InjectDetours();
 	OpenGLHelper::InjectDetours();
@@ -23,6 +26,7 @@ DWORD WINAPI MainThread(LPVOID param)
 	}
 
 	ImGuiManager::Dispose();
+	LuaState::Dispose();
 
 	//FreeLibraryAndExitThread((HMODULE)param, 0);
 

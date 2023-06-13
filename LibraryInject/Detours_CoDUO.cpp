@@ -1,6 +1,7 @@
 #include "Detours.h"
 #include "CoDUO.h"
 #include <stdio.h>
+#include "LuaState.h"
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
@@ -37,6 +38,8 @@ namespace Detours
 			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
+
+			LuaState::SetCallbacks();
 		}
 
 		_asm popad
