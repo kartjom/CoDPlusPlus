@@ -8,7 +8,7 @@ namespace CoDUO
 	inline DWORD syscall = 0x004685A0;
 	inline DWORD uo_game_mp_x86 = 0;
 
-	struct {
+	inline struct Callbacks {
 		uint32_t OnPlayerShoot = 0;
 		uint32_t OnPlayerMelee = 0;
 		uint32_t OnProjectileBounce = 0;
