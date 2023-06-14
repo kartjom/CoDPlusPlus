@@ -154,7 +154,7 @@ namespace CoDUO
 		}
 	}
 
-	void Scr_AddBool(bool value)
+	void Scr_AddBool(int value)
 	{
 		_asm
 		{

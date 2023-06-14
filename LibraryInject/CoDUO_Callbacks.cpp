@@ -1,15 +1,12 @@
 #include "CoDUO_Callbacks.h"
 #include "CoDUO.h"
+#include "LuaState.h"
 
 #include <format>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc
 {
-	void Scr_Sandbox()
-	{
-	}
-
 	void Scr_StringToCmd()
 	{
 		const char* str = Scr_GetString(0);
@@ -23,6 +20,26 @@ namespace CoDUO::Gsc
 			cmd[strSize] = '\n';
 
 			trap_SendConsoleCommand(EXEC_APPEND, cmd);
+		}
+	}
+
+	void Scr_LuaDoFile()
+	{
+		const char* fileName = Scr_GetString(0);
+
+		if (fileName)
+		{
+			luaL_dofile(LuaState::Lua(), fileName);
+		}
+	}
+
+	void Scr_LuaDoString()
+	{
+		const char* str = Scr_GetString(0);
+
+		if (str)
+		{
+			luaL_dostring(LuaState::Lua(), str);
 		}
 	}
 

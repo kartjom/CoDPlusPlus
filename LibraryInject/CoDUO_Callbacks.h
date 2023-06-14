@@ -5,9 +5,9 @@
 
 namespace CoDUO::Gsc
 {
-	void Scr_Sandbox();
-
 	void Scr_StringToCmd();
+	void Scr_LuaDoFile();
+	void Scr_LuaDoString();
 
 	void Scr_ForceRename(int param);
 	void Scr_GetViewOrigin(int param);
@@ -17,8 +17,9 @@ namespace CoDUO::Gsc
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
-		gsc_function("sandbox", Scr_Sandbox),
 		gsc_function("console", Scr_StringToCmd),
+		gsc_function("lua_dofile", Scr_LuaDoFile),
+		gsc_function("lua_dostring", Scr_LuaDoString),
 	};
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_methods

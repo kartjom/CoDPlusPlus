@@ -35,7 +35,7 @@ namespace CoDUO
 	gentity_t* Scr_GetEntity(int param);
 
 	void Scr_AddUndefined();
-	void Scr_AddBool(bool value);
+	void Scr_AddBool(int value);
 	void Scr_AddInt(int value);
 	void Scr_AddFloat(float value);
 	void Scr_AddVector(float* value);
