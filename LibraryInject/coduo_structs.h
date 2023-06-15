@@ -45,8 +45,9 @@ struct gentity_t
 {
 	int32_t number; //0x0000
 	int32_t eType; //0x0004
-	char pad_0008[8]; //0x0008
-	int32_t time; //0x0010
+	char pad_0008[4]; //0x0008
+	int32_t trType; //0x000C
+	int32_t trTime; //0x0010
 	char pad_0014[4]; //0x0014
 	vec3_t origin; //0x0018
 	vec3_t velocity; //0x0024
@@ -66,7 +67,8 @@ struct gentity_t
 	int32_t classname; //0x0184
 	int32_t spawnflags; //0x0188
 	int32_t flags; //0x018C
-	char pad_0190[20]; //0x0190
+	char pad_0190[16]; //0x0190
+	int32_t clipmask; //0x01A0
 	uint32_t frames; //0x01A4
 	class gentity_t* parent; //0x01A8
 	char pad_01AC[58]; //0x01AC
@@ -78,8 +80,12 @@ struct gentity_t
 	int32_t health; //0x0240
 	char pad_0244[4]; //0x0244
 	int32_t damage; //0x0248
-	int32_t splashDamage; //0x024C
-	char pad_0250[252]; //0x0250
+	int32_t explosionInnerDamage; //0x024C
+	int32_t explosionOuterDamage; //0x0250
+	int32_t explosionRadius; //0x0254
+	int32_t methodOfDeath; //0x0258
+	int32_t splashMethodOfDeath; //0x025C
+	char pad_0260[236]; //0x0260
 }; //Size: 0x034C
 
 struct gclient_t
