@@ -48,9 +48,9 @@ struct gentity_t
 	char pad_0008[4]; //0x0008
 	int32_t trType; //0x000C
 	int32_t trTime; //0x0010
-	char pad_0014[4]; //0x0014
-	vec3_t origin; //0x0018
-	vec3_t velocity; //0x0024
+	int32_t trDuration; //0x0014
+	vec3_t trBase; //0x0018
+	vec3_t trDelta; //0x0024
 	char pad_0030[12]; //0x0030
 	vec3_t viewangles; //0x003C
 	char pad_0048[132]; //0x0048
@@ -58,7 +58,7 @@ struct gentity_t
 	char pad_00D0[40]; //0x00D0
 	int32_t svFlags; //0x00F8
 	char pad_00FC[64]; //0x00FC
-	vec3_t current_origin; //0x013C
+	vec3_t currentOrigin; //0x013C
 	char pad_0148[12]; //0x0148
 	int32_t ownerNum; //0x0154
 	char pad_0158[8]; //0x0158
