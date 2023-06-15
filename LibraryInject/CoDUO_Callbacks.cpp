@@ -7,6 +7,8 @@
 using namespace CoDUO;
 namespace CoDUO::Gsc
 {
+	/* Functions */
+
 	void Scr_StringToCmd()
 	{
 		const char* str = Scr_GetString(0);
@@ -20,6 +22,30 @@ namespace CoDUO::Gsc
 			cmd[strSize] = '\n';
 
 			trap_SendConsoleCommand(EXEC_APPEND, cmd);
+		}
+	}
+
+	void Scr_GetWeaponInfo()
+	{
+		int index = Scr_GetInt(0);
+		weaponinfo_t* weapon = G_GetWeaponInfo(index);
+
+		if (weapon && weapon->name)
+		{
+			Scr_MakeArray();
+
+			Scr_AddInt(weapon->number);
+			Scr_AddArrayStringIndexed(G_NewString("number"));		
+
+			Scr_AddString(weapon->name);
+			Scr_AddArrayStringIndexed(G_NewString("name"));
+
+			Scr_AddInt(weapon->maxAmmo);
+			Scr_AddArrayStringIndexed(G_NewString("maxAmmo"));
+		}
+		else
+		{
+			Scr_AddUndefined();
 		}
 	}
 
@@ -42,6 +68,8 @@ namespace CoDUO::Gsc
 			luaL_dostring(LuaState::Lua(), str);
 		}
 	}
+
+	/* Methods */
 
 	void Scr_ForceRename(int param)
 	{
@@ -114,6 +142,19 @@ namespace CoDUO::Gsc
 		else
 		{
 			Scr_AddUndefined();
+		}
+	}
+
+	void Scr_GetWeapon(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		if (ent && ent->client)
+		{
+			Scr_AddInt(ent->client->weapon);
+		}
+		else
+		{
+			Scr_AddInt(ent->weapon);
 		}
 	}
 }
