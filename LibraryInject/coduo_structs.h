@@ -44,15 +44,20 @@ enum cbufExec_t
 struct gentity_t
 {
 	int32_t number; //0x0000
-	char pad_0004[12]; //0x0004
+	int32_t eType; //0x0004
+	char pad_0008[8]; //0x0008
 	int32_t time; //0x0010
 	char pad_0014[4]; //0x0014
-	vec3_t origin_i; //0x0018
+	vec3_t origin; //0x0018
 	vec3_t velocity; //0x0024
 	char pad_0030[12]; //0x0030
 	vec3_t viewangles; //0x003C
-	char pad_0048[244]; //0x0048
-	vec3_t origin_f; //0x013C
+	char pad_0048[132]; //0x0048
+	int32_t weapon; //0x00CC
+	char pad_00D0[40]; //0x00D0
+	int32_t svFlags; //0x00F8
+	char pad_00FC[64]; //0x00FC
+	vec3_t current_origin; //0x013C
 	char pad_0148[12]; //0x0148
 	int32_t ownerNum; //0x0154
 	char pad_0158[8]; //0x0158
@@ -66,9 +71,15 @@ struct gentity_t
 	class gentity_t* parent; //0x01A8
 	char pad_01AC[58]; //0x01AC
 	int16_t targetname; //0x01E6
-	char pad_01E8[88]; //0x01E8
+	char pad_01E8[36]; //0x01E8
+	int32_t nextthink; //0x020C
+	void* think; //0x0210
+	char pad_0214[44]; //0x0214
 	int32_t health; //0x0240
-	char pad_0244[264]; //0x0244
+	char pad_0244[4]; //0x0244
+	int32_t damage; //0x0248
+	int32_t splashDamage; //0x024C
+	char pad_0250[252]; //0x0250
 }; //Size: 0x034C
 
 struct gclient_t
@@ -78,7 +89,9 @@ struct gclient_t
 	char pad_0008[12]; //0x0008
 	vec3_t origin; //0x0014
 	vec3_t velocity; //0x0020
-	char pad_002C[24]; //0x002C
+	char pad_002C[8]; //0x002C
+	int32_t grenadeTimeLeft; //0x0034
+	char pad_0038[12]; //0x0038
 	float leanf; //0x0044
 	char pad_0048[144]; //0x0048
 	int32_t weapon; //0x00D8
