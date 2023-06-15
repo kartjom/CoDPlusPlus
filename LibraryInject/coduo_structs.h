@@ -182,7 +182,9 @@ struct weaponinfo_t
 	char pad_020C[8]; //0x020C
 	int32_t damageInnerRadius; //0x0214
 	int32_t damageOuterRadius; //0x0218
-	char pad_021C[308]; //0x021C
+	char pad_021C[76]; //0x021C
+	int32_t fuseTime; //0x0268
+	char pad_026C[228]; //0x026C
 	char* killIcon; //0x0350
 	char pad_0354[20]; //0x0354
 	char* altWeapon; //0x0368
