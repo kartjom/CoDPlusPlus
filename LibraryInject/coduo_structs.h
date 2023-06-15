@@ -175,7 +175,7 @@ struct weaponinfo_t
 	int32_t startAmmo; //0x01E0
 	char pad_01E4[16]; //0x01E4
 	int32_t maxAmmo; //0x01F4
-	char pad_01F8[4]; //0x01F8
+	int32_t clipSize; //0x01F8
 	char* sharedAmmoCapName; //0x01FC
 	char pad_0200[8]; //0x0200
 	int32_t damage; //0x0208
@@ -192,8 +192,7 @@ struct weaponinfo_t
 	int32_t explosionOuterDamage; //0x0380
 	char pad_0384[8]; //0x0384
 	char* projectileModel; //0x038C
-	char pad_0390[176]; //0x0390
-}; //Size: 0x0440
+};
 
 struct vmCvar_t
 {

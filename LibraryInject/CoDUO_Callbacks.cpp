@@ -40,6 +40,9 @@ namespace CoDUO::Gsc
 			Scr_AddString(weapon->name);
 			Scr_AddArrayStringIndexed(G_NewString("name"));
 
+			Scr_AddInt(weapon->clipSize);
+			Scr_AddArrayStringIndexed(G_NewString("clipSize"));
+			
 			Scr_AddInt(weapon->maxAmmo);
 			Scr_AddArrayStringIndexed(G_NewString("maxAmmo"));
 		}
