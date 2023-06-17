@@ -109,7 +109,12 @@ struct gclient_t
 	int32_t weapon; //0x00D8
 	char pad_00DC[12]; //0x00DC
 	vec3_t viewangles; //0x00E8
-	char pad_00F4[48]; //0x00F4
+	int32_t viewheight_i; //0x00F4
+	float viewheight_f; //0x00F8
+	char pad_00FC[4]; //0x00FC
+	int32_t viewheight_i_2; //0x0100
+	int32_t stance_change_dir; //0x0104
+	char pad_0108[28]; //0x0108
 	int32_t maxhealth; //0x0124
 	char pad_0128[1076]; //0x0128
 	vec3_t mins; //0x055C
@@ -201,6 +206,13 @@ struct weapondef_t
 	int32_t explosionOuterDamage; //0x0380
 	char pad_0384[8]; //0x0384
 	char* projectileModel; //0x038C
+};
+
+struct weaponslot_t
+{
+	weapondef_t* weapondef;
+	int32_t clip;
+	int32_t reserve;
 };
 
 struct vmCvar_t

@@ -257,14 +257,35 @@ namespace CoDUO
 		}
 	}
 
-	weapondef_t* G_GetWeaponInfo(int32_t index)
+	weapondef_t* G_GetWeaponDef(int32_t index)
 	{
-		if (uo_game_mp_x86 == 0) return nullptr;
+		if (index < 1 || uo_game_mp_x86 == 0) return nullptr;
 
 		uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
 		weapondef_t* weaponinfo = *(weapondef_t**)(ptr + index * 4);
 
 		return weaponinfo;
+	}
+
+	weaponslot_t G_GetWeaponSlot(gentity_t* player, int32_t weaponIndex)
+	{
+		weaponslot_t slot = {};
+
+		if (weaponIndex > 0 && player->client != nullptr && uo_game_mp_x86 > 0)
+		{
+			weapondef_t* def = G_GetWeaponDef(weaponIndex);
+			if (def->clientIndex > 0)
+			{
+				int clipAddr = (DWORD)(player->client) + (def->clientIndex * 4) + 0x334;
+				int reserveAddr = (DWORD)(player->client) + (def->clientIndex * 4) + 0x134;
+
+				slot.weapondef = def;
+				slot.clip = *(DWORD*)clipAddr;
+				slot.reserve = *(DWORD*)reserveAddr;
+			}
+		}
+
+		return slot;
 	}
 
 	int32_t G_NewString(const char* string)

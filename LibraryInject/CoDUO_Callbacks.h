@@ -15,7 +15,7 @@ namespace CoDUO::Gsc
 	void Scr_GetViewAngles(int param);
 	void Scr_GetParent(int param);
 	void Scr_GetOwner(int param);
-	void Scr_GetWeapon(int param);
+	void Scr_GetWeaponDefIndex(int param);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
@@ -32,6 +32,6 @@ namespace CoDUO::Gsc
 		gsc_function("getviewangles", Scr_GetViewAngles),
 		gsc_function("getparent", Scr_GetParent),
 		gsc_function("getowner", Scr_GetOwner),
-		gsc_function("getweaponindex", Scr_GetWeapon),
+		gsc_function("getweaponindex", Scr_GetWeaponDefIndex),
 	};
 }

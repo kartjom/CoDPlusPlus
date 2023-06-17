@@ -28,9 +28,9 @@ namespace CoDUO::Gsc
 	void Scr_GetWeaponInfo()
 	{
 		int index = Scr_GetInt(0);
-		weapondef_t* weapon = G_GetWeaponInfo(index);
+		weapondef_t* weapon = G_GetWeaponDef(index);
 
-		if (weapon && weapon->name)
+		if (index > 0 && weapon && weapon->name)
 		{
 			Scr_MakeArray();
 
@@ -148,7 +148,7 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetWeapon(int param)
+	void Scr_GetWeaponDefIndex(int param)
 	{
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
