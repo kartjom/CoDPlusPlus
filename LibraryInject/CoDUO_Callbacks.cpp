@@ -30,7 +30,7 @@ namespace CoDUO::Gsc
 		int index = Scr_GetInt(0);
 		weapondef_t* weapon = G_GetWeaponDef(index);
 
-		if (weapon && weapon->name)
+		if (weapon)
 		{
 			Scr_MakeArray();
 
