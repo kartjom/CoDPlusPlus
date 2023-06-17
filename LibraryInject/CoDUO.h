@@ -19,6 +19,7 @@ namespace CoDUO
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
+	inline int32_t* weaponDefCount = nullptr;
 
 	int32_t Scr_LoadScript(const char* file);
 	int32_t Scr_GetFunctionHandle(const char* file, const char* method);

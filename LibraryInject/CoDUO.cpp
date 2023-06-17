@@ -259,10 +259,13 @@ namespace CoDUO
 
 	weapondef_t* G_GetWeaponDef(int32_t index)
 	{
-		if (index < 1 || uo_game_mp_x86 == 0) return nullptr;
+		weapondef_t* weaponinfo = nullptr;
 
-		uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
-		weapondef_t* weaponinfo = *(weapondef_t**)(ptr + index * 4);
+		if (index > 0 && index <= *weaponDefCount && uo_game_mp_x86 != 0)
+		{
+			uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
+			weaponinfo = *(weapondef_t**)(ptr + index * 4);
+		}
 
 		return weaponinfo;
 	}
@@ -271,7 +274,7 @@ namespace CoDUO
 	{
 		weaponslot_t slot = {};
 
-		if (weaponIndex > 0 && player->client != nullptr && uo_game_mp_x86 > 0)
+		if (weaponIndex > 0 && weaponIndex <= *weaponDefCount && player->client != nullptr && uo_game_mp_x86 > 0)
 		{
 			weapondef_t* def = G_GetWeaponDef(weaponIndex);
 			if (def->clientIndex > 0)
@@ -467,6 +470,7 @@ namespace CoDUO
 	{
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
+		weaponDefCount = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
@@ -484,6 +488,7 @@ namespace CoDUO
 	{
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
+		weaponDefCount = nullptr;
 
 		CodeCallback = {}; // Clear all callbacks
 
