@@ -45,7 +45,7 @@ namespace CoDUO
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
 
-	weaponinfo_t* G_GetWeaponInfo(int32_t index);
+	weapondef_t* G_GetWeaponInfo(int32_t index);
 
 	int32_t G_NewString(const char* string);
 	const char* SL_ConvertToString(int32_t index);

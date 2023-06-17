@@ -257,12 +257,12 @@ namespace CoDUO
 		}
 	}
 
-	weaponinfo_t* G_GetWeaponInfo(int32_t index)
+	weapondef_t* G_GetWeaponInfo(int32_t index)
 	{
 		if (uo_game_mp_x86 == 0) return nullptr;
 
 		uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
-		weaponinfo_t* weaponinfo = *(weaponinfo_t**)(ptr + index * 4);
+		weapondef_t* weaponinfo = *(weapondef_t**)(ptr + index * 4);
 
 		return weaponinfo;
 	}

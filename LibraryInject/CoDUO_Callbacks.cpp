@@ -28,7 +28,7 @@ namespace CoDUO::Gsc
 	void Scr_GetWeaponInfo()
 	{
 		int index = Scr_GetInt(0);
-		weaponinfo_t* weapon = G_GetWeaponInfo(index);
+		weapondef_t* weapon = G_GetWeaponInfo(index);
 
 		if (weapon && weapon->name)
 		{

@@ -75,8 +75,14 @@ struct gentity_t
 	int16_t targetname; //0x01E6
 	char pad_01E8[36]; //0x01E8
 	int32_t nextthink; //0x020C
-	void* think; //0x0210
-	char pad_0214[44]; //0x0214
+	void (*think)(gentity_t* self);
+	void (*reached)(gentity_t* self);
+	void (*blocked)(gentity_t* self, gentity_t* other);
+	void (*touch)(gentity_t* self, gentity_t* other, struct trace_t* trace);
+	void (*use)(gentity_t* self, gentity_t* other, gentity_t* activator);
+	void (*pain)(gentity_t* self, gentity_t* attacker, int damage, vec3_t point);
+	void (*die)(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int mod);
+	char pad_022C[20]; //0x022C
 	int32_t health; //0x0240
 	char pad_0244[4]; //0x0244
 	int32_t damage; //0x0248
@@ -119,7 +125,7 @@ struct gclient_t
 	int32_t noclip; //0x461C
 };
 
-struct weaponinfo_t
+struct weapondef_t
 {
 	int32_t number; //0x0000
 	char* name; //0x0004
@@ -173,7 +179,8 @@ struct weaponinfo_t
 	char* modeIcon; //0x01D8
 	char* ammoIcon; //0x01DC
 	int32_t startAmmo; //0x01E0
-	char pad_01E4[16]; //0x01E4
+	char pad_01E4[12]; //0x01E4
+	int32_t clientIndex; //0x01F0
 	int32_t maxAmmo; //0x01F4
 	int32_t clipSize; //0x01F8
 	char* sharedAmmoCapName; //0x01FC
@@ -229,6 +236,25 @@ struct cvar_t
 	int integer;                    // atoi( string )
 	cvar_t* next;
 	cvar_t* hashNext;
+};
+
+struct cplane_t {
+	vec3_t normal;
+	float dist;
+	unsigned char type;              // for fast side tests: 0,1,2 = axial, 3 = nonaxial
+	unsigned char signbits;          // signx + (signy<<1) + (signz<<2), used as lookup during collision
+	char pad[2];
+};
+
+struct trace_t {
+	qboolean allsolid;      // if true, plane is not valid
+	qboolean startsolid;    // if true, the initial point was in a solid area
+	float fraction;         // time completed, 1.0 = didn't hit anything
+	vec3_t endpos;          // final position
+	cplane_t plane;         // surface normal at impact, transformed to world space
+	int surfaceFlags;       // surface hit
+	int contents;           // contents on other side of surface hit
+	int entityNum;          // entity the contacted sirface is a part of
 };
 
 struct refdef_t
