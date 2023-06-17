@@ -19,7 +19,7 @@ namespace CoDUO
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
-	inline int32_t* weaponDefCount = nullptr;
+	inline int32_t* bg_iNumWeapons = nullptr;
 
 	int32_t Scr_LoadScript(const char* file);
 	int32_t Scr_GetFunctionHandle(const char* file, const char* method);
@@ -46,8 +46,10 @@ namespace CoDUO
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
 
-	weapondef_t* G_GetWeaponDef(int32_t index);
-	weaponslot_t G_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
+	int32_t BG_GetNumWeapons();
+	weapondef_t* BG_GetWeaponDef(int32_t index);
+	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
+	int32_t BG_GetWeaponIndexForName(const char* name);
 
 	int32_t G_NewString(const char* string);
 	const char* SL_ConvertToString(int32_t index);

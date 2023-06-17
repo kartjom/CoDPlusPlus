@@ -28,7 +28,7 @@ namespace CoDUO::Gsc
 	void Scr_GetWeaponInfo()
 	{
 		int index = Scr_GetInt(0);
-		weapondef_t* weapon = G_GetWeaponDef(index);
+		weapondef_t* weapon = BG_GetWeaponDef(index);
 
 		if (weapon)
 		{
@@ -45,6 +45,20 @@ namespace CoDUO::Gsc
 			
 			Scr_AddInt(weapon->maxAmmo);
 			Scr_AddArrayStringIndexed(G_NewString("maxAmmo"));
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
+
+	void Scr_GetWeaponIndexByName()
+	{
+		const char* weaponName = Scr_GetString(0);
+		if (weaponName)
+		{
+			int32_t weaponIndex = BG_GetWeaponIndexForName(weaponName);
+			Scr_AddInt(weaponIndex);
 		}
 		else
 		{
@@ -168,7 +182,7 @@ namespace CoDUO::Gsc
 
 		if (ent && ent->client)
 		{
-			weaponslot_t slot = G_GetWeaponSlotInfo(ent, index);
+			weaponslot_t slot = BG_GetWeaponSlotInfo(ent, index);
 
 			if (slot.weapondef)
 			{

@@ -257,11 +257,16 @@ namespace CoDUO
 		}
 	}
 
-	weapondef_t* G_GetWeaponDef(int32_t index)
+	int32_t BG_GetNumWeapons()
+	{
+		return bg_iNumWeapons != nullptr ? *bg_iNumWeapons : 0;
+	}
+
+	weapondef_t* BG_GetWeaponDef(int32_t index)
 	{
 		weapondef_t* weaponinfo = nullptr;
 
-		if (index > 0 && index <= *weaponDefCount && uo_game_mp_x86 != 0)
+		if (index > 0 && index <= BG_GetNumWeapons() && uo_game_mp_x86 != 0)
 		{
 			uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
 			weaponinfo = *(weapondef_t**)(ptr + index * 4);
@@ -270,13 +275,13 @@ namespace CoDUO
 		return weaponinfo;
 	}
 
-	weaponslot_t G_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex)
+	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex)
 	{
 		weaponslot_t slot = {};
 
-		if (weaponIndex > 0 && weaponIndex <= *weaponDefCount && player->client != nullptr && uo_game_mp_x86 > 0)
+		if (weaponIndex > 0 && weaponIndex <= BG_GetNumWeapons() && player->client != nullptr && uo_game_mp_x86 > 0)
 		{
-			weapondef_t* def = G_GetWeaponDef(weaponIndex);
+			weapondef_t* def = BG_GetWeaponDef(weaponIndex);
 			if (def->clientIndex > 0)
 			{
 				int clipAddr = (DWORD)(player->client) + (def->clientIndex * 4) + 0x334;
@@ -289,6 +294,17 @@ namespace CoDUO
 		}
 
 		return slot;
+	}
+
+	int32_t BG_GetWeaponIndexForName(const char* name)
+	{
+		_asm
+		{
+			mov esi, name
+			mov eax, uo_game_mp_x86
+			add eax, 0x00011010
+			call eax
+		}
 	}
 
 	int32_t G_NewString(const char* string)
@@ -470,7 +486,7 @@ namespace CoDUO
 	{
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
-		weaponDefCount = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
+		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
@@ -488,7 +504,7 @@ namespace CoDUO
 	{
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
-		weaponDefCount = nullptr;
+		bg_iNumWeapons = nullptr;
 
 		CodeCallback = {}; // Clear all callbacks
 
