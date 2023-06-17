@@ -270,7 +270,7 @@ namespace CoDUO
 		return weaponinfo;
 	}
 
-	weaponslot_t G_GetWeaponSlot(gentity_t* player, int32_t weaponIndex)
+	weaponslot_t G_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex)
 	{
 		weaponslot_t slot = {};
 

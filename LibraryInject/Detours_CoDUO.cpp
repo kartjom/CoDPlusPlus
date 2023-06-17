@@ -64,26 +64,15 @@ namespace Detours
 		if (CodeCallback.OnPlayerShoot != 0)
 		{
 			gentity_t* player = nullptr;
-			const char* weaponName = nullptr;
-
 			_asm
 			{
 				mov player, edi
-				mov edx, [edx + 4]
-				mov weaponName, edx
 			}
 
-			if (player && weaponName && player->client)
+			if (player && player->client)
 			{
-				Scr_AddString(weaponName);
-				Scr_AddVector(player->client->viewangles);
-
-				vec3_t vieworigin;
-				G_GetPlayerViewOrigin(player, vieworigin);
-				Scr_AddVector(vieworigin);
-
 				Scr_AddEntityNum(player->number);
-				Scr_RunScript(CodeCallback.OnPlayerShoot, 4);
+				Scr_RunScript(CodeCallback.OnPlayerShoot, 1);
 			}
 		}
 

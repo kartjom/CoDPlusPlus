@@ -16,11 +16,12 @@ namespace CoDUO::Gsc
 	void Scr_GetParent(int param);
 	void Scr_GetOwner(int param);
 	void Scr_GetWeaponDefIndex(int param);
+	void Scr_GetWeaponSlotInfo(int param);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
 		gsc_function("console", Scr_StringToCmd),
-		gsc_function("getweaponinfo", Scr_GetWeaponInfo),
+		gsc_function("getweapondef", Scr_GetWeaponInfo),
 		gsc_function("lua_dofile", Scr_LuaDoFile),
 		gsc_function("lua_dostring", Scr_LuaDoString),
 	};
@@ -33,5 +34,6 @@ namespace CoDUO::Gsc
 		gsc_function("getparent", Scr_GetParent),
 		gsc_function("getowner", Scr_GetOwner),
 		gsc_function("getweaponindex", Scr_GetWeaponDefIndex),
+		gsc_function("getweaponslotinfo", Scr_GetWeaponSlotInfo),
 	};
 }

@@ -30,7 +30,7 @@ namespace CoDUO::Gsc
 		int index = Scr_GetInt(0);
 		weapondef_t* weapon = G_GetWeaponDef(index);
 
-		if (index > 0 && weapon && weapon->name)
+		if (weapon && weapon->name)
 		{
 			Scr_MakeArray();
 
@@ -158,6 +158,42 @@ namespace CoDUO::Gsc
 		else
 		{
 			Scr_AddInt(ent->weapon);
+		}
+	}
+
+	void Scr_GetWeaponSlotInfo(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		int index = Scr_GetInt(0);
+
+		if (ent && ent->client)
+		{
+			weaponslot_t slot = G_GetWeaponSlotInfo(ent, index);
+
+			if (slot.weapondef)
+			{
+				Scr_MakeArray();
+
+				Scr_AddInt(slot.weapondef->number);
+				Scr_AddArrayStringIndexed(G_NewString("number"));
+
+				Scr_AddString(slot.weapondef->name);
+				Scr_AddArrayStringIndexed(G_NewString("name"));
+
+				Scr_AddInt(slot.clip);
+				Scr_AddArrayStringIndexed(G_NewString("clip"));
+
+				Scr_AddInt(slot.reserve);
+				Scr_AddArrayStringIndexed(G_NewString("reserve"));
+			}
+			else
+			{
+				Scr_AddUndefined();
+			}
+		}
+		else
+		{
+			Scr_AddUndefined();
 		}
 	}
 }
