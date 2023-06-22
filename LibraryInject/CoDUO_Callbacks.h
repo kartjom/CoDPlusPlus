@@ -18,6 +18,7 @@ namespace CoDUO::Gsc
 	void Scr_GetOwner(int param);
 	void Scr_GetWeaponDefIndex(int param);
 	void Scr_GetWeaponSlotInfo(int param);
+	void Scr_SetWeaponAmmo(int param);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
@@ -42,5 +43,6 @@ namespace CoDUO::Gsc
 
 		gsc_function("getweaponindex", Scr_GetWeaponDefIndex),
 		gsc_function("getweaponslotinfo", Scr_GetWeaponSlotInfo),
+		gsc_function("setweaponammo", Scr_SetWeaponAmmo),
 	};
 }

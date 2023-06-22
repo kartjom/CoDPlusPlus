@@ -210,4 +210,18 @@ namespace CoDUO::Gsc
 			Scr_AddUndefined();
 		}
 	}
+
+	void Scr_SetWeaponAmmo(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+
+		int weaponIndex = Scr_GetInt(0);
+		int clip = Scr_GetInt(1);
+		int reserve = Scr_GetInt(2);
+
+		if (ent && ent->client)
+		{
+			BG_SetPlayerSlotAmmo(ent, weaponIndex, clip, reserve);
+		}
+	}
 }

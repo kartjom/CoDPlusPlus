@@ -47,8 +47,10 @@ namespace CoDUO
 	void Scr_AddArrayStringIndexed(int32_t str_index);
 
 	int32_t BG_GetNumWeapons();
+	bool BG_IsWeaponIndexValid(int32_t index);
 	weapondef_t* BG_GetWeaponDef(int32_t index);
 	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
+	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
 	int32_t BG_GetWeaponIndexForName(const char* name);
 
 	int32_t G_NewString(const char* string);

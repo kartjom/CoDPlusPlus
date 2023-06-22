@@ -262,11 +262,16 @@ namespace CoDUO
 		return bg_iNumWeapons != nullptr ? *bg_iNumWeapons : 0;
 	}
 
+	bool BG_IsWeaponIndexValid(int32_t index)
+	{
+		return uo_game_mp_x86 > 0 && index > 0 && index <= BG_GetNumWeapons();
+	}
+
 	weapondef_t* BG_GetWeaponDef(int32_t index)
 	{
 		weapondef_t* weaponinfo = nullptr;
 
-		if (index > 0 && index <= BG_GetNumWeapons() && uo_game_mp_x86 != 0)
+		if (BG_IsWeaponIndexValid(index))
 		{
 			uintptr_t ptr = *(uintptr_t*)(uo_game_mp_x86 + 0x0010ed40);
 			weaponinfo = *(weapondef_t**)(ptr + index * 4);
@@ -279,7 +284,7 @@ namespace CoDUO
 	{
 		weaponslot_t slot = {};
 
-		if (weaponIndex > 0 && weaponIndex <= BG_GetNumWeapons() && player->client != nullptr && uo_game_mp_x86 > 0)
+		if (BG_IsWeaponIndexValid(weaponIndex) && player->client != nullptr)
 		{
 			weapondef_t* def = BG_GetWeaponDef(weaponIndex);
 			if (def->clientIndex > 0)
@@ -294,6 +299,30 @@ namespace CoDUO
 		}
 
 		return slot;
+	}
+
+	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve)
+	{
+		if (clip < 0 && reserve < 0) return;
+
+		if (BG_IsWeaponIndexValid(weaponIndex) && player->client != nullptr)
+		{
+			weapondef_t* def = BG_GetWeaponDef(weaponIndex);
+			if (def->clientIndex > 0)
+			{
+				if (clip >= 0)
+				{
+					int clipAddr = (DWORD)(player->client) + (def->clientIndex * 4) + 0x334;
+					*(DWORD*)clipAddr = clip;
+				}
+
+				if (reserve >= 0)
+				{
+					int reserveAddr = (DWORD)(player->client) + (def->clientIndex * 4) + 0x134;
+					*(DWORD*)reserveAddr = reserve;
+				}
+			}
+		}
 	}
 
 	int32_t BG_GetWeaponIndexForName(const char* name)
