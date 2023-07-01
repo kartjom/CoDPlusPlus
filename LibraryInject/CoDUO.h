@@ -11,6 +11,7 @@ namespace CoDUO
 	inline struct Callbacks {
 		uint32_t OnPlayerShoot = 0;
 		uint32_t OnPlayerMelee = 0;
+		uint32_t OnPlayerSay = 0;
 		uint32_t OnProjectileBounce = 0;
 		uint32_t OnProjectileExplode = 0;
 	} CodeCallback;

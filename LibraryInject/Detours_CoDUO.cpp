@@ -36,6 +36,7 @@ namespace Detours
 		{
 			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
 			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
+			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 
@@ -271,5 +272,59 @@ namespace Detours
 			method_found:
 			ret
 		}
+	}
+
+	ImplementDetour(PlayerSayCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback.OnPlayerSay)
+		{
+			_asm
+			{
+				mov	ebp, esp
+			}
+
+			static int clientNum = -1;
+			static int mode = -1;
+			static char* text = nullptr;
+
+			_asm
+			{
+				mov eax, esp
+
+				add eax, 0x208
+				mov edi, [eax]
+				mov clientNum, edi
+
+				add eax, 0x4
+				mov edi, [eax]
+				mov mode, edi
+
+				add eax, 0x4
+				mov edi, [eax]
+				add edi, 0x1
+				mov text, edi
+			}
+
+			if (text && clientNum >= 0 && clientNum < 128)
+			{
+				if (text[strlen(text) - 1] == 21) text[strlen(text) - 1] = '\0';
+
+				Scr_AddInt(mode);
+				Scr_AddString(text);
+				Scr_AddEntityNum(clientNum);
+				Scr_RunScript(CodeCallback.OnPlayerSay, 3);
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			mov dword ptr ss:[esp + 0x1E0], eax
+		}
+
+		JumpBack(PlayerSayCallback)
 	}
 }
