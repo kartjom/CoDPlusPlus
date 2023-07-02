@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Entry Point">
+      <UniqueIdentifier>{de9ce8ee-23b2-4c37-9b7d-23a4201f0f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor">
+      <UniqueIdentifier>{3fab1898-d08a-4fab-b206-1e502d0d12ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\ImGui">
+      <UniqueIdentifier>{e595806f-aec9-420b-9d10-bbb50a5eb375}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\ImGui\include">
+      <UniqueIdentifier>{d9a0feba-dd49-49e1-a2ac-d1818ab96ead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\ImGui\src">
+      <UniqueIdentifier>{c6c8d737-75f9-460a-9a79-76b7a26c3a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Detours">
+      <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structs">
+      <UniqueIdentifier>{e811e7a4-7d33-4d01-8b04-e90bade1605b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptLayer">
+      <UniqueIdentifier>{920c9c2b-0382-4cd8-9650-8401268bd1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptLayer\Lua">
+      <UniqueIdentifier>{a4f60a47-8347-4209-856d-dd4957205f86}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Vendor\ImGui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinApiHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Entry Point</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDUO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_CoDUO.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_OpenGL.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_WinAPI.cpp">
+      <Filter>Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDUO_Callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaState.cpp">
+      <Filter>ScriptLayer\Lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_win32.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_opengl3.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h">
+      <Filter>Vendor\ImGui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApiHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDUO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours.h">
+      <Filter>Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours_defines.h">
+      <Filter>Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="coduo_structs.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3_t.h">
+      <Filter>Structs</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDUO_Callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaState.h">
+      <Filter>ScriptLayer\Lua</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
