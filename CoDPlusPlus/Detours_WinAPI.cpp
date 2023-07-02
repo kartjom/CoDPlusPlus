@@ -38,30 +38,22 @@ namespace Detours
 
 		_asm
 		{
-			push ebp
 			mov	ebp, esp
-			sub esp, 0x4
 		}
 
-		DWORD moduleAddr;
+		DWORD moduleAddr_edx;
+		DWORD moduleAddr_eax;
 		_asm
 		{
-			mov moduleAddr, edx
+			mov moduleAddr_edx, edx
+			mov moduleAddr_eax, eax
 		}
 
-		if (moduleAddr)
+		// Depending on the file (cracked, original or Steam), addr of module is in edx or eax
+		if ((uo_game_mp_x86 && moduleAddr_edx == uo_game_mp_x86) || (uo_game_mp_x86 && moduleAddr_eax == uo_game_mp_x86))
 		{
-			if (moduleAddr == uo_game_mp_x86)
-			{
-				uo_game_mp_x86 = 0;
-				uo_game_mp_x86_OnDetach();
-			}
-		}
-
-		_asm
-		{
-			add esp, 0x4
-			pop ebp
+			uo_game_mp_x86 = 0;
+			uo_game_mp_x86_OnDetach();
 		}
 
 		_asm popad
