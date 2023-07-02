@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Entry Point">
       <UniqueIdentifier>{de9ce8ee-23b2-4c37-9b7d-23a4201f0f34}</UniqueIdentifier>
     </Filter>
@@ -24,26 +16,32 @@
     <Filter Include="Vendor\ImGui\src">
       <UniqueIdentifier>{c6c8d737-75f9-460a-9a79-76b7a26c3a40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Detours">
-      <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Structs">
       <UniqueIdentifier>{e811e7a4-7d33-4d01-8b04-e90bade1605b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScriptLayer">
-      <UniqueIdentifier>{920c9c2b-0382-4cd8-9650-8401268bd1fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScriptLayer\Lua">
-      <UniqueIdentifier>{a4f60a47-8347-4209-856d-dd4957205f86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ScriptLayer\Gsc">
-      <UniqueIdentifier>{7187cf51-9849-449b-942d-35efdc42e4bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{91bc2bb1-2d27-4e03-aa1b-49d4fc6c1590}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Mappings">
       <UniqueIdentifier>{ba887283-3ae5-491a-9d87-be4f8ef4e026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utils">
+      <UniqueIdentifier>{7bf5b055-3327-4185-b241-c774c548431e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ScriptLayer">
+      <UniqueIdentifier>{920c9c2b-0382-4cd8-9650-8401268bd1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ScriptLayer\Lua">
+      <UniqueIdentifier>{a4f60a47-8347-4209-856d-dd4957205f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ScriptLayer\Gsc">
+      <UniqueIdentifier>{7187cf51-9849-449b-942d-35efdc42e4bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Hook">
+      <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Hook\Detours">
+      <UniqueIdentifier>{8a0ddede-e436-4bcb-b5fb-a2c3c1de01b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,38 +66,17 @@
     <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
       <Filter>Vendor\ImGui\src</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApiHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Entry Point</Filter>
     </ClCompile>
-    <ClCompile Include="Hook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_CoDUO.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_OpenGL.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_WinAPI.cpp">
-      <Filter>Detours</Filter>
-    </ClCompile>
     <ClCompile Include="LuaState.cpp">
-      <Filter>ScriptLayer\Lua</Filter>
+      <Filter>Engine\ScriptLayer\Lua</Filter>
     </ClCompile>
     <ClCompile Include="GscFunctionExt.cpp">
-      <Filter>ScriptLayer\Gsc</Filter>
+      <Filter>Engine\ScriptLayer\Gsc</Filter>
     </ClCompile>
     <ClCompile Include="GscMethodExt.cpp">
-      <Filter>ScriptLayer\Gsc</Filter>
+      <Filter>Engine\ScriptLayer\Gsc</Filter>
     </ClCompile>
     <ClCompile Include="CoDUO.cpp">
       <Filter>Engine</Filter>
@@ -118,6 +95,27 @@
     </ClCompile>
     <ClCompile Include="PlayerMapping.cpp">
       <Filter>Engine\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Engine\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHelper.cpp">
+      <Filter>Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="WinApiHelper.cpp">
+      <Filter>Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>Engine\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_CoDUO.cpp">
+      <Filter>Engine\Hook\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_WinAPI.cpp">
+      <Filter>Engine\Hook\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours_OpenGL.cpp">
+      <Filter>Engine\Hook\Detours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,24 +146,6 @@
     <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h">
       <Filter>Vendor\ImGui\include</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApiHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours.h">
-      <Filter>Detours</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours_defines.h">
-      <Filter>Detours</Filter>
-    </ClInclude>
     <ClInclude Include="coduo_structs.h">
       <Filter>Structs</Filter>
     </ClInclude>
@@ -173,13 +153,31 @@
       <Filter>Structs</Filter>
     </ClInclude>
     <ClInclude Include="LuaState.h">
-      <Filter>ScriptLayer\Lua</Filter>
+      <Filter>Engine\ScriptLayer\Lua</Filter>
     </ClInclude>
     <ClInclude Include="GscExtensions.h">
-      <Filter>ScriptLayer\Gsc</Filter>
+      <Filter>Engine\ScriptLayer\Gsc</Filter>
     </ClInclude>
     <ClInclude Include="CoDUO.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook.h">
+      <Filter>Engine\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApiHelper.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLHelper.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours.h">
+      <Filter>Engine\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours_defines.h">
+      <Filter>Engine\Hook</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
