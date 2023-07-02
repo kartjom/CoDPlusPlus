@@ -278,7 +278,7 @@ struct refdef_t
 };
 
 // GSC
-#define gsc_function(name, callback) { name, { name, callback, 0 } }
+#define gsc_register(name, callback) { name, { name, callback, 0 } }
 struct gsc_function_t
 {
 	const char* name;

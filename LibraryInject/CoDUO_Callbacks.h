@@ -23,21 +23,21 @@ namespace CoDUO::Gsc
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
-		gsc_function("console", Scr_StringToCmd),
+		gsc_register("console", Scr_StringToCmd),
 
-		gsc_function("getweapondef", Scr_GetWeaponInfo),
-		gsc_function("getweaponindexbyname", Scr_GetWeaponIndexByName),
+		gsc_register("getweapondef", Scr_GetWeaponInfo),
+		gsc_register("getweaponindexbyname", Scr_GetWeaponIndexByName),
 
-		gsc_function("string_toupper", Scr_String_ToUpper),
-		gsc_function("string_tolower", Scr_String_ToLower),
-		gsc_function("string_startswith", Scr_String_StartsWith),
-		gsc_function("string_endswith", Scr_String_EndsWith),
-		gsc_function("string_contains", Scr_String_Contains),
-		gsc_function("string_replace", Scr_String_Replace),
-		gsc_function("string_split", Scr_String_Split),
+		gsc_register("string_toupper", Scr_String_ToUpper),
+		gsc_register("string_tolower", Scr_String_ToLower),
+		gsc_register("string_startswith", Scr_String_StartsWith),
+		gsc_register("string_endswith", Scr_String_EndsWith),
+		gsc_register("string_contains", Scr_String_Contains),
+		gsc_register("string_replace", Scr_String_Replace),
+		gsc_register("string_split", Scr_String_Split),
 
-		gsc_function("lua_dofile", Scr_LuaDoFile),
-		gsc_function("lua_dostring", Scr_LuaDoString),
+		gsc_register("lua_dofile", Scr_LuaDoFile),
+		gsc_register("lua_dostring", Scr_LuaDoString),
 	};
 }
 
@@ -54,16 +54,16 @@ namespace CoDUO::Gsc
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_methods
 	{
-		gsc_function("rename", Scr_ForceRename),
+		gsc_register("rename", Scr_ForceRename),
 
-		gsc_function("getvieworigin", Scr_GetViewOrigin),
-		gsc_function("getviewangles", Scr_GetViewAngles),
+		gsc_register("getvieworigin", Scr_GetViewOrigin),
+		gsc_register("getviewangles", Scr_GetViewAngles),
 
-		gsc_function("getparent", Scr_GetParent),
-		gsc_function("getowner", Scr_GetOwner),
+		gsc_register("getparent", Scr_GetParent),
+		gsc_register("getowner", Scr_GetOwner),
 
-		gsc_function("getweaponindex", Scr_GetWeaponDefIndex),
-		gsc_function("getweaponslotinfo", Scr_GetWeaponSlotInfo),
-		gsc_function("setweaponammo", Scr_SetWeaponAmmo),
+		gsc_register("getweaponindex", Scr_GetWeaponDefIndex),
+		gsc_register("getweaponslotinfo", Scr_GetWeaponSlotInfo),
+		gsc_register("setweaponammo", Scr_SetWeaponAmmo),
 	};
 }
