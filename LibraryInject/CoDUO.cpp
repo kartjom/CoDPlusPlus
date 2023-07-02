@@ -517,6 +517,8 @@ namespace CoDUO
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
+		CodeCallback = {};
+
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
 		DetourRet(uo_game_mp_x86 + 0x00055727, Detours::MeleeCallback, 5);
