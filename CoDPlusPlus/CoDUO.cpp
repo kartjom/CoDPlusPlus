@@ -7,47 +7,6 @@
 using namespace CoDUO::Gsc;
 namespace CoDUO
 {
-	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination)
-	{
-		_asm
-		{
-			mov esi, destination
-			mov edi, ent
-			mov eax, uo_game_mp_x86
-			add eax, 0x000563b0
-			call eax
-		}
-	}
-
-	void trap_GetUserinfo(int num, char* buffer, int bufferSize)
-	{
-		_asm
-		{
-			push bufferSize
-			push buffer
-			push num
-			push 0x21
-			mov eax, syscall
-			call eax
-
-			add esp, 0x10
-		}
-	}
-
-	void trap_SetUserinfo(int num, const char* buffer)
-	{
-		_asm
-		{
-			push buffer
-			push num
-			push 0x22
-			mov eax, syscall
-			call eax
-
-			add esp, 0xC
-		}
-	}
-
 	void BaseAttach()
 	{
 		BYTE payloadBuffer[] = { 0xEB }; // Console cvars

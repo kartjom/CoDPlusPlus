@@ -116,6 +116,7 @@
     <ClCompile Include="LuaState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenGLHelper.cpp" />
+    <ClCompile Include="PlayerMapping.cpp" />
     <ClCompile Include="StringUtilsMapping.cpp" />
     <ClCompile Include="WeaponMapping.cpp" />
     <ClCompile Include="WinApiHelper.cpp" />

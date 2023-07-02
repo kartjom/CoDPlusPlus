@@ -58,9 +58,6 @@ namespace CoDUO /* WeaponMapping.cpp */
 	bool BG_IsWeaponIndexValid(int32_t index);
 	int32_t BG_GetWeaponIndexForName(const char* name);
 	weapondef_t* BG_GetWeaponDef(int32_t index);
-
-	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
-	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
 }
 
 namespace CoDUO /* StringUtilsMapping.cpp */
@@ -72,9 +69,12 @@ namespace CoDUO /* StringUtilsMapping.cpp */
 	void Info_SetValueForKey(char* buffer, const char* key, const char* value);
 }
 
-namespace CoDUO
+namespace CoDUO /* PlayerMapping.cpp */
 {
 	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
+
+	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
+	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
 
 	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
 	void trap_SetUserinfo(int num, const char* buffer);

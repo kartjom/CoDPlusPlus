@@ -116,6 +116,9 @@
     <ClCompile Include="StringUtilsMapping.cpp">
       <Filter>Engine\Mappings</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imstb_truetype.h">
