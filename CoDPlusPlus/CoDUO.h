@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <wtypes.h>
-#include "CoDUO_Callbacks.h"
+#include "GscExtensions.h"
 
 namespace CoDUO
 {
