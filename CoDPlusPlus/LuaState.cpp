@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace CoDUO;
-
+using namespace CoDUO::Gsc;
 namespace LuaState
 {
 	inline lua_State* Instance;

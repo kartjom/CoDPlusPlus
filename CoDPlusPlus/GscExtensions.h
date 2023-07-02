@@ -5,6 +5,17 @@
 
 namespace CoDUO::Gsc
 {
+	inline struct Callbacks {
+		uint32_t OnPlayerShoot = 0;
+		uint32_t OnPlayerMelee = 0;
+		uint32_t OnPlayerSay = 0;
+		uint32_t OnProjectileBounce = 0;
+		uint32_t OnProjectileExplode = 0;
+	} CodeCallback;
+}
+
+namespace CoDUO::Gsc
+{
 	void Scr_StringToCmd();
 
 	void Scr_GetWeaponInfo();

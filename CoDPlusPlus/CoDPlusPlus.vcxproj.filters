@@ -39,6 +39,12 @@
     <Filter Include="ScriptLayer\Gsc">
       <UniqueIdentifier>{7187cf51-9849-449b-942d-35efdc42e4bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{91bc2bb1-2d27-4e03-aa1b-49d4fc6c1590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Mappings">
+      <UniqueIdentifier>{ba887283-3ae5-491a-9d87-be4f8ef4e026}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
@@ -74,9 +80,6 @@
     <ClCompile Include="Hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoDUO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Detours_CoDUO.cpp">
       <Filter>Detours</Filter>
     </ClCompile>
@@ -92,11 +95,26 @@
     <ClCompile Include="LuaState.cpp">
       <Filter>ScriptLayer\Lua</Filter>
     </ClCompile>
-    <ClCompile Include="GscFunctions.cpp">
+    <ClCompile Include="GscFunctionExt.cpp">
       <Filter>ScriptLayer\Gsc</Filter>
     </ClCompile>
-    <ClCompile Include="GscMethods.cpp">
+    <ClCompile Include="GscMethodExt.cpp">
       <Filter>ScriptLayer\Gsc</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDUO.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CvarMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="GscMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtilsMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +154,6 @@
     <ClInclude Include="Hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoDUO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Detours.h">
       <Filter>Detours</Filter>
     </ClInclude>
@@ -159,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="GscExtensions.h">
       <Filter>ScriptLayer\Gsc</Filter>
+    </ClInclude>
+    <ClInclude Include="CoDUO.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

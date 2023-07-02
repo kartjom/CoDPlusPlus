@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint>
 #include <wtypes.h>
 #include "GscExtensions.h"
 
@@ -8,20 +7,15 @@ namespace CoDUO
 	inline DWORD syscall = 0x004685A0;
 	inline DWORD uo_game_mp_x86 = 0;
 
-	inline struct Callbacks {
-		uint32_t OnPlayerShoot = 0;
-		uint32_t OnPlayerMelee = 0;
-		uint32_t OnPlayerSay = 0;
-		uint32_t OnProjectileBounce = 0;
-		uint32_t OnProjectileExplode = 0;
-	} CodeCallback;
-
 	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
 	inline int32_t* bg_iNumWeapons = nullptr;
+};
 
+namespace CoDUO /* GscMapping.cpp */
+{
 	int32_t Scr_LoadScript(const char* file);
 	int32_t Scr_GetFunctionHandle(const char* file, const char* method);
 	int32_t Scr_RunScript(int32_t scriptHandle, uint32_t argc);
@@ -46,31 +40,49 @@ namespace CoDUO
 	void Scr_MakeArray();
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
+}
 
-	int32_t BG_GetNumWeapons();
-	bool BG_IsWeaponIndexValid(int32_t index);
-	weapondef_t* BG_GetWeaponDef(int32_t index);
-	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
-	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
-	int32_t BG_GetWeaponIndexForName(const char* name);
-
-	int32_t G_NewString(const char* string);
-	const char* SL_ConvertToString(int32_t index);
-
-	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
-
-	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
-	void trap_SetUserinfo(int num, const char* buffer);
-	const char* Info_ValueForKey(const char* buffer, const char* key);
-	void Info_SetValueForKey(char* buffer, const char* key, const char* value);
-
+namespace CoDUO /* CvarMapping.cpp */
+{
 	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	cvar_t* Cvar_FindVar(const char* var_name);
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);
 	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force);
+}
 
+namespace CoDUO /* WeaponMapping.cpp */
+{
+	int32_t BG_GetNumWeapons();
+
+	bool BG_IsWeaponIndexValid(int32_t index);
+	int32_t BG_GetWeaponIndexForName(const char* name);
+	weapondef_t* BG_GetWeaponDef(int32_t index);
+
+	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
+	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
+}
+
+namespace CoDUO /* StringUtilsMapping.cpp */
+{
+	int32_t G_NewString(const char* string);
+	const char* SL_ConvertToString(int32_t index);
+
+	const char* Info_ValueForKey(const char* buffer, const char* key);
+	void Info_SetValueForKey(char* buffer, const char* key, const char* value);
+}
+
+namespace CoDUO
+{
+	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
+
+	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
+	void trap_SetUserinfo(int num, const char* buffer);
+}
+
+namespace CoDUO
+{
 	void BaseAttach();
 	void uo_game_mp_x86_OnAttach();
 	void uo_game_mp_x86_OnDetach();
-};
+}
