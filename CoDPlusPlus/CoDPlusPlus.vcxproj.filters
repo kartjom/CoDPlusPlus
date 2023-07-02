@@ -36,6 +36,9 @@
     <Filter Include="ScriptLayer\Lua">
       <UniqueIdentifier>{a4f60a47-8347-4209-856d-dd4957205f86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ScriptLayer\Gsc">
+      <UniqueIdentifier>{7187cf51-9849-449b-942d-35efdc42e4bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
@@ -86,11 +89,14 @@
     <ClCompile Include="Detours_WinAPI.cpp">
       <Filter>Detours</Filter>
     </ClCompile>
-    <ClCompile Include="CoDUO_Callbacks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LuaState.cpp">
       <Filter>ScriptLayer\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="GscFunctions.cpp">
+      <Filter>ScriptLayer\Gsc</Filter>
+    </ClCompile>
+    <ClCompile Include="GscMethods.cpp">
+      <Filter>ScriptLayer\Gsc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,11 +154,11 @@
     <ClInclude Include="vec3_t.h">
       <Filter>Structs</Filter>
     </ClInclude>
-    <ClInclude Include="CoDUO_Callbacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LuaState.h">
       <Filter>ScriptLayer\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="GscExtensions.h">
+      <Filter>ScriptLayer\Gsc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

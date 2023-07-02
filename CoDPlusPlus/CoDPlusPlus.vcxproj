@@ -97,10 +97,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CoDUO.cpp" />
-    <ClCompile Include="CoDUO_Callbacks.cpp" />
     <ClCompile Include="Detours_CoDUO.cpp" />
     <ClCompile Include="Detours_OpenGL.cpp" />
     <ClCompile Include="Detours_WinAPI.cpp" />
+    <ClCompile Include="GscFunctions.cpp" />
+    <ClCompile Include="GscMethods.cpp" />
     <ClCompile Include="Hook.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -117,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoDUO.h" />
-    <ClInclude Include="CoDUO_Callbacks.h" />
+    <ClInclude Include="GscExtensions.h" />
     <ClInclude Include="coduo_structs.h" />
     <ClInclude Include="Detours.h" />
     <ClInclude Include="Detours_defines.h" />
