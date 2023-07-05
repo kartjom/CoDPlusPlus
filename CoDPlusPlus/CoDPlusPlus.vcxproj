@@ -118,6 +118,7 @@
     <ClCompile Include="OpenGLHelper.cpp" />
     <ClCompile Include="PlayerMapping.cpp" />
     <ClCompile Include="StringUtilsMapping.cpp" />
+    <ClCompile Include="UtilsMapping.cpp" />
     <ClCompile Include="WeaponMapping.cpp" />
     <ClCompile Include="WinApiHelper.cpp" />
   </ItemGroup>

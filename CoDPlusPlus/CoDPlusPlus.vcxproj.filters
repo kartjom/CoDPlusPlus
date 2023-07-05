@@ -117,6 +117,9 @@
     <ClCompile Include="Detours_OpenGL.cpp">
       <Filter>Engine\Hook\Detours</Filter>
     </ClCompile>
+    <ClCompile Include="UtilsMapping.cpp">
+      <Filter>Engine\Mappings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGui\imstb_truetype.h">

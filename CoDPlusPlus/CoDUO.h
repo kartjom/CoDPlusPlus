@@ -80,6 +80,14 @@ namespace CoDUO /* PlayerMapping.cpp */
 	void trap_SetUserinfo(int num, const char* buffer);
 }
 
+namespace CoDUO /* UtilsMapping.cpp */
+{
+	void trap_Trace(trace_t* trace, vec3_t* start, vec3_t* end, int passEntityNum, int contentMask);
+
+	vec3_t AnglesToDirection(vec3_t& viewangles);
+	trace_t G_GetEyeTrace(gentity_t* player, float distance);
+}
+
 namespace CoDUO
 {
 	void BaseAttach();

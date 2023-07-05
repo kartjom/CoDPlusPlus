@@ -128,6 +128,11 @@ struct gclient_t
 	char name[32]; //0x45F4
 	char pad_4614[8]; //0x4614
 	int32_t noclip; //0x461C
+	char pad_4620[8]; //0x4620
+	int32_t lastCmdTime; //0x4628
+	int32_t buttons; //0x462C
+	int32_t oldbuttons; //0x4630
+	char pad_4634[568]; //0x4634
 };
 
 struct weapondef_t
@@ -250,23 +255,21 @@ struct cvar_t
 	cvar_t* hashNext;
 };
 
-struct cplane_t {
-	vec3_t normal;
-	float dist;
-	unsigned char type;              // for fast side tests: 0,1,2 = axial, 3 = nonaxial
-	unsigned char signbits;          // signx + (signy<<1) + (signz<<2), used as lookup during collision
-	char pad[2];
-};
+#define MASK_SHOT 0x2802031
 
-struct trace_t {
-	qboolean allsolid;      // if true, plane is not valid
-	qboolean startsolid;    // if true, the initial point was in a solid area
-	float fraction;         // time completed, 1.0 = didn't hit anything
-	vec3_t endpos;          // final position
-	cplane_t plane;         // surface normal at impact, transformed to world space
-	int surfaceFlags;       // surface hit
-	int contents;           // contents on other side of surface hit
-	int entityNum;          // entity the contacted sirface is a part of
+struct trace_t
+{
+	float fraction;
+	vec3_t endpos;
+	vec3_t normal;
+	char type;
+	char signbits;
+	char pad_0[2];
+	int contents;
+	char* textureName;
+	short entityNum;
+	char pad_1[2];
+	int surfaceFlags;
 };
 
 struct refdef_t
