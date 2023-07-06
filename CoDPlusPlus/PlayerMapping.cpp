@@ -67,8 +67,7 @@ namespace CoDUO
 			push buffer
 			push num
 			push 0x21
-			mov eax, syscall
-			call eax
+			call syscall
 
 			add esp, 0x10
 		}
@@ -81,8 +80,7 @@ namespace CoDUO
 			push buffer
 			push num
 			push 0x22
-			mov eax, syscall
-			call eax
+			call syscall
 
 			add esp, 0xC
 		}

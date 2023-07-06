@@ -2,9 +2,11 @@
 #include <wtypes.h>
 #include "GscExtensions.h"
 
+typedef char* (__cdecl* syscall_t)(int32_t, ...);
+
 namespace CoDUO
 {
-	inline DWORD syscall = 0x004685A0;
+	inline syscall_t syscall = (syscall_t)(0x004685A0);
 	inline DWORD uo_game_mp_x86 = 0;
 
 	inline refdef_t* refdef = nullptr;

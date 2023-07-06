@@ -9,8 +9,7 @@ namespace CoDUO
 			push text
 			push exec_when
 			push 0x17
-			mov eax, syscall
-			call eax
+			call syscall
 
 			add esp, 0xC
 		}

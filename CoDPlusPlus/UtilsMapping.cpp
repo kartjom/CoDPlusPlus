@@ -19,8 +19,7 @@ namespace CoDUO
 			push start
 			push trace
 			push 0x2e
-			mov eax, syscall
-			call eax
+			call syscall
 
 			add esp, 0x1C
 		}

@@ -256,15 +256,13 @@ struct cvar_t
 };
 
 #define MASK_SHOT 0x2802031
-
+#define Trace_GetSurfaceType(type) syscall(0x44, type >> 0x14 & 0x1f)
 struct trace_t
 {
 	float fraction;
 	vec3_t endpos;
 	vec3_t normal;
-	char type;
-	char signbits;
-	char pad_0[2];
+	int type;
 	int contents;
 	char* textureName;
 	short entityNum;

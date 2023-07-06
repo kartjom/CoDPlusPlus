@@ -51,6 +51,70 @@ namespace CoDUO::Gsc
 		}
 	}
 
+	void Scr_GetViewDirection(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		if (ent && ent->client)
+		{
+			vec3_t dir = AnglesToDirection(ent->client->viewangles);
+			Scr_AddVector(dir);
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
+
+	void Scr_GetEyeTrace(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		if (ent && ent->client)
+		{
+			trace_t tr = G_GetEyeTrace(ent, 100);
+
+			Scr_MakeArray();
+
+			Scr_AddFloat(tr.fraction);
+			Scr_AddArrayStringIndexed(G_NewString("fraction"));
+
+			Scr_AddVector(tr.endpos);
+			Scr_AddArrayStringIndexed(G_NewString("position"));
+
+			if (tr.entityNum == 1022 || tr.entityNum == 1023)
+			{
+				Scr_AddUndefined();
+			}
+			else
+			{
+				Scr_AddEntityNum(tr.entityNum);
+			}
+			Scr_AddArrayStringIndexed(G_NewString("entity"));
+
+			if (tr.fraction < 1.0f)
+			{
+				Scr_AddVector(tr.normal);
+				Scr_AddArrayStringIndexed(G_NewString("normal"));
+
+				char* surfaceType = Trace_GetSurfaceType(tr.type);
+				Scr_AddString(surfaceType);
+				Scr_AddArrayStringIndexed(G_NewString("surfacetype"));
+			}
+			else
+			{
+				vec3_t normal{};
+				Scr_AddVector(normal);
+				Scr_AddArrayStringIndexed(G_NewString("normal"));
+
+				Scr_AddString("default");
+				Scr_AddArrayStringIndexed(G_NewString("surfacetype"));
+			}
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
+
 	void Scr_GetParent(int param)
 	{
 		gentity_t* ent = &g_entities[param];
