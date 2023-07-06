@@ -75,7 +75,7 @@ namespace CoDUO::Gsc
 		gsc_register("getvieworigin", Scr_GetViewOrigin),
 		gsc_register("getviewangles", Scr_GetViewAngles),
 		gsc_register("getviewdirection", Scr_GetViewDirection),
-		gsc_register("geteyetrace", Scr_GetEyeTrace),
+		gsc_register("geteyetrace", Scr_GetEyeTrace), /* range, spread */
 
 		gsc_register("getparent", Scr_GetParent),
 		gsc_register("getowner", Scr_GetOwner),

@@ -70,7 +70,10 @@ namespace CoDUO::Gsc
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
 		{
-			trace_t tr = G_GetEyeTrace(ent, 100);
+			float range = Scr_GetFloat(0);
+			float spread = Scr_GetFloat(1);
+
+			trace_t tr = G_GetEyeTrace(ent, range, spread);
 
 			Scr_MakeArray();
 
