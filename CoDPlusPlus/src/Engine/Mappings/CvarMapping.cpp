@@ -1,4 +1,4 @@
-#include "CoDUO.h"
+#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
@@ -54,7 +54,7 @@ namespace CoDUO
 		}
 	}
 
-	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force)
+	cvar_t* Cvar_Set(const char* var_name, const char* value, uint32_t force)
 	{
 		_asm
 		{

@@ -10,6 +10,61 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Engine\CoDUO.cpp" />
+    <ClCompile Include="src\Engine\Mappings\CvarMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\GscMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\PlayerMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\StringUtilsMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\UtilsMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\WeaponMapping.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscFunctionExt.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscMethodExt.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Lua\LuaState.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_CoDUO.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_OpenGL.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_WinAPI.cpp" />
+    <ClCompile Include="src\Hook\Hook.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Utils\ImGuiManager.cpp" />
+    <ClCompile Include="src\Utils\OpenGLHelper.cpp" />
+    <ClCompile Include="src\Utils\WinApiHelper.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Engine\CoDUO.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Lua\LuaState.h" />
+    <ClInclude Include="src\Hook\Detours.h" />
+    <ClInclude Include="src\Hook\Detours_defines.h" />
+    <ClInclude Include="src\Hook\Hook.h" />
+    <ClInclude Include="src\Structs\Engine\gsc.h" />
+    <ClInclude Include="src\Structs\Engine\refdef.h" />
+    <ClInclude Include="src\Structs\Engine\cvar.h" />
+    <ClInclude Include="src\Structs\Engine\gclient.h" />
+    <ClInclude Include="src\Structs\Engine\gentity.h" />
+    <ClInclude Include="src\Structs\Engine\trace.h" />
+    <ClInclude Include="src\Structs\vec3_t.h" />
+    <ClInclude Include="src\Structs\Engine\weapondef.h" />
+    <ClInclude Include="src\Utils\ImGuiManager.h" />
+    <ClInclude Include="src\Utils\OpenGLHelper.h" />
+    <ClInclude Include="src\Utils\WinApiHelper.h" />
+    <ClInclude Include="vendor\ImGui\imconfig.h" />
+    <ClInclude Include="vendor\ImGui\imgui.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="vendor\ImGui\imgui_internal.h" />
+    <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
+    <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -46,12 +101,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>UMPDC</TargetName>
     <OutDir>D:\Program Files (x86)\Steam\steamapps\common\Call of Duty\</OutDir>
-    <IntDir>..\build\$(ProjectName)\$(Configuration)</IntDir>
+    <IntDir>..\build\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>D:\Program Files (x86)\Steam\steamapps\common\Call of Duty\</OutDir>
     <TargetName>UMPDC</TargetName>
-    <IntDir>..\build\$(ProjectName)\$(Configuration)</IntDir>
+    <IntDir>..\build\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -60,7 +115,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Lua542\include;$(ProjectDir)ImGui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BuildStlModules>false</BuildStlModules>
       <AdditionalOptions>/arch:IA32 %(AdditionalOptions)</AdditionalOptions>
@@ -68,7 +123,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Lua542;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)vendor\Lua542;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>liblua54.a;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -81,7 +136,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Lua542\include;$(ProjectDir)ImGui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BuildStlModules>false</BuildStlModules>
@@ -92,60 +147,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Lua542;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)vendor\Lua542;</AdditionalLibraryDirectories>
       <AdditionalDependencies>liblua54.a;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CoDUO.cpp" />
-    <ClCompile Include="CvarMapping.cpp" />
-    <ClCompile Include="Detours_CoDUO.cpp" />
-    <ClCompile Include="Detours_OpenGL.cpp" />
-    <ClCompile Include="Detours_WinAPI.cpp" />
-    <ClCompile Include="GscFunctionExt.cpp" />
-    <ClCompile Include="GscMapping.cpp" />
-    <ClCompile Include="GscMethodExt.cpp" />
-    <ClCompile Include="Hook.cpp" />
-    <ClCompile Include="ImGuiManager.cpp" />
-    <ClCompile Include="ImGui\imgui.cpp" />
-    <ClCompile Include="ImGui\imgui_demo.cpp" />
-    <ClCompile Include="ImGui\imgui_draw.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="ImGui\imgui_tables.cpp" />
-    <ClCompile Include="ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="LuaState.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="OpenGLHelper.cpp" />
-    <ClCompile Include="PlayerMapping.cpp" />
-    <ClCompile Include="StringUtilsMapping.cpp" />
-    <ClCompile Include="UtilsMapping.cpp" />
-    <ClCompile Include="WeaponMapping.cpp" />
-    <ClCompile Include="WinApiHelper.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CoDUO.h" />
-    <ClInclude Include="GscExtensions.h" />
-    <ClInclude Include="coduo_structs.h" />
-    <ClInclude Include="Detours.h" />
-    <ClInclude Include="Detours_defines.h" />
-    <ClInclude Include="Hook.h" />
-    <ClInclude Include="ImGuiManager.h" />
-    <ClInclude Include="ImGui\imconfig.h" />
-    <ClInclude Include="ImGui\imgui.h" />
-    <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="ImGui\imgui_impl_win32.h" />
-    <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ImGui\imstb_textedit.h" />
-    <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="LuaState.h" />
-    <ClInclude Include="OpenGLHelper.h" />
-    <ClInclude Include="vec3_t.h" />
-    <ClInclude Include="WinApiHelper.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

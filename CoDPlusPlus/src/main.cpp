@@ -1,11 +1,11 @@
 #include <Windows.h>
 #include <iostream>
 
-#include "WinApiHelper.h"
-#include "OpenGLHelper.h"
-#include "ImGuiManager.h"
-#include "LuaState.h"
-#include "CoDUO.h"
+#include <Utils/WinApiHelper.h>
+#include <Utils/OpenGLHelper.h>
+#include <Utils/ImGuiManager.h>
+#include <Engine/ScriptLayer/Lua/LuaState.h>
+#include <Engine/CoDUO.h>
 
 using namespace CoDUO;
 

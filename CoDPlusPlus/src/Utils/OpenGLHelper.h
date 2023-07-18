@@ -1,5 +1,6 @@
 #pragma once
-#include "coduo_structs.h"
+#include <Structs/Engine/refdef.h>
+#include <Structs/vec3_t.h>
 
 namespace OpenGLHelper
 {

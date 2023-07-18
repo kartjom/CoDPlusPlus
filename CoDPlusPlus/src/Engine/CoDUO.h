@@ -1,6 +1,12 @@
 #pragma once
+#include <Structs/Engine/gentity.h>
+#include <Structs/Engine/gclient.h>
+#include <Structs/Engine/weapondef.h>
+#include <Structs/Engine/cvar.h>
+#include <Structs/Engine/trace.h>
+#include <Structs/Engine/refdef.h>
+#include <Engine/ScriptLayer/Gsc/GscExtensions.h>
 #include <wtypes.h>
-#include "GscExtensions.h"
 
 typedef char* (__cdecl* syscall_t)(int32_t, ...);
 
@@ -50,7 +56,7 @@ namespace CoDUO /* CvarMapping.cpp */
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	cvar_t* Cvar_FindVar(const char* var_name);
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);
-	cvar_t* Cvar_Set(const char* var_name, const char* value, qboolean force);
+	cvar_t* Cvar_Set(const char* var_name, const char* value, uint32_t force);
 }
 
 namespace CoDUO /* WeaponMapping.cpp */

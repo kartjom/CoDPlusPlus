@@ -1,6 +1,6 @@
 #include "CoDUO.h"
-#include "Hook.h"
-#include "Detours.h"
+#include <Hook/Hook.h>
+#include <Hook/Detours.h>
 
 #include <iostream>
 

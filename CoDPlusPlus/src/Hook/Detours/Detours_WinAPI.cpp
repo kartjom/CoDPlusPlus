@@ -1,6 +1,6 @@
-#include "Detours.h"
-#include "ImGuiManager.h"
-#include "CoDUO.h"
+#include <Engine/CoDUO.h>
+#include <Hook/Detours.h>
+#include <Utils/ImGuiManager.h>
 #include <string>
 
 using namespace CoDUO;

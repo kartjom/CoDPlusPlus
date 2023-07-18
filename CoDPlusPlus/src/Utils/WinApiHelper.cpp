@@ -1,12 +1,12 @@
-#include "WinApiHelper.h"
-#include "ImGuiManager.h"
+#include <Utils/WinApiHelper.h>
+#include <Utils/ImGuiManager.h>
 
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <imgui_impl_win32.h>
+#include <imgui_impl_opengl3.h>
 
-#include "Hook.h"
-#include "Detours.h"
+#include <Hook/Hook.h>
+#include <Hook/Detours.h>
 
 #include <iostream>
 

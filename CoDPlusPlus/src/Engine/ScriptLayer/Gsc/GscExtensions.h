@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "coduo_structs.h"
+#include <Structs/Engine/gsc.h>
 
 namespace CoDUO::Gsc
 {

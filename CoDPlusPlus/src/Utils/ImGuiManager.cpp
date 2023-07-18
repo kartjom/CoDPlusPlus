@@ -10,9 +10,9 @@
 
 #include <iostream>
 #include <format>
-#include "vec3_t.h"
-#include "OpenGLHelper.h"
-#include "CoDUO.h"
+#include <Structs/vec3_t.h>
+#include <Utils/OpenGLHelper.h>
+#include <Engine/CoDUO.h>
 
 using namespace OpenGLHelper;
 using namespace CoDUO;

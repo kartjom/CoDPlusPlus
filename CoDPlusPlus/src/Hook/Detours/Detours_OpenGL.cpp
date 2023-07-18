@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Detours.h"
-#include "ImGuiManager.h"
+#include <Hook/Detours.h>
+#include <Utils/ImGuiManager.h>
 
 namespace Detours
 {

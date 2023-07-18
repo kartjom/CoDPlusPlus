@@ -1,7 +1,7 @@
-#include "OpenGLHelper.h"
-#include "Hook.h"
-#include "Detours.h"
-#include "vec3_t.h"
+#include <Utils/OpenGLHelper.h>
+#include <Hook/Hook.h>
+#include <Hook/Detours.h>
+#include <Structs/vec3_t.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>

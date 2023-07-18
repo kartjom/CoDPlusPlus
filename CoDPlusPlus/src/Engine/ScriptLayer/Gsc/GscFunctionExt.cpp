@@ -1,6 +1,6 @@
 #include "GscExtensions.h"
-#include "CoDUO.h"
-#include "LuaState.h"
+#include <Engine/CoDUO.h>
+#include <Engine/ScriptLayer/Lua/LuaState.h>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc

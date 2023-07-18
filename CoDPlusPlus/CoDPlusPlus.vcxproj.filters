@@ -1,186 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Entry Point">
-      <UniqueIdentifier>{de9ce8ee-23b2-4c37-9b7d-23a4201f0f34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vendor">
-      <UniqueIdentifier>{3fab1898-d08a-4fab-b206-1e502d0d12ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vendor\ImGui">
-      <UniqueIdentifier>{e595806f-aec9-420b-9d10-bbb50a5eb375}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vendor\ImGui\include">
-      <UniqueIdentifier>{d9a0feba-dd49-49e1-a2ac-d1818ab96ead}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vendor\ImGui\src">
-      <UniqueIdentifier>{c6c8d737-75f9-460a-9a79-76b7a26c3a40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Structs">
-      <UniqueIdentifier>{e811e7a4-7d33-4d01-8b04-e90bade1605b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{91bc2bb1-2d27-4e03-aa1b-49d4fc6c1590}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Mappings">
-      <UniqueIdentifier>{ba887283-3ae5-491a-9d87-be4f8ef4e026}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Utils">
-      <UniqueIdentifier>{7bf5b055-3327-4185-b241-c774c548431e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ScriptLayer">
-      <UniqueIdentifier>{920c9c2b-0382-4cd8-9650-8401268bd1fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ScriptLayer\Lua">
-      <UniqueIdentifier>{a4f60a47-8347-4209-856d-dd4957205f86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\ScriptLayer\Gsc">
-      <UniqueIdentifier>{7187cf51-9849-449b-942d-35efdc42e4bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Hook">
-      <UniqueIdentifier>{67c50f97-30f8-4756-ab88-7496c1f61790}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Hook\Detours">
-      <UniqueIdentifier>{8a0ddede-e436-4bcb-b5fb-a2c3c1de01b6}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Engine\Mappings\CvarMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\GscMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\PlayerMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\StringUtilsMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\UtilsMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\WeaponMapping.cpp" />
+    <ClCompile Include="src\Engine\CoDUO.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscFunctionExt.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscMethodExt.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Lua\LuaState.cpp" />
+    <ClCompile Include="src\Hook\Hook.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_CoDUO.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_OpenGL.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_WinAPI.cpp" />
+    <ClCompile Include="src\Utils\ImGuiManager.cpp" />
+    <ClCompile Include="src\Utils\OpenGLHelper.cpp" />
+    <ClCompile Include="src\Utils\WinApiHelper.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="vendor\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImGui\imgui_widgets.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_demo.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_draw.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_tables.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
-      <Filter>Vendor\ImGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Entry Point</Filter>
-    </ClCompile>
-    <ClCompile Include="LuaState.cpp">
-      <Filter>Engine\ScriptLayer\Lua</Filter>
-    </ClCompile>
-    <ClCompile Include="GscFunctionExt.cpp">
-      <Filter>Engine\ScriptLayer\Gsc</Filter>
-    </ClCompile>
-    <ClCompile Include="GscMethodExt.cpp">
-      <Filter>Engine\ScriptLayer\Gsc</Filter>
-    </ClCompile>
-    <ClCompile Include="CoDUO.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="CvarMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-    <ClCompile Include="GscMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-    <ClCompile Include="StringUtilsMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-    <ClCompile Include="Hook.cpp">
-      <Filter>Engine\Hook</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLHelper.cpp">
-      <Filter>Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApiHelper.cpp">
-      <Filter>Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGuiManager.cpp">
-      <Filter>Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_CoDUO.cpp">
-      <Filter>Engine\Hook\Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_WinAPI.cpp">
-      <Filter>Engine\Hook\Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="Detours_OpenGL.cpp">
-      <Filter>Engine\Hook\Detours</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilsMapping.cpp">
-      <Filter>Engine\Mappings</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ImGui\imstb_truetype.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imconfig.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_internal.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imstb_rectpack.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imstb_textedit.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_win32.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_opengl3.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\imgui_impl_opengl3_loader.h">
-      <Filter>Vendor\ImGui\include</Filter>
-    </ClInclude>
-    <ClInclude Include="coduo_structs.h">
-      <Filter>Structs</Filter>
-    </ClInclude>
-    <ClInclude Include="vec3_t.h">
-      <Filter>Structs</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaState.h">
-      <Filter>Engine\ScriptLayer\Lua</Filter>
-    </ClInclude>
-    <ClInclude Include="GscExtensions.h">
-      <Filter>Engine\ScriptLayer\Gsc</Filter>
-    </ClInclude>
-    <ClInclude Include="CoDUO.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Hook.h">
-      <Filter>Engine\Hook</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApiHelper.h">
-      <Filter>Engine\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLHelper.h">
-      <Filter>Engine\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiManager.h">
-      <Filter>Engine\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours.h">
-      <Filter>Engine\Hook</Filter>
-    </ClInclude>
-    <ClInclude Include="Detours_defines.h">
-      <Filter>Engine\Hook</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Engine\CoDUO.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Lua\LuaState.h" />
+    <ClInclude Include="src\Hook\Detours.h" />
+    <ClInclude Include="src\Hook\Detours_defines.h" />
+    <ClInclude Include="src\Hook\Hook.h" />
+    <ClInclude Include="src\Structs\Engine\refdef.h" />
+    <ClInclude Include="src\Structs\vec3_t.h" />
+    <ClInclude Include="src\Utils\ImGuiManager.h" />
+    <ClInclude Include="src\Utils\OpenGLHelper.h" />
+    <ClInclude Include="src\Utils\WinApiHelper.h" />
+    <ClInclude Include="vendor\ImGui\imconfig.h" />
+    <ClInclude Include="vendor\ImGui\imgui.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="vendor\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="vendor\ImGui\imgui_internal.h" />
+    <ClInclude Include="vendor\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="vendor\ImGui\imstb_textedit.h" />
+    <ClInclude Include="vendor\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\Structs\Engine\gentity.h" />
+    <ClInclude Include="src\Structs\Engine\gclient.h" />
+    <ClInclude Include="src\Structs\Engine\weapondef.h" />
+    <ClInclude Include="src\Structs\Engine\cvar.h" />
+    <ClInclude Include="src\Structs\Engine\trace.h" />
+    <ClInclude Include="src\Structs\Engine\gsc.h" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "LuaState.h"
-#include "CoDUO.h"
+#include <Engine/CoDUO.h>
 #include <iostream>
 
 using namespace CoDUO;

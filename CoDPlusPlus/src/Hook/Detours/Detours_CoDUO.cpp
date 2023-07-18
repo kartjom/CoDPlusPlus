@@ -1,7 +1,7 @@
-#include "Detours.h"
-#include "CoDUO.h"
+#include <Engine/CoDUO.h>
+#include <Engine/ScriptLayer/Lua/LuaState.h>
+#include <Hook/Detours.h>
 #include <stdio.h>
-#include "LuaState.h"
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;

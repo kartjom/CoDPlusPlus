@@ -1,5 +1,5 @@
 #include "GscExtensions.h"
-#include "CoDUO.h"
+#include <Engine/CoDUO.h>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc
@@ -98,7 +98,7 @@ namespace CoDUO::Gsc
 				Scr_AddVector(tr.normal);
 				Scr_AddArrayStringIndexed(G_NewString("normal"));
 
-				char* surfaceType = Trace_GetSurfaceType(tr.type);
+				char* surfaceType = trace_GetSurfaceType(tr.type);
 				Scr_AddString(surfaceType);
 				Scr_AddArrayStringIndexed(G_NewString("surfacetype"));
 			}
