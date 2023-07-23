@@ -23,6 +23,16 @@ namespace CoDUO
 
 	void uo_game_mp_x86_OnAttach()
 	{
+		if (uo_game_mp_x86 == 0)
+		{
+			MessageBox(NULL,
+				(LPCWSTR)L"uo_game_mp_x86.dll not found. Make sure the file is in the mod directory.",
+				(LPCWSTR)L"Fatal error",
+				MB_ICONERROR | MB_OK | MB_DEFBUTTON2);
+
+			exit(-69);
+		}
+
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);

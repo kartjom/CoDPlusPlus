@@ -6,7 +6,6 @@
 #include <Utils/ImGuiManager.h>
 #include <Engine/ScriptLayer/Lua/LuaState.h>
 #include <Engine/CoDUO.h>
-#include <glad/glad.h>
 
 using namespace CoDUO;
 
@@ -16,7 +15,6 @@ DWORD WINAPI MainThread(LPVOID param)
 
 	LuaState::Init();
 
-	gladLoadGL();
 	WinApiHelper::InjectDetours();
 	OpenGLHelper::InjectDetours();
 

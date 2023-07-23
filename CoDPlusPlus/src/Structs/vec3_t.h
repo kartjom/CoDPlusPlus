@@ -1,4 +1,6 @@
 #pragma once
+#include <glm/vec3.hpp>
+
 struct vec3_t
 {
 	float x, y, z;
@@ -6,6 +8,11 @@ struct vec3_t
 	operator float* ()
 	{
 		return &x;
+	}
+
+	operator glm::vec3()
+	{
+		return glm::vec3(x, y, z);
 	}
 
 	vec3_t operator-(const vec3_t& rhs) const
