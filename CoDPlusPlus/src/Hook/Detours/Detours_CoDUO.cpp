@@ -58,6 +58,22 @@ namespace Detours
 		JumpBack(GScr_LoadGameTypeScript)
 	}
 
+	ImplementDetour(Tick)
+	{
+		_asm pushad
+
+		Tick();
+
+		_asm popad
+
+		_restore
+		{
+			sub esp, 0x254
+		}
+
+		JumpBack(Tick)
+	}
+
 	ImplementDetour(ShootCallback)
 	{
 		_asm pushad

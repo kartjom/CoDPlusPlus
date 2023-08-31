@@ -40,6 +40,7 @@ namespace CoDUO
 		CodeCallback = {};
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
+		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
 		DetourRet(uo_game_mp_x86 + 0x00055727, Detours::MeleeCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00022B5D, Detours::PlayerSayCallback, 7);
@@ -61,5 +62,10 @@ namespace CoDUO
 		CodeCallback = {}; // Clear all callbacks
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
+	}
+
+	void Tick()
+	{
+		
 	}
 }
