@@ -33,6 +33,7 @@
     <ClCompile Include="src\Render\Buffers\VAO_utils.cpp" />
     <ClCompile Include="src\Render\Materials\Shader.cpp" />
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
+    <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -69,5 +70,7 @@
     <ClInclude Include="src\Render\Buffers\VAO.h" />
     <ClInclude Include="src\Render\Buffers\VAO_utils.h" />
     <ClInclude Include="src\Render\Materials\Shader.h" />
+    <ClInclude Include="src\Utils\Network\HttpClient.h" />
+    <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />
   </ItemGroup>
 </Project>

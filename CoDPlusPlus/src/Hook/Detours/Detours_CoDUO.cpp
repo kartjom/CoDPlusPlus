@@ -39,6 +39,7 @@ namespace Detours
 			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
+			CodeCallback.OnHttpResponse = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnHttpResponse");
 
 			LuaState::SetCallbacks();
 		}
@@ -78,7 +79,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback.OnPlayerShoot != 0)
+		if (CodeCallback.OnPlayerShoot)
 		{
 			gentity_t* player = nullptr;
 			_asm
@@ -107,7 +108,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (CodeCallback.OnPlayerMelee != 0)
+		if (CodeCallback.OnPlayerMelee)
 		{
 			gentity_t* player = nullptr;
 			int16_t target_num = -1;

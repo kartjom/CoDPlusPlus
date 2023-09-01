@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\CoDUO.cpp" />
     <ClCompile Include="src\Engine\Mappings\CvarMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\GscMapping.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="vendor\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Lua\LuaState.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="src\Utils\ImGuiManager.h" />
     <ClInclude Include="src\Utils\OpenGLHelper.h" />
     <ClInclude Include="src\Utils\WinApiHelper.h" />
+    <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />
     <ClInclude Include="vendor\glad\include\glad\glad.h" />
     <ClInclude Include="vendor\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="vendor\ImGui\imconfig.h" />
@@ -130,7 +133,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;$(ProjectDir)vendor\cpp-httplib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BuildStlModules>false</BuildStlModules>
       <AdditionalOptions>/arch:IA32 %(AdditionalOptions)</AdditionalOptions>
@@ -151,7 +154,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\Lua542\include;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;$(ProjectDir)vendor\cpp-httplib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <BuildStlModules>false</BuildStlModules>

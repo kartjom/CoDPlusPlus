@@ -1,3 +1,4 @@
+#include <Utils/Network/HttpClient.h>
 #include "GscExtensions.h"
 #include <Engine/CoDUO.h>
 #include <Engine/ScriptLayer/Lua/LuaState.h>
@@ -205,6 +206,32 @@ namespace CoDUO::Gsc
 		else
 		{
 			Scr_AddUndefined();
+		}
+	}
+
+	void BackgroundHttpRequest(int actionIndex, httplib::Result (*request_fn)(std::string), std::string url)
+	{
+		auto res = request_fn(url);
+		
+		HttpResult model {
+			.ActionIndex = actionIndex,
+			.StatusCode = res->status,
+			.Body = res->body
+		};
+
+		std::unique_lock<std::mutex> lock(HttpMutex);
+		BackgroundHttpResults.push_back(model);
+	}
+
+	void Scr_HttpGet()
+	{
+		int actionIndex = Scr_GetInt(0);
+		const char* url = Scr_GetString(1);
+
+		if (url)
+		{
+			std::thread http_thread(BackgroundHttpRequest, actionIndex, HttpClient::Get, "http://88.156.235.177:5000");
+			http_thread.detach();
 		}
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <mutex>
 #include <Structs/Engine/gsc.h>
 
 namespace CoDUO::Gsc
@@ -11,7 +12,17 @@ namespace CoDUO::Gsc
 		uint32_t OnPlayerSay = 0; /* ePlayer, sText, iMode */
 		uint32_t OnProjectileBounce = 0; /* eProjectile */
 		uint32_t OnProjectileExplode = 0; /* eProjectile */
+		uint32_t OnHttpResponse = 0; /* iActionIndex, iStatusCode, sResponse */
 	} CodeCallback;
+
+	struct HttpResult {
+		int ActionIndex;
+		int StatusCode;
+		std::string Body;
+	};
+
+	inline std::mutex HttpMutex;
+	inline std::vector<HttpResult> BackgroundHttpResults;
 }
 
 namespace CoDUO::Gsc
@@ -28,6 +39,8 @@ namespace CoDUO::Gsc
 	void Scr_String_Contains();
 	void Scr_String_Replace();
 	void Scr_String_Split();
+
+	void Scr_HttpGet();
 
 	void Scr_LuaDoFile();
 	void Scr_LuaDoString();
@@ -46,6 +59,8 @@ namespace CoDUO::Gsc
 		gsc_register("string_contains", Scr_String_Contains), /* string, substr */
 		gsc_register("string_replace", Scr_String_Replace), /* string, from, to */
 		gsc_register("string_split", Scr_String_Split), /* string, delimiter */
+
+		gsc_register("http_get", Scr_HttpGet), /* actionIndex, url */
 
 		gsc_register("lua_dofile", Scr_LuaDoFile), /* fileName */
 		gsc_register("lua_dostring", Scr_LuaDoString), /* string */
