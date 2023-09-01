@@ -60,7 +60,7 @@ namespace CoDUO::Gsc
 		gsc_register("string_replace", Scr_String_Replace), /* string, from, to */
 		gsc_register("string_split", Scr_String_Split), /* string, delimiter */
 
-		gsc_register("http_get", Scr_HttpGet), /* actionIndex, url */
+		gsc_register("http_get", Scr_HttpGet), /* actionIndex, host, endpoint */
 
 		gsc_register("lua_dofile", Scr_LuaDoFile), /* fileName */
 		gsc_register("lua_dostring", Scr_LuaDoString), /* string */

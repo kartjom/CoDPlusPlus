@@ -7,5 +7,5 @@
 class HttpClient
 {
 public:
-	static httplib::Result Get(std::string url);
+	static httplib::Result Get(std::string host, std::string endpoint);
 };

@@ -209,9 +209,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void BackgroundHttpRequest(int actionIndex, httplib::Result (*request_fn)(std::string), std::string url)
+	void BackgroundHttpRequest(int actionIndex, httplib::Result (*request_fn)(std::string, std::string), std::string url, std::string endpoint)
 	{
-		auto res = request_fn(url);
+		auto res = request_fn(url, endpoint);
 		
 		HttpResult model;
 		if ((bool)res.error())
@@ -238,11 +238,12 @@ namespace CoDUO::Gsc
 	void Scr_HttpGet()
 	{
 		int actionIndex = Scr_GetInt(0);
-		const char* url = Scr_GetString(1);
+		const char* host = Scr_GetString(1);
+		const char* endpoint = Scr_GetString(2);
 
-		if (url)
+		if (host && endpoint)
 		{
-			std::thread http_thread(BackgroundHttpRequest, actionIndex, HttpClient::Get, "http://88.156.235.177:5000");
+			std::thread http_thread(BackgroundHttpRequest, actionIndex, HttpClient::Get, host, endpoint);
 			http_thread.detach();
 		}
 	}

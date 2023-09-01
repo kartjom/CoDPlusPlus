@@ -1,9 +1,9 @@
 #include "HttpClient.h"
 
-httplib::Result HttpClient::Get(std::string url)
+httplib::Result HttpClient::Get(std::string host, std::string endpoint)
 {
-	httplib::Client cli(url);
-	auto res = cli.Get("/");
+	httplib::Client cli(host);
+	auto res = cli.Get(endpoint);
 
 	return res;
 }
