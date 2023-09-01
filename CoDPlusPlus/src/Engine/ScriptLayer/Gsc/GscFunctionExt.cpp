@@ -213,11 +213,23 @@ namespace CoDUO::Gsc
 	{
 		auto res = request_fn(url);
 		
-		HttpResult model {
-			.ActionIndex = actionIndex,
-			.StatusCode = res->status,
-			.Body = res->body
-		};
+		HttpResult model;
+		if ((bool)res.error())
+		{
+			model = {
+				.ActionIndex = actionIndex,
+				.StatusCode = -1,
+				.Body = httplib::to_string(res.error())
+			};
+		}
+		else
+		{
+			model = {
+				.ActionIndex = actionIndex,
+				.StatusCode = res->status,
+				.Body = res->body
+			};
+		}
 
 		std::unique_lock<std::mutex> lock(HttpMutex);
 		BackgroundHttpResults.push_back(model);
