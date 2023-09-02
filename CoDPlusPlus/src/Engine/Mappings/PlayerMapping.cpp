@@ -1,4 +1,5 @@
 #include <Engine/CoDUO.h>
+#include <format>
 
 namespace CoDUO
 {
@@ -83,6 +84,22 @@ namespace CoDUO
 			call syscall
 
 			add esp, 0xC
+		}
+	}
+
+	std::string NET_AdrToString(netadr_t adr)
+	{
+		switch (adr.type)
+		{
+		case NA_LOOPBACK:
+			return "loopback";
+		case NA_BOT:
+			return "bot";
+		case NA_IP:
+			return std::format("{}.{}.{}.{}", adr.ip[0], adr.ip[1], adr.ip[2], adr.ip[3]);
+		default:
+			return std::format("{:02x}{:02x}{:02x}{:02x}.{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
+				adr.ipx[0], adr.ipx[1], adr.ipx[2], adr.ipx[3], adr.ipx[4], adr.ipx[5], adr.ipx[6], adr.ipx[7], adr.ipx[8], adr.ipx[9]);
 		}
 	}
 }

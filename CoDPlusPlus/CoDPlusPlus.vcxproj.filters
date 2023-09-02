@@ -72,5 +72,6 @@
     <ClInclude Include="src\Render\Materials\Shader.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />
+    <ClInclude Include="src\Structs\Engine\server.h" />
   </ItemGroup>
 </Project>

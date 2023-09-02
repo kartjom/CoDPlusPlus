@@ -1,4 +1,5 @@
 #pragma once
+#include <Structs/Engine/server.h>
 #include <Structs/Engine/gentity.h>
 #include <Structs/Engine/gclient.h>
 #include <Structs/Engine/weapondef.h>
@@ -15,6 +16,7 @@ namespace CoDUO
 	inline syscall_t syscall = (syscall_t)(0x004685A0);
 	inline DWORD uo_game_mp_x86 = 0;
 
+	inline serverStatic_t* svs = nullptr;
 	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
@@ -86,6 +88,8 @@ namespace CoDUO /* PlayerMapping.cpp */
 
 	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
 	void trap_SetUserinfo(int num, const char* buffer);
+
+	std::string NET_AdrToString(netadr_t adr);
 }
 
 namespace CoDUO /* UtilsMapping.cpp */

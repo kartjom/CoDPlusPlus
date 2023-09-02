@@ -22,6 +22,21 @@ namespace CoDUO::Gsc
 		}
 	}
 
+	void Scr_GetIP(int param)
+	{
+		gentity_t* ent = &g_entities[param];
+		client_t* client = &svs->clients[param];
+		if (ent && ent->client && client)
+		{
+			std::string ip = NET_AdrToString(client->netchan.remoteAddress);
+			Scr_AddString(ip.c_str());
+		}
+		else
+		{
+			Scr_AddUndefined();
+		}
+	}
+
 	void Scr_GetViewOrigin(int param)
 	{
 		gentity_t* ent = &g_entities[param];

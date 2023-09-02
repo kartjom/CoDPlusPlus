@@ -33,6 +33,7 @@ namespace CoDUO
 			exit(-69);
 		}
 
+		svs = (serverStatic_t*)(0x4907BC0);
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
@@ -56,6 +57,7 @@ namespace CoDUO
 
 	void uo_game_mp_x86_OnDetach()
 	{
+		svs = nullptr;
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;

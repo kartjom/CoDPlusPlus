@@ -46,6 +46,7 @@
     <ClCompile Include="vendor\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
