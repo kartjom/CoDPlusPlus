@@ -39,6 +39,8 @@ namespace CoDUO
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
 		CodeCallback = {};
+
+		std::unique_lock<std::mutex> lock(HttpMutex);
 		BackgroundHttpResults.clear();
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
@@ -63,6 +65,8 @@ namespace CoDUO
 		bg_iNumWeapons = nullptr;
 
 		CodeCallback = {};
+
+		std::unique_lock<std::mutex> lock(HttpMutex);
 		BackgroundHttpResults.clear();
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
@@ -70,17 +74,19 @@ namespace CoDUO
 
 	void Tick()
 	{
-		if (CodeCallback.OnHttpResponse && !BackgroundHttpResults.empty())
+		if (CodeCallback.OnHttpResponse)
 		{
 			std::unique_lock<std::mutex> lock(HttpMutex);
-
-			HttpResult result = BackgroundHttpResults.back();
-			BackgroundHttpResults.pop_back();
+			if (!BackgroundHttpResults.empty())
+			{
+				HttpResult result = BackgroundHttpResults.back();
+				BackgroundHttpResults.pop_back();
 			
-			Scr_AddString(result.Body.c_str());
-			Scr_AddInt(result.StatusCode);
-			Scr_AddInt(result.ActionIndex);
-			Scr_RunScript(CodeCallback.OnHttpResponse, 3);
+				Scr_AddString(result.Body.c_str());
+				Scr_AddInt(result.StatusCode);
+				Scr_AddInt(result.ActionIndex);
+				Scr_RunScript(CodeCallback.OnHttpResponse, 3);
+			}
 		}
 	}
 }
