@@ -213,26 +213,29 @@ namespace CoDUO::Gsc
 	{
 		auto res = request_fn(host, endpoint);
 		
-		HttpResult model;
-		if ((bool)res.error())
+		if (CodeCallback.OnHttpResponse)
 		{
-			model = {
-				.ActionIndex = actionIndex,
-				.StatusCode = -1,
-				.Body = httplib::to_string(res.error())
-			};
-		}
-		else
-		{
-			model = {
-				.ActionIndex = actionIndex,
-				.StatusCode = res->status,
-				.Body = res->body
-			};
-		}
+			HttpResult model;
+			if ((bool)res.error())
+			{
+				model = {
+					.ActionIndex = actionIndex,
+					.StatusCode = -1,
+					.Body = httplib::to_string(res.error())
+				};
+			}
+			else
+			{
+				model = {
+					.ActionIndex = actionIndex,
+					.StatusCode = res->status,
+					.Body = res->body
+				};
+			}
 
-		std::unique_lock<std::mutex> lock(HttpMutex);
-		BackgroundHttpResults.push_back(model);
+			std::unique_lock<std::mutex> lock(HttpMutex);
+			BackgroundHttpResults.push_back(model);
+		}
 	}
 
 	void Scr_HttpGet()
