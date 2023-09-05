@@ -1,6 +1,6 @@
 #pragma once
 
-//#define CPPHTTPLIB_OPENSSL_SUPPORT // link libssl and libcrypto
+#define CPPHTTPLIB_OPENSSL_SUPPORT // link libssl and libcrypto
 #include <httplib.h>
 #include <string>
 
