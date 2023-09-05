@@ -1,7 +1,6 @@
 #include <Utils/Network/HttpClient.h>
 #include "GscExtensions.h"
 #include <Engine/CoDUO.h>
-#include <Engine/ScriptLayer/Lua/LuaState.h>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc
@@ -248,26 +247,6 @@ namespace CoDUO::Gsc
 		{
 			std::thread http_thread(BackgroundHttpRequest, actionIndex, HttpClient::Get, std::string(host), std::string(endpoint));
 			http_thread.detach();
-		}
-	}
-
-	void Scr_LuaDoFile()
-	{
-		const char* fileName = Scr_GetString(0);
-
-		if (fileName)
-		{
-			luaL_dofile(LuaState::Lua(), fileName);
-		}
-	}
-
-	void Scr_LuaDoString()
-	{
-		const char* str = Scr_GetString(0);
-
-		if (str)
-		{
-			luaL_dostring(LuaState::Lua(), str);
 		}
 	}
 }

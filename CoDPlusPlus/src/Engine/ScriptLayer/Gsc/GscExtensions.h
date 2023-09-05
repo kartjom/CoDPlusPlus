@@ -42,9 +42,6 @@ namespace CoDUO::Gsc
 
 	void Scr_HttpGet();
 
-	void Scr_LuaDoFile();
-	void Scr_LuaDoString();
-
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
 		gsc_register("console", Scr_StringToCmd), /* string */
@@ -61,9 +58,6 @@ namespace CoDUO::Gsc
 		gsc_register("string_split", Scr_String_Split), /* string, delimiter */
 
 		gsc_register("http_get", Scr_HttpGet), /* actionIndex, host, endpoint */
-
-		gsc_register("lua_dofile", Scr_LuaDoFile), /* fileName */
-		gsc_register("lua_dostring", Scr_LuaDoString), /* string */
 	};
 }
 

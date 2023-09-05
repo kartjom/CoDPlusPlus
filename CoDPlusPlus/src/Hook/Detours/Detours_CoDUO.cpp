@@ -1,5 +1,4 @@
 #include <Engine/CoDUO.h>
-#include <Engine/ScriptLayer/Lua/LuaState.h>
 #include <Hook/Detours.h>
 #include <stdio.h>
 
@@ -40,8 +39,6 @@ namespace Detours
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 			CodeCallback.OnHttpResponse = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnHttpResponse");
-
-			LuaState::SetCallbacks();
 		}
 
 		_asm popad
