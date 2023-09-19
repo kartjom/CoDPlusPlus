@@ -233,7 +233,7 @@ namespace CoDUO::Gsc
 			}
 
 			std::unique_lock<std::mutex> lock(HttpMutex);
-			BackgroundHttpResults.push_back(model);
+			BackgroundHttpResults.push(model);
 		}
 	}
 

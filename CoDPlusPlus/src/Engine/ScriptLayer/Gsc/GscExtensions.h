@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <queue>
 #include <mutex>
 #include <Structs/Engine/gsc.h>
 
@@ -22,7 +23,7 @@ namespace CoDUO::Gsc
 	};
 
 	inline std::mutex HttpMutex;
-	inline std::vector<HttpResult> BackgroundHttpResults;
+	inline std::queue<HttpResult> BackgroundHttpResults;
 }
 
 namespace CoDUO::Gsc

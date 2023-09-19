@@ -41,7 +41,7 @@ namespace CoDUO
 		CodeCallback = {};
 
 		std::unique_lock<std::mutex> lock(HttpMutex);
-		BackgroundHttpResults.clear();
+		BackgroundHttpResults = {};
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
@@ -67,7 +67,7 @@ namespace CoDUO
 		CodeCallback = {};
 
 		std::unique_lock<std::mutex> lock(HttpMutex);
-		BackgroundHttpResults.clear();
+		BackgroundHttpResults = {};
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}
@@ -79,8 +79,8 @@ namespace CoDUO
 			std::unique_lock<std::mutex> lock(HttpMutex);
 			if (!BackgroundHttpResults.empty())
 			{
-				HttpResult result = BackgroundHttpResults.back();
-				BackgroundHttpResults.pop_back();
+				HttpResult result = BackgroundHttpResults.front();
+				BackgroundHttpResults.pop();
 			
 				Scr_AddString(result.Body.c_str());
 				Scr_AddInt(result.StatusCode);
