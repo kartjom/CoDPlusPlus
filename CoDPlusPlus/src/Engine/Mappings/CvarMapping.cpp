@@ -2,6 +2,16 @@
 
 namespace CoDUO
 {
+	void Cbuf_AddText(const char* text)
+	{
+		_asm
+		{
+			mov eax, text
+			mov esi, 0x0042bc10
+			call esi
+		}
+	}
+
 	void trap_SendConsoleCommand(int exec_when, const char* text)
 	{
 		_asm

@@ -54,6 +54,7 @@ namespace CoDUO /* GscMapping.cpp */
 
 namespace CoDUO /* CvarMapping.cpp */
 {
+	void Cbuf_AddText(const char* text);
 	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	cvar_t* Cvar_FindVar(const char* var_name);
