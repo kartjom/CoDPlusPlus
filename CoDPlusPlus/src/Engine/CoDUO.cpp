@@ -17,6 +17,7 @@ namespace CoDUO
 		refdef = (refdef_t*)(0x0489A100);
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
+		Cmd_Argv = (char**)(0x00964DC0);
 
 		std::cout << "[CoDUOMP] - BaseAttach" << std::endl;
 	}

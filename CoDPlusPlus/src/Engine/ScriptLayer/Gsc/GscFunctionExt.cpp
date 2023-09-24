@@ -17,7 +17,7 @@ namespace CoDUO::Gsc
 			memcpy(cmd, str, strSize);
 			cmd[strSize] = '\n';
 
-			trap_SendConsoleCommand(EXEC_APPEND, cmd);
+			Cbuf_AddText(cmd);
 		}
 	}
 

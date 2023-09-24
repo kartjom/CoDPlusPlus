@@ -22,6 +22,8 @@ namespace CoDUO
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;
 	inline int32_t* bg_iNumWeapons = nullptr;
+
+	inline char** Cmd_Argv = nullptr;
 };
 
 namespace CoDUO /* GscMapping.cpp */
