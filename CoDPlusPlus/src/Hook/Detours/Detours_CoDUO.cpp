@@ -346,8 +346,11 @@ namespace Detours
 		JumpBack(PlayerSayCallback)
 	}
 
-	void LoadMapBinding(char* mapname)
+	void LoadMapBinding()
 	{
+		char* mapname = Cmd_Argv[1];
+		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(MAP_BINDINGS)) return;
+
 		std::ifstream file(MAP_BINDINGS, std::ifstream::in);
 		if (!file.is_open()) return;
 
@@ -387,10 +390,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		if (Cmd_Argv[1] != nullptr && std::filesystem::exists(MAP_BINDINGS))
-		{
-			LoadMapBinding(Cmd_Argv[1]);
-		}
+		LoadMapBinding();
 
 		_asm popad
 
