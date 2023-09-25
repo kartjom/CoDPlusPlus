@@ -1,6 +1,10 @@
 #include <Engine/CoDUO.h>
 #include <Hook/Detours.h>
 #include <stdio.h>
+#include <fstream>
+#include <filesystem>
+
+#define MAP_BINDINGS "map_bindings.txt"
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
@@ -340,5 +344,62 @@ namespace Detours
 		}
 
 		JumpBack(PlayerSayCallback)
+	}
+
+	void LoadMapBinding(char* mapname)
+	{
+		std::ifstream file(MAP_BINDINGS, std::ifstream::in);
+		if (!file.is_open()) return;
+
+		std::string _default;
+
+		std::string line;
+		while (std::getline(file, line))
+		{
+			std::istringstream iss(line);
+			std::string key, value;
+			if (std::getline(iss, key, '=') && std::getline(iss, value))
+			{
+				if (_default.empty() && _stricmp(key.c_str(), "default") == 0)
+				{
+					_default = value;
+					continue;
+				}
+
+				if (_stricmp(key.c_str(), mapname) == 0)
+				{
+					Cvar_Set("fs_game", value.c_str(), 1);
+
+					file.close();
+					return;
+				}
+			}
+		}
+		file.close();
+
+		if (!_default.empty())
+		{
+			Cvar_Set("fs_game", _default.c_str(), 1);
+		}
+	}
+
+	ImplementDetour(SV_Map_LoadConfig)
+	{
+		_asm pushad
+
+		if (Cmd_Argv[1] != nullptr && std::filesystem::exists(MAP_BINDINGS))
+		{
+			LoadMapBinding(Cmd_Argv[1]);
+		}
+
+		_asm popad
+
+		_restore
+		{
+			sub esp, 0x98
+			mov eax, dword ptr ds:[0x5C3610]
+		}
+
+		JumpBack(SV_Map_LoadConfig)
 	}
 }

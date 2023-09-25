@@ -27,4 +27,6 @@ namespace Detours
 
 	DeclareDetour(LoadFunctionMP);
 	DeclareDetour(LoadMethodMP);
+
+	DeclareDetour(SV_Map_LoadConfig);
 };

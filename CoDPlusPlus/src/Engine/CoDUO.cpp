@@ -19,6 +19,8 @@ namespace CoDUO
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
 		Cmd_Argv = (char**)(0x00964DC0);
 
+		DetourRet(0x00457650, Detours::SV_Map_LoadConfig, 11);
+
 		std::cout << "[CoDUOMP] - BaseAttach" << std::endl;
 	}
 
