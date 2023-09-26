@@ -29,6 +29,46 @@ void* GetMethodCallback(const char* value)
 	return 0;
 }
 
+void LoadMapBinding()
+{
+	char* mapname = Cmd_Argv[1];
+	if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(MAP_BINDINGS)) return;
+
+	std::ifstream file(MAP_BINDINGS, std::ifstream::in);
+	if (!file.is_open()) return;
+
+	std::string _default;
+
+	std::string line;
+	while (std::getline(file, line))
+	{
+		std::istringstream iss(line);
+		std::string key, value;
+		if (std::getline(iss, key, '=') && std::getline(iss, value))
+		{
+			if (_default.empty() && _stricmp(key.c_str(), "default") == 0)
+			{
+				_default = value;
+				continue;
+			}
+
+			if (_stricmp(key.c_str(), mapname) == 0)
+			{
+				Cvar_Set("fs_game", value.c_str(), 1);
+
+				file.close();
+				return;
+			}
+		}
+	}
+	file.close();
+
+	if (!_default.empty())
+	{
+		Cvar_Set("fs_game", _default.c_str(), 1);
+	}
+}
+
 namespace Detours
 {
 	ImplementDetour(GScr_LoadGameTypeScript)
@@ -346,46 +386,6 @@ namespace Detours
 		JumpBack(PlayerSayCallback)
 	}
 
-	void LoadMapBinding()
-	{
-		char* mapname = Cmd_Argv[1];
-		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(MAP_BINDINGS)) return;
-
-		std::ifstream file(MAP_BINDINGS, std::ifstream::in);
-		if (!file.is_open()) return;
-
-		std::string _default;
-
-		std::string line;
-		while (std::getline(file, line))
-		{
-			std::istringstream iss(line);
-			std::string key, value;
-			if (std::getline(iss, key, '=') && std::getline(iss, value))
-			{
-				if (_default.empty() && _stricmp(key.c_str(), "default") == 0)
-				{
-					_default = value;
-					continue;
-				}
-
-				if (_stricmp(key.c_str(), mapname) == 0)
-				{
-					Cvar_Set("fs_game", value.c_str(), 1);
-
-					file.close();
-					return;
-				}
-			}
-		}
-		file.close();
-
-		if (!_default.empty())
-		{
-			Cvar_Set("fs_game", _default.c_str(), 1);
-		}
-	}
-
 	ImplementDetour(SV_Map_LoadConfig)
 	{
 		_asm pushad
@@ -396,8 +396,8 @@ namespace Detours
 
 		_restore
 		{
-			sub esp, 0x98
-			mov eax, dword ptr ds:[0x5C3610]
+			mov esi, dword ptr ds:[0x9677C0]
+			test esi, esi
 		}
 
 		JumpBack(SV_Map_LoadConfig)
