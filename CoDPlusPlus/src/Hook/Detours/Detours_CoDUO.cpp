@@ -361,18 +361,34 @@ namespace Detours
 
 				add eax, 0x4
 				mov edi, [eax]
-				add edi, 0x1
 				mov text, edi
 			}
 
 			if (text && clientNum >= 0 && clientNum < 128)
 			{
-				if (text[strlen(text) - 1] == 21) text[strlen(text) - 1] = '\0';
+				
+				if (text[0] == 0x14 && text[strlen(text) - 1] == 0x15)
+				{
+					text[strlen(text) - 1] = '\0'; // vchat end character, broken in gsc
+					
+					mode = 2; // set mode to vchat
+					text += 1; // skip first character
+					Scr_AddBool(0);
+				}
+				else if (text[0] == 0x15)
+				{
+					text += 1; // skip first character
+					Scr_AddBool(0);
+				}
+				else
+				{
+					Scr_AddBool(1);
+				}
 
 				Scr_AddInt(mode);
 				Scr_AddString(text);
 				Scr_AddEntityNum(clientNum);
-				Scr_RunScript(CodeCallback.OnPlayerSay, 3);
+				Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 			}
 		}
 
