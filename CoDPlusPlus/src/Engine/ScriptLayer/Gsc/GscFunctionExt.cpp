@@ -208,7 +208,7 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void BackgroundHttpRequest(int actionIndex, httplib::Result (*request_fn)(std::string, std::string), std::string host, std::string endpoint)
+	void BackgroundHttpRequest(std::string identifier, httplib::Result (*request_fn)(std::string, std::string), std::string host, std::string endpoint)
 	{
 		auto res = request_fn(host, endpoint);
 		
@@ -218,7 +218,7 @@ namespace CoDUO::Gsc
 			if ((bool)res.error())
 			{
 				model = {
-					.ActionIndex = actionIndex,
+					.Identifier = identifier,
 					.StatusCode = -1,
 					.Body = httplib::to_string(res.error())
 				};
@@ -226,7 +226,7 @@ namespace CoDUO::Gsc
 			else
 			{
 				model = {
-					.ActionIndex = actionIndex,
+					.Identifier = identifier,
 					.StatusCode = res->status,
 					.Body = res->body
 				};
@@ -239,13 +239,13 @@ namespace CoDUO::Gsc
 
 	void Scr_HttpGet()
 	{
-		int actionIndex = Scr_GetInt(0);
+		const char* identifier = Scr_GetString(0);
 		const char* host = Scr_GetString(1);
 		const char* endpoint = Scr_GetString(2);
 
-		if (host && endpoint)
+		if (identifier && host && endpoint)
 		{
-			std::thread http_thread(BackgroundHttpRequest, actionIndex, HttpClient::Get, std::string(host), std::string(endpoint));
+			std::thread http_thread(BackgroundHttpRequest, std::string(identifier), HttpClient::Get, std::string(host), std::string(endpoint));
 			http_thread.detach();
 		}
 	}

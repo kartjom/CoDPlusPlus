@@ -13,11 +13,11 @@ namespace CoDUO::Gsc
 		uint32_t OnPlayerSay = 0; /* ePlayer, sText, iMode, bConsole */
 		uint32_t OnProjectileBounce = 0; /* eProjectile */
 		uint32_t OnProjectileExplode = 0; /* eProjectile */
-		uint32_t OnHttpResponse = 0; /* iActionIndex, iStatusCode, sResponse */
+		uint32_t OnHttpResponse = 0; /* sIdentifier, iStatusCode, sResponse */
 	} CodeCallback;
 
 	struct HttpResult {
-		int ActionIndex;
+		std::string Identifier;
 		int StatusCode;
 		std::string Body;
 	};

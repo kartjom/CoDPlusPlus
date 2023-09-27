@@ -87,7 +87,7 @@ namespace CoDUO
 			
 				Scr_AddString(result.Body.c_str());
 				Scr_AddInt(result.StatusCode);
-				Scr_AddInt(result.ActionIndex);
+				Scr_AddString(result.Identifier.c_str());
 				Scr_RunScript(CodeCallback.OnHttpResponse, 3);
 			}
 		}
