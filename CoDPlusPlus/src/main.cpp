@@ -1,5 +1,4 @@
 #include <Windows.h>
-#include <iostream>
 
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
@@ -11,9 +10,11 @@ using namespace CoDUO;
 DWORD WINAPI MainThread(LPVOID param)
 {
 	WinApiHelper::CreateConsole("Console");
-
 	WinApiHelper::InjectDetours();
+
+#ifdef CLIENT
 	OpenGLHelper::InjectDetours();
+#endif
 
 	CoDUO::BaseAttach();
 
@@ -21,10 +22,6 @@ DWORD WINAPI MainThread(LPVOID param)
 	{
 		Sleep(1);
 	}
-
-	ImGuiManager::Dispose();
-
-	//FreeLibraryAndExitThread((HMODULE)param, 0);
 
 	return 0;
 }

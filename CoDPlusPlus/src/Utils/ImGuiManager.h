@@ -1,4 +1,6 @@
+#ifdef CLIENT
 #pragma once
+
 #include <Windows.h>
 
 namespace ImGuiManager
@@ -23,3 +25,5 @@ namespace ImGuiManager
     bool Show();
     bool Hide();
 };
+
+#endif

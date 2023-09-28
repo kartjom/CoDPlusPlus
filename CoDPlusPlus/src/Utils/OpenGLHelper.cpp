@@ -1,3 +1,5 @@
+#ifdef CLIENT
+
 #include <Utils/OpenGLHelper.h>
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
@@ -75,3 +77,5 @@ namespace OpenGLHelper
         return CameraMatrices{ .Model = glm::mat4(1.0f), .View = view, .Projection = projection };
     }
 }
+
+#endif

@@ -63,7 +63,12 @@ namespace Detours
 			jmp [Detours::FreeLibrary_kernelbase]
 		}
 	}
+}
 
+#ifdef CLIENT
+
+namespace Detours
+{
 	ImplementOverride(BOOL, __stdcall, SetPhysicalCursorPos)(int x, int y)
 	{
 		if (ImGuiManager::ShouldShow)
@@ -84,3 +89,5 @@ namespace Detours
 		JumpBack(SetPhysicalCursorPos)
 	}
 }
+
+#endif

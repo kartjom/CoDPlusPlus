@@ -1,3 +1,5 @@
+#ifdef CLIENT
+
 #include <iostream>
 #include <Hook/Detours.h>
 #include <Utils/ImGuiManager.h>
@@ -36,3 +38,5 @@ namespace Detours
 		JumpBack(wglSwapBuffers)
 	}
 }
+
+#endif

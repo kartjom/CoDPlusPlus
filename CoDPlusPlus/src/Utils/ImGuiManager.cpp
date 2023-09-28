@@ -1,3 +1,5 @@
+#ifdef CLIENT
+
 #include "ImGuiManager.h"
 #include "WinApiHelper.h"
 
@@ -148,3 +150,5 @@ namespace ImGuiManager
 		ImGui::End();
 	}
 }
+
+#endif

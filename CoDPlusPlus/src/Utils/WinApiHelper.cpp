@@ -10,8 +10,34 @@
 
 #include <iostream>
 
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+namespace WinApiHelper
+{
+	void CreateConsole(const char* title)
+	{
+		AllocConsole();
+		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
+		SetConsoleTitleA(title);
+	}
+
+	void InjectDetours()
+	{
+		Detours::LoadLibraryA_o = Hook::LoadFromDLL<LoadLibraryA_t>("kernel32.dll", "LoadLibraryA");
+		DetourRet(Hook::BaseAddress + 0x6B8FB, Detours::LoadLibraryA, 6);
+
+		Detours::FreeLibrary_kernelbase = Hook::LoadFromDLL<DWORD>("kernelbase.dll", "FreeLibrary");
+		DetourRet(Hook::LoadFromDLL<DWORD>("kernel32.dll", "FreeLibrary") + 6, Detours::FreeLibrary, 6);
+
+	#ifdef CLIENT
+		Detours::SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
+		DetourRet(Hook::BaseAddress + 0x69C3B, Detours::SetPhysicalCursorPos, 6);
+	#endif
+	}
+}
+
+#ifdef CLIENT
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 namespace WinApiHelper
 {
 	LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -53,24 +79,6 @@ namespace WinApiHelper
 
 		return CallWindowProc(o_WndProc, hWnd, uMsg, wParam, lParam);
 	}
-
-	void CreateConsole(const char* title)
-	{
-		AllocConsole();
-		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-
-		SetConsoleTitleA(title);
-	}
-
-	void InjectDetours()
-	{
-		Detours::LoadLibraryA_o = Hook::LoadFromDLL<LoadLibraryA_t>("kernel32.dll", "LoadLibraryA");
-		DetourRet(Hook::BaseAddress + 0x6B8FB, Detours::LoadLibraryA, 6);
-
-		Detours::SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
-		DetourRet(Hook::BaseAddress + 0x69C3B, Detours::SetPhysicalCursorPos, 6);
-
-		Detours::FreeLibrary_kernelbase = Hook::LoadFromDLL<DWORD>("kernelbase.dll", "FreeLibrary");
-		DetourRet(Hook::LoadFromDLL<DWORD>("kernel32.dll", "FreeLibrary") + 6, Detours::FreeLibrary, 6);
-	}
 }
+
+#endif
