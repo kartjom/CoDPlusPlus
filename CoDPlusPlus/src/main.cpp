@@ -9,6 +9,12 @@ using namespace CoDUO;
 
 DWORD WINAPI MainThread(LPVOID param)
 {
+	if ( !WinApiHelper::CheckGame() )
+	{
+		FreeLibraryAndExitThread((HMODULE)param, 0);
+		return 0;
+	}
+
 	WinApiHelper::CreateConsole("Console");
 	WinApiHelper::InjectDetours();
 

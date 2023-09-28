@@ -8,10 +8,24 @@
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 
-#include <iostream>
+#include <psapi.h>
 
 namespace WinApiHelper
 {
+	bool CheckGame()
+	{
+		char baseName[32];
+		if (GetModuleBaseNameA(GetCurrentProcess(), nullptr, baseName, 32))
+		{
+			if (_stricmp(baseName, "CoDUOMP.exe") == 0)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	void CreateConsole(const char* title)
 	{
 		AllocConsole();
