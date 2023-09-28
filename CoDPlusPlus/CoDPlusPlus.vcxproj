@@ -116,14 +116,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>UMPDC</TargetName>
-    <OutDir>D:\Program Files (x86)\Steam\steamapps\common\Call of Duty\</OutDir>
-    <IntDir>..\build\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>CoDPlusPlus</TargetName>
+    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <IntDir>..\build\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>D:\Program Files (x86)\Steam\steamapps\common\Call of Duty\</OutDir>
-    <TargetName>UMPDC</TargetName>
-    <IntDir>..\build\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>..\bin\$(Configuration)\</OutDir>
+    <TargetName>CoDPlusPlus</TargetName>
+    <IntDir>..\build\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
