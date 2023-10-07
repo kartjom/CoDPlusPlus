@@ -18,6 +18,7 @@ namespace CoDUO
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
 		Cmd_Argv = (char**)(0x00964DC0);
+		Cmd_Argc = (int*)(0x009677C0);
 
 		DetourRet(0x00457702, Detours::SV_Map_LoadConfig, 8);
 
@@ -53,6 +54,8 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x00022B5D, Detours::PlayerSayCallback, 7);
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
+		DetourRet(uo_game_mp_x86 + 0x00023310, Detours::VoteCallCallback, 6);
+		DetourRet(uo_game_mp_x86 + 0x0002415f, Detours::PlayerVoteCallback, 6);
 
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);

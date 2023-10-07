@@ -24,6 +24,7 @@ namespace CoDUO
 	inline int32_t* bg_iNumWeapons = nullptr;
 
 	inline char** Cmd_Argv = nullptr;
+	inline int* Cmd_Argc = nullptr;
 };
 
 namespace CoDUO /* GscMapping.cpp */

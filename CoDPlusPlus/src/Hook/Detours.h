@@ -16,6 +16,8 @@ namespace Detours
 	DeclareDetour(ShootCallback);
 	DeclareDetour(MeleeCallback);
 	DeclareDetour(PlayerSayCallback);
+	DeclareDetour(VoteCallCallback);
+	DeclareDetour(PlayerVoteCallback);
 	DeclareDetour(ProjectileBounceCallback);
 	DeclareDetour(ProjectileExplodeCallback);
 

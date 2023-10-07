@@ -80,6 +80,8 @@ namespace Detours
 			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
 			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
 			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
+			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnVoteCalled");
+			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerVote");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
 			CodeCallback.OnHttpResponse = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnHttpResponse");
@@ -250,6 +252,87 @@ namespace Detours
 		}
 
 		JumpBack(ProjectileExplodeCallback);
+	}
+
+	ImplementDetour(VoteCallCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback.OnVoteCalled)
+		{
+			static gentity_t* player = nullptr;
+			_asm
+			{
+				mov eax, [esp + 0x24]
+				mov player, eax
+			}
+
+			if (*Cmd_Argc >= 2 && player && player->client)
+			{
+				static cvar_t* CancelVote = Cvar_Get("cancelvote", "0", 0);
+				[]()
+				{
+					Cvar_Set("cancelvote", "0", 1);
+
+					Scr_MakeArray();
+					for (int i = 2; i < *Cmd_Argc; i++)
+					{
+						Scr_AddString(Cmd_Argv[i]);
+						Scr_AddArray();
+					}
+
+					Scr_AddString(Cmd_Argv[1]); // Vote Type
+					Scr_AddEntityNum(player->number);
+					Scr_RunScript(CodeCallback.OnVoteCalled, 3);
+				}();
+
+				if (CancelVote->integer == 1)
+				{
+					_asm popad
+					_asm ret
+				}
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			sub esp, 0x554
+		}
+
+		JumpBack(VoteCallCallback)
+	}
+
+	ImplementDetour(PlayerVoteCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback.OnPlayerVote)
+		{
+			static gentity_t* player = nullptr;
+			_asm
+			{
+				mov player, ecx
+			}
+
+			if (*Cmd_Argc >= 2 && player && player->client)
+			{
+				Scr_AddString(Cmd_Argv[1]);
+				Scr_AddEntityNum(player->number);
+				Scr_RunScript(CodeCallback.OnPlayerVote, 2);
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			mov esi, ecx
+			mov dword ptr ss:[esp + 0x44], eax
+		}
+
+		JumpBack(PlayerVoteCallback)
 	}
 	
 	ImplementDetour(LoadFunctionMP)
