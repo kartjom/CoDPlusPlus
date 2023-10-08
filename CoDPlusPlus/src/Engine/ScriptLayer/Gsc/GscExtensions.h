@@ -33,6 +33,7 @@ namespace CoDUO::Gsc
 namespace CoDUO::Gsc
 {
 	void Scr_StringToCmd();
+	void Scr_GetSystemTime();
 
 	void Scr_GetWeaponInfo();
 	void Scr_GetWeaponIndexByName();
@@ -50,6 +51,7 @@ namespace CoDUO::Gsc
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
 		gsc_register("console", Scr_StringToCmd), /* string */
+		gsc_register("getsystemtime", Scr_GetSystemTime), /* string */
 
 		gsc_register("getweapondef", Scr_GetWeaponInfo), /* weaponIndex */
 		gsc_register("getweaponindexbyname", Scr_GetWeaponIndexByName), /* weaponName */

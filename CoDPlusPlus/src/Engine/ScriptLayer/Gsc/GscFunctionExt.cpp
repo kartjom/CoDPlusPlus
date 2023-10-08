@@ -21,6 +21,38 @@ namespace CoDUO::Gsc
 		}
 	}
 
+	void Scr_GetSystemTime()
+	{
+		std::time_t currentTime = time(0);
+		std::tm timeInfo = *std::localtime(&currentTime);
+
+		Scr_MakeArray();
+
+		Scr_AddInt(currentTime);
+		Scr_AddArrayStringIndexed(G_NewString("timestamp"));
+		
+		Scr_AddInt(timeInfo.tm_year + 1900);
+		Scr_AddArrayStringIndexed(G_NewString("year"));
+
+		Scr_AddInt(timeInfo.tm_mon + 1);
+		Scr_AddArrayStringIndexed(G_NewString("month"));
+
+		Scr_AddInt(timeInfo.tm_mday);
+		Scr_AddArrayStringIndexed(G_NewString("day"));
+
+		Scr_AddInt(timeInfo.tm_hour);
+		Scr_AddArrayStringIndexed(G_NewString("hour"));
+
+		Scr_AddInt(timeInfo.tm_min);
+		Scr_AddArrayStringIndexed(G_NewString("min"));
+
+		Scr_AddInt(timeInfo.tm_sec);
+		Scr_AddArrayStringIndexed(G_NewString("sec"));
+
+		Scr_AddInt((timeInfo.tm_wday == 0 ? 7 : timeInfo.tm_wday));
+		Scr_AddArrayStringIndexed(G_NewString("weekday"));
+	}
+
 	void Scr_GetWeaponInfo()
 	{
 		int index = Scr_GetInt(0);
