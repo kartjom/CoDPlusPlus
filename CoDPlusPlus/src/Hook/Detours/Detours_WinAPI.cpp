@@ -2,6 +2,7 @@
 #include <Hook/Detours.h>
 #include <Utils/ImGuiManager.h>
 #include <string>
+#include <iostream>
 
 using namespace CoDUO;
 
@@ -12,8 +13,9 @@ namespace Detours
 		std::string dllName(lpLibFileName);
 
 		HMODULE handle = Original(LoadLibraryA)(lpLibFileName);
+		std::cout << "[LoadLibrary] - " << dllName << " (0x" << std::hex << (DWORD)handle << ")" << std::endl;
 
-		if (dllName.find("uo_game_mp_x86.dll") != std::string::npos)
+		if ((DWORD)handle != 0 && dllName.find("uo_game_mp_x86") != std::string::npos)
 		{
 			uo_game_mp_x86 = (DWORD)handle;
 			uo_game_mp_x86_OnAttach();
