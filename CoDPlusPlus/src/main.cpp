@@ -18,11 +18,12 @@ DWORD WINAPI MainThread(LPVOID param)
 	WinApiHelper::CreateConsole("Console");
 	WinApiHelper::InjectDetours();
 
-#ifdef CLIENT
-	OpenGLHelper::InjectDetours();
-#endif
+	#ifdef CLIENT
+		OpenGLHelper::InjectDetours();
+	#endif
 
 	CoDUO::BaseAttach();
+	FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
 	while (true)
 	{
