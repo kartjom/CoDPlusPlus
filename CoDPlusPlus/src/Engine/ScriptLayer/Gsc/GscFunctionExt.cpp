@@ -244,6 +244,7 @@ namespace CoDUO::Gsc
 	{
 		auto res = request_fn(host, endpoint);
 		
+		std::unique_lock<std::mutex> lock(HttpMutex);
 		if (CodeCallback.OnHttpResponse)
 		{
 			HttpResult model;
@@ -264,7 +265,6 @@ namespace CoDUO::Gsc
 				};
 			}
 
-			std::unique_lock<std::mutex> lock(HttpMutex);
 			BackgroundHttpResults.push(model);
 		}
 	}
@@ -277,8 +277,15 @@ namespace CoDUO::Gsc
 
 		if (identifier && host && endpoint)
 		{
-			std::thread http_thread(BackgroundHttpRequest, std::string(identifier), HttpClient::Get, std::string(host), std::string(endpoint));
-			http_thread.detach();
+			try
+			{
+				std::thread http_thread(BackgroundHttpRequest, std::string(identifier), HttpClient::Get, std::string(host), std::string(endpoint));
+				http_thread.detach();
+			}
+			catch (std::exception& ex)
+			{
+				printf("[ERROR] - Could not allocate thread: %s\n", ex.what());
+			}
 		}
 	}
 }

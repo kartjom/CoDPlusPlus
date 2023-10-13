@@ -42,10 +42,9 @@ namespace CoDUO
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
-		CodeCallback = {};
-
 		std::unique_lock<std::mutex> lock(HttpMutex);
 		BackgroundHttpResults = {};
+		CodeCallback = {};
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
@@ -70,24 +69,23 @@ namespace CoDUO
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;
 
-		CodeCallback = {};
-
 		std::unique_lock<std::mutex> lock(HttpMutex);
 		BackgroundHttpResults = {};
+		CodeCallback = {};
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}
 
 	void Tick()
 	{
+		std::unique_lock<std::mutex> lock(HttpMutex);
 		if (CodeCallback.OnHttpResponse)
 		{
-			std::unique_lock<std::mutex> lock(HttpMutex);
 			if (!BackgroundHttpResults.empty())
 			{
 				HttpResult result = BackgroundHttpResults.front();
 				BackgroundHttpResults.pop();
-			
+
 				Scr_AddString(result.Body.c_str());
 				Scr_AddInt(result.StatusCode);
 				Scr_AddString(result.Identifier.c_str());
