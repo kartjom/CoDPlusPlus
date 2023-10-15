@@ -8,6 +8,8 @@
 namespace CoDUO::Gsc
 {
 	inline struct Callbacks {
+		uint32_t OnServerTick = 0;
+
 		uint32_t OnPlayerShoot = 0;			//	 ePlayer
 		uint32_t OnPlayerMelee = 0;			//	 ePlayer, eTarget (optional)
 		uint32_t OnPlayerSay = 0;			//	 ePlayer, sText, iMode, bConsole

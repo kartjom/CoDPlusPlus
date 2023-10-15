@@ -79,8 +79,13 @@ namespace CoDUO
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
 	}
 
-	void Tick()
+	void ServerTick()
 	{
+		if (CodeCallback.OnServerTick)
+		{
+			Scr_RunScript(CodeCallback.OnServerTick, 0);
+		}
+
 		std::unique_lock<std::mutex> lock(HttpMutex);
 		if (CodeCallback.OnHttpResponse)
 		{

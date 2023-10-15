@@ -77,6 +77,7 @@ namespace Detours
 
 		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
 		{
+			CodeCallback.OnServerTick = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnServerTick");
 			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
 			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
 			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
@@ -106,7 +107,7 @@ namespace Detours
 	{
 		_asm pushad
 
-		Tick();
+		ServerTick();
 
 		_asm popad
 

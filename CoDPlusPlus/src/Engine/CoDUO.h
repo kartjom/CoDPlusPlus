@@ -110,5 +110,5 @@ namespace CoDUO
 	void uo_game_mp_x86_OnAttach();
 	void uo_game_mp_x86_OnDetach();
 
-	void Tick();
+	void ServerTick();
 }
