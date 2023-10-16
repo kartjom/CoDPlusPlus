@@ -281,10 +281,14 @@ namespace CoDUO::Gsc
 			{
 				std::thread http_thread(BackgroundHttpRequest, std::string(identifier), HttpClient::Get, std::string(host), std::string(endpoint));
 				http_thread.detach();
+
+				Scr_AddBool(true);
 			}
 			catch (std::exception& ex)
 			{
-				printf("[ERROR] - Could not allocate thread: %s\n", ex.what());
+				Scr_AddBool(false);
+
+				printf("[ERROR] - Could not allocate thread for request '%s': %s\n", identifier, ex.what());
 			}
 		}
 	}
