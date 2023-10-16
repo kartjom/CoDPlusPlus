@@ -450,7 +450,10 @@ namespace Detours
 
 			if (text && clientNum >= 0 && clientNum < 128)
 			{
-				
+				static char buff[256];
+				strcpy(buff, text);
+				text = buff;
+
 				if (text[0] == 0x14 && text[strlen(text) - 1] == 0x15)
 				{
 					text[strlen(text) - 1] = '\0'; // vchat end character, broken in gsc
