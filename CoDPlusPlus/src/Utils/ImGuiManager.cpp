@@ -50,6 +50,7 @@ namespace ImGuiManager
 
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.IniFilename = nullptr;
 
 		IsInitialized = true;
 		std::cout << "[ImGui] - Initialized" << std::endl;
