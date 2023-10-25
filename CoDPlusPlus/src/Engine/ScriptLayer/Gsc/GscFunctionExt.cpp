@@ -244,27 +244,27 @@ namespace CoDUO::Gsc
 	{
 		auto res = request_fn(host, endpoint);
 		
+		HttpResult model;
+		if ((bool)res.error())
+		{
+			model = {
+				.Identifier = identifier,
+				.StatusCode = -1,
+				.Body = httplib::to_string(res.error())
+			};
+		}
+		else
+		{
+			model = {
+				.Identifier = identifier,
+				.StatusCode = res->status,
+				.Body = res->body
+			};
+		}
+
 		std::unique_lock<std::mutex> lock(HttpMutex);
 		if (CodeCallback.OnHttpResponse)
 		{
-			HttpResult model;
-			if ((bool)res.error())
-			{
-				model = {
-					.Identifier = identifier,
-					.StatusCode = -1,
-					.Body = httplib::to_string(res.error())
-				};
-			}
-			else
-			{
-				model = {
-					.Identifier = identifier,
-					.StatusCode = res->status,
-					.Body = res->body
-				};
-			}
-
 			BackgroundHttpResults.push(model);
 		}
 	}
