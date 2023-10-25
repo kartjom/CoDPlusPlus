@@ -427,19 +427,17 @@ namespace Detours
 				mov	ebp, esp
 			}
 
-			static int clientNum = -1;
+			static gentity_t* player = nullptr;
 			static int mode = -1;
 			static char* text = nullptr;
 
 			_asm
 			{
+				mov player, ecx
+
 				mov eax, esp
 
-				add eax, 0x208
-				mov edi, [eax]
-				mov clientNum, edi
-
-				add eax, 0x4
+				add eax, 0x20C
 				mov edi, [eax]
 				mov mode, edi
 
@@ -448,7 +446,7 @@ namespace Detours
 				mov text, edi
 			}
 
-			if (text && clientNum >= 0 && clientNum < 128)
+			if (text && player && player->client)
 			{
 				static char buff[256];
 				strcpy(buff, text);
@@ -474,7 +472,7 @@ namespace Detours
 
 				Scr_AddInt(mode);
 				Scr_AddString(text);
-				Scr_AddEntityNum(clientNum);
+				Scr_AddEntityNum(player->number);
 				Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 			}
 		}
