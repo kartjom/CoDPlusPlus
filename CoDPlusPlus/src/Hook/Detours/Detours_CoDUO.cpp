@@ -261,41 +261,58 @@ namespace Detours
 
 		if (CodeCallback.OnVoteCalled)
 		{
-			static gentity_t* player = nullptr;
+			_asm
+			{
+				mov ebp, esp
+				sub ebp, 0x40
+			}
+
+			gentity_t* player;
+
 			_asm
 			{
 				mov eax, [esp + 0x24]
 				mov player, eax
 			}
 
+			_asm
+			{
+				sub esp, 0x80
+			}
+
 			if (*Cmd_Argc >= 2 && player && player->client)
 			{
-				static cvar_t* CancelVote = Cvar_Get("cancelvote", "0", 0);
-				[]()
+				cvar_t* CancelVote = Cvar_Get("cancelvote", "0", 0);
+				Cvar_Set("cancelvote", "0", 1);
+
+				Scr_MakeArray();
+				for (int i = 2; i < *Cmd_Argc; i++)
 				{
-					Cvar_Set("cancelvote", "0", 1);
+					Scr_AddString(Cmd_Argv[i]);
+					Scr_AddArray();
+				}
 
-					Scr_MakeArray();
-					for (int i = 2; i < *Cmd_Argc; i++)
-					{
-						Scr_AddString(Cmd_Argv[i]);
-						Scr_AddArray();
-					}
-
-					Scr_AddString(Cmd_Argv[1]); // Vote Type
-					Scr_AddEntityNum(player->number);
-					Scr_RunScript(CodeCallback.OnVoteCalled, 3);
-				}();
+				Scr_AddString(Cmd_Argv[1]); // Vote Type
+				Scr_AddEntityNum(player->number);
+				Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
 				if (CancelVote->integer == 1)
 				{
-					_asm popad
-					_asm ret
+					_asm
+					{
+						add esp, 0x80
+						popad
+						ret
+					}
 				}
 			}
 		}
 
-		_asm popad
+		_asm
+		{
+			add esp, 0x80
+			popad
+		}
 
 		_restore
 		{
@@ -311,7 +328,14 @@ namespace Detours
 
 		if (CodeCallback.OnPlayerVote)
 		{
-			static gentity_t* player = nullptr;
+			_asm
+			{
+				mov ebp, esp
+				sub ebp, 0x80
+			}
+
+			gentity_t* player;
+
 			_asm
 			{
 				mov player, ecx
@@ -425,11 +449,13 @@ namespace Detours
 			_asm
 			{
 				mov	ebp, esp
+				sub ebp, 0x180
 			}
 
-			static gentity_t* player = nullptr;
-			static int mode = -1;
-			static char* text = nullptr;
+			gentity_t* player;
+			int mode;
+			char* text;
+			char buff[256];
 
 			_asm
 			{
@@ -448,7 +474,6 @@ namespace Detours
 
 			if (text && player && player->client)
 			{
-				static char buff[256];
 				strcpy(buff, text);
 				text = buff;
 
