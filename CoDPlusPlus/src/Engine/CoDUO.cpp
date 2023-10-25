@@ -85,9 +85,11 @@ namespace CoDUO
 
 	void ServerTick()
 	{
-		if (CodeCallback.OnServerTick)
+		// One time initialization, can be used for threaded Tick() in Gsc
+		if (CodeCallback.OnInitialize)
 		{
-			Scr_RunScript(CodeCallback.OnServerTick, 0);
+			Scr_RunScript(CodeCallback.OnInitialize, 0);
+			CodeCallback.OnInitialize = 0;
 		}
 
 		HttpResult httpResult{};
