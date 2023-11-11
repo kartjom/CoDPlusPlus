@@ -33,6 +33,7 @@
     <ClCompile Include="src\Render\Materials\Shader.cpp" />
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -71,5 +72,7 @@
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Awaiter.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\CoDUO.cpp" />
     <ClCompile Include="src\Engine\Mappings\CvarMapping.cpp" />
@@ -45,6 +46,8 @@
     <ClCompile Include="vendor\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Awaiter.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
