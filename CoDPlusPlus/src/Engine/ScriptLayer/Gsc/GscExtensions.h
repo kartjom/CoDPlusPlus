@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <queue>
-#include <mutex>
 #include <Structs/Engine/gsc.h>
 
 namespace CoDUO::Gsc
@@ -18,18 +16,7 @@ namespace CoDUO::Gsc
 
 		uint32_t OnProjectileBounce = 0;	//	 eProjectile
 		uint32_t OnProjectileExplode = 0;	//	 eProjectile
-
-		uint32_t OnHttpResponse = 0;		//	 sIdentifier, iStatusCode, sResponse
 	} CodeCallback;
-
-	struct HttpResult {
-		std::string Identifier;
-		int StatusCode;
-		std::string Body;
-	};
-
-	inline std::mutex HttpMutex;
-	inline std::queue<HttpResult> BackgroundHttpResults;
 }
 
 namespace CoDUO::Gsc
@@ -48,6 +35,7 @@ namespace CoDUO::Gsc
 	void Scr_String_Replace();
 	void Scr_String_Split();
 
+	void Scr_Await();
 	void Scr_HttpGet();
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
@@ -66,7 +54,8 @@ namespace CoDUO::Gsc
 		gsc_register("string_replace", Scr_String_Replace), /* string, from, to */
 		gsc_register("string_split", Scr_String_Split), /* string, delimiter */
 
-		gsc_register("http_get", Scr_HttpGet), /* actionIndex, host, endpoint */
+		gsc_register("await", Scr_Await), /* handle */
+		gsc_register("http_get", Scr_HttpGet), /* host, endpoint */
 	};
 }
 

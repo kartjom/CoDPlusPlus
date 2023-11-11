@@ -1,10 +1,12 @@
 #include "CoDUO.h"
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
+#include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
 
 #include <iostream>
 
 using namespace CoDUO::Gsc;
+using namespace CoDUO::Gsc::Async;
 namespace CoDUO
 {
 	void BaseAttach()
@@ -43,8 +45,8 @@ namespace CoDUO
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
 		{
-			std::unique_lock<std::mutex> lock(HttpMutex);
-			BackgroundHttpResults = {};
+			std::unique_lock<std::mutex> lock(TaskResultsMutex);
+			PendingTasks = {};
 			CodeCallback = {};
 		}
 
@@ -75,8 +77,8 @@ namespace CoDUO
 		bg_iNumWeapons = nullptr;
 
 		{
-			std::unique_lock<std::mutex> lock(HttpMutex);
-			BackgroundHttpResults = {};
+			std::unique_lock<std::mutex> lock(TaskResultsMutex);
+			PendingTasks = {};
 			CodeCallback = {};
 		}
 
@@ -90,27 +92,6 @@ namespace CoDUO
 		{
 			Scr_RunScript(CodeCallback.OnInitialize, 0);
 			CodeCallback.OnInitialize = 0;
-		}
-
-		HttpResult httpResult{};
-		{
-			std::unique_lock<std::mutex> lock(HttpMutex);
-			if (CodeCallback.OnHttpResponse)
-			{
-				if (!BackgroundHttpResults.empty())
-				{
-					httpResult = BackgroundHttpResults.front();
-					BackgroundHttpResults.pop();
-				}
-			}
-		}
-
-		if (!httpResult.Identifier.empty() && !httpResult.Body.empty())
-		{
-			Scr_AddString(httpResult.Body.c_str());
-			Scr_AddInt(httpResult.StatusCode);
-			Scr_AddString(httpResult.Identifier.c_str());
-			Scr_RunScript(CodeCallback.OnHttpResponse, 3);
 		}
 	}
 }

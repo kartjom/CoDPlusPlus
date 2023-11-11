@@ -1,8 +1,10 @@
+#include <Engine/ScriptLayer/Gsc/Async/HttpResult/HttpResult.h>
 #include <Utils/Network/HttpClient.h>
-#include "GscExtensions.h"
 #include <Engine/CoDUO.h>
+#include "GscExtensions.h"
 
 using namespace CoDUO;
+using namespace CoDUO::Gsc::Async;
 namespace CoDUO::Gsc
 {
 	void Scr_StringToCmd()
@@ -240,56 +242,108 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void BackgroundHttpRequest(std::string identifier, httplib::Result (*request_fn)(std::string, std::string), std::string host, std::string endpoint)
+	void Scr_Await()
 	{
-		auto res = request_fn(host, endpoint);
-		
-		HttpResult model;
-		if ((bool)res.error())
+		int handle = Scr_GetInt(0);
+
+		Scr_MakeArray();
+
+		if (handle < 0) // Invalid handle
 		{
-			model = {
-				.Identifier = identifier,
-				.StatusCode = -1,
-				.Body = httplib::to_string(res.error())
-			};
-		}
-		else
-		{
-			model = {
-				.Identifier = identifier,
-				.StatusCode = res->status,
-				.Body = res->body
-			};
+			Scr_AddBool(false);
+			Scr_AddArrayStringIndexed(G_NewString("pending"));
+			return;
 		}
 
-		std::unique_lock<std::mutex> lock(HttpMutex);
-		if (CodeCallback.OnHttpResponse)
+		std::shared_ptr<Awaitable> result;
 		{
-			BackgroundHttpResults.push(model);
+			std::unique_lock<std::mutex> lock(TaskResultsMutex);
+
+			auto it = PendingTasks.find(handle);
+			if (it == PendingTasks.end()) // Resource doesn't exist
+			{
+				Scr_AddBool(false);
+				Scr_AddArrayStringIndexed(G_NewString("pending"));
+				return;
+			}
+
+			result = (*it).second;
+		}
+
+		if (result->AwaitStatus.load() == AwaiterStatus::InProgress)
+		{
+			Scr_AddBool(true);
+			Scr_AddArrayStringIndexed(G_NewString("pending"));
+			return;
+		}
+
+		if (result->AwaitStatus.load() == AwaiterStatus::Finished)
+		{
+			Scr_AddBool(false);
+			Scr_AddArrayStringIndexed(G_NewString("pending"));
+
+			result->PushGscData();
+			return;
 		}
 	}
 
 	void Scr_HttpGet()
 	{
-		const char* identifier = Scr_GetString(0);
-		const char* host = Scr_GetString(1);
-		const char* endpoint = Scr_GetString(2);
+		const char* host = Scr_GetString(0);
+		const char* endpoint = Scr_GetString(1);
 
-		if (identifier && host && endpoint)
+		if (host && endpoint)
 		{
+			std::shared_ptr<HttpResult> httpResult = std::make_shared<HttpResult>();
+
 			try
 			{
-				std::thread http_thread(BackgroundHttpRequest, std::string(identifier), HttpClient::Get, std::string(host), std::string(endpoint));
-				http_thread.detach();
+				httpResult->Initialize();
 
-				Scr_AddBool(true);
+				std::thread http_task([=]()
+				{
+					try
+					{
+						auto res = HttpClient::Get(std::string(host), std::string(endpoint));
+
+						if ((bool)res.error())
+						{
+							httpResult->StatusCode = -1;
+							httpResult->Body = httplib::to_string(res.error());
+						}
+						else
+						{
+							httpResult->StatusCode = res->status;
+							httpResult->Body = res->body;
+						}
+
+						httpResult->Finish();
+
+						std::this_thread::sleep_for(std::chrono::seconds(2)); // Wait to dispose
+					}
+					catch (std::exception& ex)
+					{
+						printf("[ERROR] - Scr_HttpGet.http_task: %s\n", ex.what());
+					}
+
+					httpResult->Dispose();
+				});
+
+				http_task.detach();
+
+				Scr_AddInt(httpResult->Handle); // awaiter handle
 			}
 			catch (std::exception& ex)
 			{
-				Scr_AddBool(false);
+				httpResult->Dispose();
+				Scr_AddInt(-1);
 
-				printf("[ERROR] - Could not allocate thread for request '%s': %s\n", identifier, ex.what());
+				printf("[ERROR] - Scr_HttpGet: %s\n", ex.what());
 			}
+		}
+		else
+		{
+			Scr_AddInt(-1);
 		}
 	}
 }
