@@ -1,5 +1,6 @@
 #include "GscExtensions.h"
 #include <Engine/CoDUO.h>
+#include <limits>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc
@@ -71,8 +72,11 @@ namespace CoDUO::Gsc
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
 		{
-			vec3_t dir = AnglesToDirection(ent->client->viewangles);
-			Scr_AddVector(dir);
+			vec3_t viewangles = { ent->client->viewangles2.x , ent->client->viewangles2.y , ent->client->viewangles.z };
+			vec3_t viewdir;
+			AngleVectors(viewangles, viewdir, NULL, NULL);
+
+			Scr_AddVector(viewdir);
 		}
 		else
 		{
@@ -85,8 +89,10 @@ namespace CoDUO::Gsc
 		gentity_t* ent = &g_entities[param];
 		if (ent && ent->client)
 		{
-			float range = Scr_GetFloat(0);
-			float spread = Scr_GetFloat(1);
+			int numParams = Scr_GetNumParam();
+
+			float range = numParams > 0 ? Scr_GetFloat(0) : std::numeric_limits<float>::lowest();
+			float spread = numParams > 1 ? Scr_GetFloat(1) : std::numeric_limits<float>::lowest();
 
 			trace_t tr = G_GetEyeTrace(ent, range, spread);
 

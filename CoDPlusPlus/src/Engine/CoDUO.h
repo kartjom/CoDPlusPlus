@@ -100,8 +100,13 @@ namespace CoDUO /* UtilsMapping.cpp */
 {
 	void trap_Trace(trace_t* trace, vec3_t* start, vec3_t* end, int passEntityNum, int contentMask);
 
-	vec3_t AnglesToDirection(vec3_t& viewangles, float spread = 0);
-	trace_t G_GetEyeTrace(gentity_t* player, float range = 100000, float spread = 0);
+	void AngleVectors(float* angles, float* forward, float* right, float* up);
+	void Bullet_Endpos(float spread, float* forward, float* out_vec);
+
+	float BG_GetAimSpread(gentity_t* ent);
+	void SetRayLength(vec3_t& start, vec3_t& end, float newLength);
+
+	trace_t G_GetEyeTrace(gentity_t* player, float range, float spread);
 }
 
 namespace CoDUO

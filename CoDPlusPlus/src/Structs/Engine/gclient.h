@@ -15,7 +15,9 @@ struct gclient_t
 	float leanf; //0x0044
 	char pad_0048[144]; //0x0048
 	int32_t weapon; //0x00D8
-	char pad_00DC[12]; //0x00DC
+	char pad_00DC[4]; //0x00DC
+	float aimProgress; //0x00E0
+	char pad_00E4[4]; //0x00E4
 	vec3_t viewangles; //0x00E8
 	int32_t viewheight_i; //0x00F4
 	float viewheight_f; //0x00F8
@@ -40,5 +42,7 @@ struct gclient_t
 	int32_t lastCmdTime; //0x4628
 	int32_t buttons; //0x462C
 	int32_t oldbuttons; //0x4630
-	char pad_4634[568]; //0x4634
+	char pad_4634[28]; //0x4634
+	vec3_t viewangles2; //0x4650
+	char pad_465C[536]; //0x465C
 };
