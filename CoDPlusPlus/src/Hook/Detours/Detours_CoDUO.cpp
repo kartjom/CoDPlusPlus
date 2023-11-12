@@ -281,9 +281,6 @@ namespace Detours
 
 			if (*Cmd_Argc >= 2 && player && player->client)
 			{
-				cvar_t* CancelVote = Cvar_Get("cancelvote", "0", 0);
-				Cvar_Set("cancelvote", "0", 1);
-
 				Scr_MakeArray();
 				for (int i = 2; i < *Cmd_Argc; i++)
 				{
@@ -295,7 +292,7 @@ namespace Detours
 				Scr_AddEntityNum(player->number);
 				Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
-				if (CancelVote->integer == 1)
+				if (GetTopStackValueInt() == 0)
 				{
 					_asm
 					{
