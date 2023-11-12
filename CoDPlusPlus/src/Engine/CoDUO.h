@@ -53,6 +53,10 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_MakeArray();
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
+
+	int GetTopStackValueInt();
+	float GetTopStackValueFloat();
+	const char* GetTopStackValueString();
 }
 
 namespace CoDUO /* CvarMapping.cpp */
