@@ -144,30 +144,12 @@ namespace CoDUO
 		}
 	}
 
-	char* GetTopStackValue()
+	ScrVar* Scr_GetStackTop()
 	{
 		uintptr_t ptrToStackTop = *(uintptr_t*)0x00b6ac90;
-		char* value = (char*)(ptrToStackTop + 0x8);
-		return value;
-	}
+		ScrVar* ptr = (ScrVar*)(ptrToStackTop + 0x8);
 
-	int GetTopStackValueInt()
-	{
-		int value = *(int*)GetTopStackValue();
-		return value;
-	}
-
-	float GetTopStackValueFloat()
-	{
-		float value = *(float*)GetTopStackValue();
-		return value;
-	}
-
-	const char* GetTopStackValueString()
-	{
-		int stringIndex = *(int*)GetTopStackValue();
-		const char* str = SL_ConvertToString(stringIndex);
-		return str;
+		return ptr;
 	}
 }
 

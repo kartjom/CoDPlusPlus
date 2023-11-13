@@ -42,6 +42,7 @@ namespace CoDUO /* GscMapping.cpp */
 	const char* Scr_GetString(int param);
 	int32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
+	ScrVar* Scr_GetStackTop();
 
 	void Scr_AddUndefined();
 	void Scr_AddBool(int value);
@@ -53,10 +54,6 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_MakeArray();
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
-
-	int GetTopStackValueInt();
-	float GetTopStackValueFloat();
-	const char* GetTopStackValueString();
 }
 
 namespace CoDUO /* CvarMapping.cpp */

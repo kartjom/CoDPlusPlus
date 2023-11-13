@@ -292,7 +292,7 @@ namespace Detours
 				Scr_AddEntityNum(player->number);
 				Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
-				if (GetTopStackValueInt() == 1)
+				if (Scr_GetStackTop()->Integer == 1)
 				{
 					_asm
 					{
