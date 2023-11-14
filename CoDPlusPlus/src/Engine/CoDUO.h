@@ -42,7 +42,7 @@ namespace CoDUO /* GscMapping.cpp */
 	const char* Scr_GetString(int param);
 	int32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
-	ScrVar* Scr_GetStackTop();
+	ScrVar* Scr_GetValue(uint32_t index);
 
 	void Scr_AddUndefined();
 	void Scr_AddBool(int value);

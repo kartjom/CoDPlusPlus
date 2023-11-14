@@ -144,11 +144,9 @@ namespace CoDUO
 		}
 	}
 
-	ScrVar* Scr_GetStackTop()
+	ScrVar* Scr_GetValue(uint32_t index)
 	{
-		uintptr_t ptrToStackTop = *(uintptr_t*)0x00b6ac90;
-		ScrVar* ptr = (ScrVar*)(ptrToStackTop + 0x8);
-
+		ScrVar* ptr = (ScrVar*)(*(uintptr_t*)0x00b6ac90 + (index + 1) * 8);
 		return ptr;
 	}
 }

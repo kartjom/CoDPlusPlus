@@ -11,8 +11,8 @@ namespace CoDUO::Gsc
 		uint32_t OnPlayerShoot = 0;			//	 ePlayer
 		uint32_t OnPlayerMelee = 0;			//	 ePlayer, eTarget (optional)
 		uint32_t OnPlayerSay = 0;			//	 ePlayer, sText, iMode, bConsole
-		uint32_t OnVoteCalled = 0;			//	 ePlayer, sVoteType, aVoteInfo
 		uint32_t OnPlayerVote = 0;			//	 ePlayer, sVote
+		uint32_t OnVoteCalled = 0;			//	 ePlayer, sVoteType, aVoteInfo
 
 		uint32_t OnProjectileBounce = 0;	//	 eProjectile
 		uint32_t OnProjectileExplode = 0;	//	 eProjectile
