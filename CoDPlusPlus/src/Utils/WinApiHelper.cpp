@@ -9,9 +9,59 @@
 #include <Hook/Detours.h>
 
 #include <psapi.h>
+#include <fstream>
+#include <format>
 
 namespace WinApiHelper
 {
+	LONG WINAPI CustomUnhandledExceptionFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
+	{
+		std::ofstream outfile;
+		outfile.open("codplusplus_crash.log", std::ios::app);
+
+		outfile << "------------- Crash Log " << time(0) << " -------------\n";
+		outfile << std::format("At memory address {} code 0x{:x}\n", pExceptionInfo->ExceptionRecord->ExceptionAddress, pExceptionInfo->ExceptionRecord->ExceptionCode);
+		
+		outfile << std::format("\nESP 0x{:x}", pExceptionInfo->ContextRecord->Esp);
+		outfile << std::format("\nEBP 0x{:x}", pExceptionInfo->ContextRecord->Ebp);
+
+		outfile << std::format("\nEDI 0x{:x}", pExceptionInfo->ContextRecord->Edi);
+		outfile << std::format("\nESI 0x{:x}", pExceptionInfo->ContextRecord->Esi);
+		outfile << std::format("\nEBX 0x{:x}", pExceptionInfo->ContextRecord->Ebx);
+		outfile << std::format("\nEDX 0x{:x}", pExceptionInfo->ContextRecord->Edx);
+		outfile << std::format("\nECX 0x{:x}", pExceptionInfo->ContextRecord->Ecx);
+		outfile << std::format("\nEAX 0x{:x}", pExceptionInfo->ContextRecord->Eax);
+
+		outfile << "\n\n";
+
+		HMODULE moduleHandles[1024];
+		DWORD bytesNeeded;
+		HANDLE processHandle = GetCurrentProcess();
+		if (EnumProcessModules(processHandle, moduleHandles, sizeof(moduleHandles), &bytesNeeded))
+		{
+			int moduleCount = bytesNeeded / sizeof(HMODULE);
+
+			for (int i = 0; i < moduleCount; ++i)
+			{
+				char moduleName[MAX_PATH];
+
+				if (K32GetModuleBaseNameA(processHandle, moduleHandles[i], moduleName, sizeof(moduleName) / sizeof(char)))
+				{
+					outfile << moduleName << " - " << "0x" << moduleHandles[i] << "\n";
+				}
+			}
+		}
+
+		outfile << "------------------------------------------------\n";
+
+		return EXCEPTION_EXECUTE_HANDLER;
+	}
+
+	void SetExceptionFilters()
+	{
+		SetUnhandledExceptionFilter(CustomUnhandledExceptionFilter);
+	}
+
 	bool CheckGame()
 	{
 		char baseName[32];

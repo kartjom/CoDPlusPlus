@@ -15,6 +15,7 @@ DWORD WINAPI MainThread(LPVOID param)
 		return 0;
 	}
 
+	WinApiHelper::SetExceptionFilters();
 	WinApiHelper::CreateConsole("Console");
 	WinApiHelper::InjectDetours();
 
