@@ -277,7 +277,7 @@ namespace Detours
 				add esp, 0x4 // 1 arg, 4 bytes
 
 				cmp al, 1 // Skip vote
-				jne eax_true
+				jne vote_continue
 
 				add esp, 0x55C
 				popad
@@ -285,7 +285,7 @@ namespace Detours
 			}
 		}
 
-		eax_true: // Vote goes on
+		vote_continue: // Vote goes on
 		_asm popad
 
 		_restore
