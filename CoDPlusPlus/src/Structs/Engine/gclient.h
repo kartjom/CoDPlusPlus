@@ -13,7 +13,8 @@ struct gclient_t
 	int32_t grenadeTimeLeft; //0x0034
 	char pad_0038[12]; //0x0038
 	float leanf; //0x0044
-	char pad_0048[144]; //0x0048
+	char pad_0048[140]; //0x0048
+	int32_t clientNum; //0x00D4
 	int32_t weapon; //0x00D8
 	char pad_00DC[4]; //0x00DC
 	float aimProgress; //0x00E0

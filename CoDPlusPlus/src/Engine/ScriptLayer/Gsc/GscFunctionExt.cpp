@@ -319,7 +319,7 @@ namespace CoDUO::Gsc
 
 						httpResult->Finish();
 
-						std::this_thread::sleep_for(std::chrono::seconds(2)); // Wait to dispose
+						std::this_thread::sleep_for(std::chrono::seconds(3)); // Wait to dispose
 					}
 					catch (std::exception& ex)
 					{

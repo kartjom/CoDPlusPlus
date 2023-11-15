@@ -44,10 +44,11 @@ namespace CoDUO
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
 
+		CodeCallback = {};
+
 		{
 			std::unique_lock<std::mutex> lock(TaskResultsMutex);
 			PendingTasks = {};
-			CodeCallback = {};
 		}
 
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
@@ -58,8 +59,8 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x00022B5D, Detours::PlayerSayCallback, 7);
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x00023310, Detours::VoteCallCallback, 6);
-		DetourRet(uo_game_mp_x86 + 0x0002415f, Detours::PlayerVoteCallback, 6);
+		DetourRet(uo_game_mp_x86 + 0x00023698, Detours::VoteCallCallback, 5);
+		DetourRet(uo_game_mp_x86 + 0x0002444c, Detours::PlayerVoteCallback, 9);
 
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
@@ -76,10 +77,11 @@ namespace CoDUO
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;
 
+		CodeCallback = {};
+
 		{
 			std::unique_lock<std::mutex> lock(TaskResultsMutex);
 			PendingTasks = {};
-			CodeCallback = {};
 		}
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;

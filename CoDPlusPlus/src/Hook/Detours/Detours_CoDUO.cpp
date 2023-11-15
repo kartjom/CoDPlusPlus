@@ -19,7 +19,7 @@ namespace Detours
 	void OnPlayerShoot(gentity_t* player);
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
 	void OnPlayerSay(gentity_t* player, char* text, int mode);
-	void OnPlayerVote(gentity_t* player);
+	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 
 	void OnProjectileBounce(gentity_t* projectile);
@@ -239,13 +239,19 @@ namespace Detours
 
 	ImplementDetour(PlayerVoteCallback)
 	{
+		_restore
+		{
+			call syscall
+			add esp, 0x14
+		}
+
 		_asm pushad
 
 		if (CodeCallback.OnPlayerVote)
 		{
 			_asm
 			{
-				push ecx // player
+				push esi // player as gclient
 				call OnPlayerVote
 
 				add esp, 0x4 // 1 arg, 4 bytes
@@ -254,13 +260,7 @@ namespace Detours
 
 		_asm popad
 
-		_restore
-		{
-			mov esi, ecx
-			mov dword ptr ss : [esp + 0x44] , eax
-		}
-
-			JumpBack(PlayerVoteCallback)
+		JumpBack(PlayerVoteCallback)
 	}
 
 	ImplementDetour(VoteCallCallback)
@@ -271,9 +271,7 @@ namespace Detours
 		{
 			_asm
 			{
-				mov eax, [esp + 0x24]
-				push eax // player
-
+				push edi // player
 				call OnVoteCalled
 
 				add esp, 0x4 // 1 arg, 4 bytes
@@ -281,20 +279,23 @@ namespace Detours
 				cmp al, 1 // Skip vote
 				jne eax_true
 
+				add esp, 0x55C
 				popad
 				ret
 			}
 		}
 
-	eax_true: // Vote goes on
+		eax_true: // Vote goes on
 		_asm popad
 
 		_restore
 		{
-			sub esp, 0x554
+			mov eax, uo_game_mp_x86
+			add eax, 0x003105e0
+			mov eax, [eax]
 		}
 
-			JumpBack(VoteCallCallback)
+		JumpBack(VoteCallCallback)
 	}
 
 	ImplementDetour(ProjectileBounceCallback)
@@ -506,12 +507,12 @@ namespace Detours
 		}
 	}
 
-	void __cdecl OnPlayerVote(gentity_t* player)
+	void __cdecl OnPlayerVote(gclient_t* player)
 	{
-		if (*Cmd_Argc >= 2 && player && player->client)
+		if (*Cmd_Argc >= 2 && player)
 		{
 			Scr_AddString(Cmd_Argv[1]);
-			Scr_AddEntityNum(player->number);
+			Scr_AddEntityNum(player->clientNum);
 			Scr_RunScript(CodeCallback.OnPlayerVote, 2);
 		}
 	}
