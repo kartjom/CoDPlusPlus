@@ -59,11 +59,11 @@ namespace Detours
 			mov edx, dword ptr ds : [eax]
 		}
 
-			JumpBack(LoadFunctionMP)
+		JumpBack(LoadFunctionMP)
 
-			_asm
+		_asm
 		{
-		function_found:
+			function_found:
 			ret
 		}
 	}
@@ -99,11 +99,11 @@ namespace Detours
 			mov edx, dword ptr ss : [esp + 0x4]
 		}
 
-			JumpBack(LoadMethodMP)
+		JumpBack(LoadMethodMP)
 
-			_asm
+		_asm
 		{
-		method_found:
+			method_found:
 			ret
 		}
 	}
@@ -122,7 +122,7 @@ namespace Detours
 			test esi, esi
 		}
 
-			JumpBack(SV_Map_LoadConfig)
+		JumpBack(SV_Map_LoadConfig)
 	}
 
 	ImplementDetour(GScr_LoadGameTypeScript)
@@ -234,7 +234,7 @@ namespace Detours
 			mov dword ptr ss : [esp + 0x1E0] , eax
 		}
 
-			JumpBack(PlayerSayCallback)
+		JumpBack(PlayerSayCallback)
 	}
 
 	ImplementDetour(PlayerVoteCallback)
@@ -364,7 +364,7 @@ namespace Detours
 			sub esp, 0x254
 		}
 
-			JumpBack(Tick)
+		JumpBack(Tick)
 	}
 }
 
