@@ -62,6 +62,9 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
+
+		DetourRet(uo_game_mp_x86 + 0x0001b482, Detours::VehicleCrashFix, 6);
+		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
 		
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 

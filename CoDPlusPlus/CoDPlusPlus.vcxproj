@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
+    <ClCompile Include="src\Hook\Detours\Detours_CoDUO_Fixes.cpp" />
     <ClCompile Include="src\Structs\Engine\gsc.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\CoDUO.cpp" />

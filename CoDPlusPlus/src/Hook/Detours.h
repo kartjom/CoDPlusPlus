@@ -25,6 +25,10 @@ namespace Detours
 	DeclareDetour(LoadMethodMP);
 
 	DeclareDetour(SV_Map_LoadConfig);
+
+	// Various fixes for UO bugs/exploits
+	DeclareDetour(VehicleCrashFix);
+	DeclareDetour(VEH_UnlinkPlayerFix);
 };
 
 #ifdef CLIENT
