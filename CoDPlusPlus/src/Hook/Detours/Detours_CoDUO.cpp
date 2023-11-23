@@ -18,7 +18,7 @@ namespace Detours
 	void LoadGameTypeScript();
 	void OnPlayerShoot(gentity_t* player);
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
-	void OnPlayerSay(gentity_t* player, char* text, int mode);
+	bool OnPlayerSay(gentity_t* player, char* text, int mode);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 
@@ -224,9 +224,19 @@ namespace Detours
 				call OnPlayerSay
 
 				add esp, 0xC // 3 args, 12 bytes
+
+				cmp al, 1 // Skip G_Say
+				jne say_continue
+				
+				popad
+				pop ebp
+				pop ebx
+				add esp, 0x1DC
+				ret
 			}
 		}
 
+		say_continue:
 		_asm popad
 
 		_restore
@@ -472,7 +482,7 @@ namespace Detours
 		}
 	}
 
-	void __cdecl OnPlayerSay(gentity_t* player, char* text, int mode)
+	bool __cdecl OnPlayerSay(gentity_t* player, char* text, int mode)
 	{
 		if (text && player && player->client)
 		{
@@ -504,7 +514,26 @@ namespace Detours
 			Scr_AddString(text);
 			Scr_AddEntityNum(player->number);
 			Scr_RunScript(CodeCallback.OnPlayerSay, 4);
+
+			if (Scr_GetValue(0)->StringIndex)
+			{
+				const char* replacement = SL_ConvertToString(Scr_GetValue(0)->StringIndex);
+				if (replacement)
+				{
+					int len = strlen(replacement);
+					if (len > 0)
+					{
+						strcpy(originalTextPtr, replacement);
+					}
+					else
+					{
+						return true;
+					}
+				}
+			}
 		}
+
+		return false;
 	}
 
 	void __cdecl OnPlayerVote(gclient_t* player)
