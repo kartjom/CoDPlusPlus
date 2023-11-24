@@ -613,9 +613,9 @@ namespace Detours
 			Scr_AddEntityNum(player->number);
 			Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
-			if (Scr_GetValue(0)->Integer == 1)
+			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
 			{
-				return true;
+				return true; // Skip the vote if script returned false
 			}
 		}
 
