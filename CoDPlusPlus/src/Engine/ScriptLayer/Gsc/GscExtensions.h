@@ -17,6 +17,8 @@ namespace CoDUO::Gsc
 		uint32_t OnProjectileBounce = 0;	//	 eProjectile
 		uint32_t OnProjectileExplode = 0;	//	 eProjectile
 	} CodeCallback;
+
+	inline ScrVar Scr_ReturnValue = {};
 }
 
 namespace CoDUO::Gsc

@@ -23,6 +23,7 @@ namespace CoDUO
 		Cmd_Argc = (int*)(0x009677C0);
 
 		DetourRet(0x00457702, Detours::SV_Map_LoadConfig, 8);
+		DetourRet(0x0048f40e, Detours::Scr_ExecThread_GscReturnValue, 5);
 
 		std::cout << "[CoDUOMP] - BaseAttach" << std::endl;
 	}

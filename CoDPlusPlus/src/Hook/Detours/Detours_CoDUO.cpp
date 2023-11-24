@@ -13,12 +13,13 @@ namespace Detours
 {
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
+	void Scr_ExecThread_GscReturnValue();
 	void LoadMapBinding();
 
 	void LoadGameTypeScript();
 	void OnPlayerShoot(gentity_t* player);
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
-	bool OnPlayerSay(gentity_t* player, char* text, int mode);
+	bool OnPlayerSay(gentity_t* player, char** text_ptr, int mode);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 
@@ -106,6 +107,23 @@ namespace Detours
 			method_found:
 			ret
 		}
+	}
+
+	ImplementDetour(Scr_ExecThread_GscReturnValue)
+	{
+		_restore
+		{
+			mov eax, 0x0048f0b0
+			call eax
+		}
+
+		_asm pushad
+
+		Scr_ExecThread_GscReturnValue();
+
+		_asm popad
+
+		JumpBack(Scr_ExecThread_GscReturnValue)
 	}
 
 	ImplementDetour(SV_Map_LoadConfig)
@@ -216,8 +234,9 @@ namespace Detours
 				push edi // mode
 
 				add eax, 0x4
-				mov edi, [eax]
-				push edi // text
+				//mov edi, [eax]
+				//push edi // text
+				push eax // ptr to text ptr
 
 				push ecx // player
 
@@ -400,6 +419,48 @@ namespace Detours
 		return 0;
 	}
 
+	void __cdecl Scr_ExecThread_GscReturnValue()
+	{
+		try
+		{
+			VariableValue* var = Scr_GetValue(-1); // get top of the stack
+
+			Scr_ReturnValue = {};
+			Scr_ReturnValue.Type = (VarType)var->type;
+			switch (Scr_ReturnValue.Type)
+			{
+			case VarType::Undefined:
+				Scr_ReturnValue.Integer = 0;
+				break;
+			case VarType::String:
+			{
+				const char* str = SL_ConvertToString(var->StringIndex);
+				Scr_ReturnValue.String = (str ? str : "<null>");
+				break;
+			}
+			case VarType::Vector:
+				Scr_ReturnValue.Vector = *var->Vector;
+				break;
+			case VarType::Float:
+				Scr_ReturnValue.Float = var->Float;
+				break;
+			case VarType::Integer:
+				Scr_ReturnValue.Integer = var->Integer;
+				break;
+			case VarType::Entity:
+				Scr_ReturnValue.Integer = var->Integer;
+				break;
+			default:
+				Scr_ReturnValue.Integer = var->Integer;
+			}
+
+		}
+		catch (std::exception& e)
+		{
+			printf("Scr_ExecThread_GscReturnValue: %s\n", e.what());
+		}
+	}
+
 	void __cdecl LoadMapBinding()
 	{
 		char* mapname = Cmd_Argv[1];
@@ -482,15 +543,14 @@ namespace Detours
 		}
 	}
 
-	bool __cdecl OnPlayerSay(gentity_t* player, char* text, int mode)
+	bool __cdecl OnPlayerSay(gentity_t* player, char** text_ptr, int mode)
 	{
-		if (text && player && player->client)
-		{
-			char buff[256];
-			char* originalTextPtr = text;
+		static char StringBuffer[256];
 
-			strcpy(buff, text);
-			text = buff;
+		if (text_ptr && *text_ptr && player && player->client)
+		{
+			strcpy(StringBuffer, *text_ptr); // string under the text_ptr
+			char* text = StringBuffer;
 
 			if (text[0] == 0x14 && text[strlen(text) - 1] == 0x15)
 			{
@@ -515,21 +575,13 @@ namespace Detours
 			Scr_AddEntityNum(player->number);
 			Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 
-			if (Scr_GetValue(0)->StringIndex)
+			if (Scr_ReturnValue.Type == VarType::String)
 			{
-				const char* replacement = SL_ConvertToString(Scr_GetValue(0)->StringIndex);
-				if (replacement)
-				{
-					int len = strlen(replacement);
-					if (len > 0)
-					{
-						strcpy(originalTextPtr, replacement);
-					}
-					else
-					{
-						return true;
-					}
-				}
+				if (Scr_ReturnValue.String.empty())
+					return true; // message won't be displayed if callback returns empty string
+
+				strcpy(StringBuffer, Scr_ReturnValue.String.c_str());
+				*text_ptr = StringBuffer;
 			}
 		}
 

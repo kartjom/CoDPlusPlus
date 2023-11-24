@@ -144,9 +144,9 @@ namespace CoDUO
 		}
 	}
 
-	ScrVar* Scr_GetValue(uint32_t index)
+	VariableValue* Scr_GetValue(uint32_t index)
 	{
-		ScrVar* ptr = (ScrVar*)(*(uintptr_t*)0x00b6ac90 + (index + 1) * 8);
+		VariableValue* ptr = (VariableValue*)(*(uintptr_t*)0x00b6ac90 + (index + 1) * 8);
 		return ptr;
 	}
 }
@@ -216,6 +216,18 @@ namespace CoDUO
 		{
 			push[string]
 			mov eax, 0x004907F0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	void Scr_AddConstString(int32_t index)
+	{
+		_asm
+		{
+			push index
+			mov eax, 0x00490890
 			call eax
 
 			add esp, 0x4

@@ -13,7 +13,7 @@ namespace CoDUO
 		}
 	}
 
-	const char* SL_ConvertToString(int32_t index)
+	const char* SL_ConvertToString(uint32_t index)
 	{
 		_asm
 		{
@@ -22,6 +22,17 @@ namespace CoDUO
 			call eax
 
 			add esp, 0x4
+		}
+	}
+
+	void SL_RemoveRefToString(uint16_t index)
+	{
+		_asm
+		{
+			xor eax, eax
+			mov ax, index
+			mov ecx, 0x00482b00
+			call ecx
 		}
 	}
 

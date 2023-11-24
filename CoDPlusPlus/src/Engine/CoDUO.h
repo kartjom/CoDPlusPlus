@@ -42,7 +42,7 @@ namespace CoDUO /* GscMapping.cpp */
 	const char* Scr_GetString(int param);
 	int32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
-	ScrVar* Scr_GetValue(uint32_t index);
+	VariableValue* Scr_GetValue(uint32_t index);
 
 	void Scr_AddUndefined();
 	void Scr_AddBool(int value);
@@ -50,6 +50,7 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_AddFloat(float value);
 	void Scr_AddVector(float* value);
 	void Scr_AddString(const char* string);
+	void Scr_AddConstString(int32_t index);
 	void Scr_AddEntityNum(int index);
 	void Scr_MakeArray();
 	void Scr_AddArray();
@@ -78,7 +79,8 @@ namespace CoDUO /* WeaponMapping.cpp */
 namespace CoDUO /* StringUtilsMapping.cpp */
 {
 	int32_t G_NewString(const char* string);
-	const char* SL_ConvertToString(int32_t index);
+	const char* SL_ConvertToString(uint32_t index);
+	void SL_RemoveRefToString(uint16_t index);
 
 	const char* Info_ValueForKey(const char* buffer, const char* key);
 	void Info_SetValueForKey(char* buffer, const char* key, const char* value);

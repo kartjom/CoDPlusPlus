@@ -23,6 +23,7 @@ namespace Detours
 
 	DeclareDetour(LoadFunctionMP);
 	DeclareDetour(LoadMethodMP);
+	DeclareDetour(Scr_ExecThread_GscReturnValue);
 
 	DeclareDetour(SV_Map_LoadConfig);
 
