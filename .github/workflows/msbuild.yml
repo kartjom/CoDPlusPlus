@@ -53,7 +53,9 @@ jobs:
     - name: GH Release
       uses: softprops/action-gh-release@v0.1.15
       with: 
-        files: bin/Release/*.dll
+        files: |
+            bin/Release/*.dll
+            bin/Release/*.pdb
         tag_name: "automatic-${{ github.ref }}"
         name: "Automatic build for ${{ github.ref }}"
         # list commits in the body
