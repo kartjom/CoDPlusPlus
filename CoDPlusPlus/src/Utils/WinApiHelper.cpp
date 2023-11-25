@@ -11,6 +11,7 @@
 #include <psapi.h>
 #include <fstream>
 #include <format>
+#include <iomanip>
 
 namespace WinApiHelper
 {
@@ -19,7 +20,10 @@ namespace WinApiHelper
 		std::ofstream outfile;
 		outfile.open("codplusplus_crash.log", std::ios::app);
 
-		outfile << "------------- Crash Log " << time(0) << " -------------\n";
+		time_t t = time(0);
+		std::tm tm = *std::localtime(&t);
+
+		outfile << "------------- Crash Log [" << std::put_time(&tm, "%d.%m.%Y %H:%M:%S") << "] -------------\n";
 		outfile << std::format("At memory address {} code 0x{:x}\n", pExceptionInfo->ExceptionRecord->ExceptionAddress, pExceptionInfo->ExceptionRecord->ExceptionCode);
 		
 		outfile << std::format("\nESP 0x{:x}", pExceptionInfo->ContextRecord->Esp);
@@ -52,7 +56,7 @@ namespace WinApiHelper
 			}
 		}
 
-		outfile << "------------------------------------------------\n";
+		outfile << "-----------------------------------------------------------\n";
 
 		return EXCEPTION_EXECUTE_HANDLER;
 	}
