@@ -12,36 +12,88 @@
 #include <fstream>
 #include <format>
 #include <iomanip>
+#include <ImageHlp.h>
+
+#pragma comment(lib, "dbghelp.lib")
 
 namespace WinApiHelper
 {
-	LONG WINAPI CustomUnhandledExceptionFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
+	IMAGEHLP_MODULE GetModuleInfo(PVOID address)
 	{
+		HANDLE proc = GetCurrentProcess();
+
+		IMAGEHLP_MODULE moduleInfo;
+		moduleInfo.SizeOfStruct = sizeof(IMAGEHLP_MODULE);
+		SymGetModuleInfo(proc, (DWORD)address, &moduleInfo);
+
+		return moduleInfo;
+	}
+
+	LONG WINAPI CrashLogger(struct _EXCEPTION_POINTERS* pExceptionInfo)
+	{
+		HANDLE process = GetCurrentProcess();
+		HANDLE thread = GetCurrentThread();
+
+		SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_UNDNAME);
+		SymInitialize(process, nullptr, TRUE);
+
 		std::ofstream outfile;
 		outfile.open("codplusplus_crash.log", std::ios::app);
 
 		time_t t = time(0);
 		std::tm tm = *std::localtime(&t);
+		std::string exceptionAtModule = GetModuleInfo(pExceptionInfo->ExceptionRecord->ExceptionAddress).ModuleName;
 
 		outfile << "------------- Crash Log [" << std::put_time(&tm, "%d.%m.%Y %H:%M:%S") << "] -------------\n";
-		outfile << std::format("At memory address {} code 0x{:x}\n", pExceptionInfo->ExceptionRecord->ExceptionAddress, pExceptionInfo->ExceptionRecord->ExceptionCode);
+		outfile << std::format("Exception code 0x{:08x} at memory address {} in module {}\n", pExceptionInfo->ExceptionRecord->ExceptionCode, pExceptionInfo->ExceptionRecord->ExceptionAddress, exceptionAtModule);
 		
-		outfile << std::format("\nESP 0x{:x}", pExceptionInfo->ContextRecord->Esp);
-		outfile << std::format("\nEBP 0x{:x}", pExceptionInfo->ContextRecord->Ebp);
+		outfile << std::format("\nEsp 0x{:08x}", pExceptionInfo->ContextRecord->Esp);
+		outfile << std::format("\nEbp 0x{:08x}", pExceptionInfo->ContextRecord->Ebp);
 
-		outfile << std::format("\nEDI 0x{:x}", pExceptionInfo->ContextRecord->Edi);
-		outfile << std::format("\nESI 0x{:x}", pExceptionInfo->ContextRecord->Esi);
-		outfile << std::format("\nEBX 0x{:x}", pExceptionInfo->ContextRecord->Ebx);
-		outfile << std::format("\nEDX 0x{:x}", pExceptionInfo->ContextRecord->Edx);
-		outfile << std::format("\nECX 0x{:x}", pExceptionInfo->ContextRecord->Ecx);
-		outfile << std::format("\nEAX 0x{:x}", pExceptionInfo->ContextRecord->Eax);
+		outfile << std::format("\nEdi 0x{:08x}", pExceptionInfo->ContextRecord->Edi);
+		outfile << std::format("\nEsi 0x{:08x}", pExceptionInfo->ContextRecord->Esi);
+		outfile << std::format("\nEbx 0x{:08x}", pExceptionInfo->ContextRecord->Ebx);
+		outfile << std::format("\nEdx 0x{:08x}", pExceptionInfo->ContextRecord->Edx);
+		outfile << std::format("\nEcx 0x{:08x}", pExceptionInfo->ContextRecord->Ecx);
+		outfile << std::format("\nEax 0x{:08x}", pExceptionInfo->ContextRecord->Eax);
 
 		outfile << "\n\n";
 
+		// Callstack
+		outfile << "Callstack:\n";
+
+		CONTEXT* context = pExceptionInfo->ContextRecord;
+		STACKFRAME64 stackFrame;
+		memset(&stackFrame, 0, sizeof(STACKFRAME));
+
+		stackFrame.AddrPC.Offset = context->Eip;
+		stackFrame.AddrPC.Mode = AddrModeFlat;
+		stackFrame.AddrFrame.Offset = context->Ebp;
+		stackFrame.AddrFrame.Mode = AddrModeFlat;
+		stackFrame.AddrStack.Offset = context->Esp;
+		stackFrame.AddrStack.Mode = AddrModeFlat;
+
+		int frameCount = 0;
+		while (StackWalk64(IMAGE_FILE_MACHINE_I386, process, thread, &stackFrame, context, NULL, SymFunctionTableAccess64, SymGetModuleBase64, NULL))
+		{
+			DWORD64 address = stackFrame.AddrPC.Offset;
+			auto moduleInfo = GetModuleInfo((PVOID)address);
+
+			outfile << std::format("Frame {}: 0x{:08x} in {}.{:08x}\n", frameCount++, address, moduleInfo.ModuleName, address - moduleInfo.BaseOfImage);
+
+			if (address == 0) {
+				break;
+			}
+		}
+
+		outfile << "\n";
+
+		// Modules
+		outfile << "Modules:\n";
+
 		HMODULE moduleHandles[1024];
 		DWORD bytesNeeded;
-		HANDLE processHandle = GetCurrentProcess();
-		if (EnumProcessModules(processHandle, moduleHandles, sizeof(moduleHandles), &bytesNeeded))
+		if (EnumProcessModules(process, moduleHandles, sizeof(moduleHandles), &bytesNeeded))
 		{
 			int moduleCount = bytesNeeded / sizeof(HMODULE);
 
@@ -49,7 +101,7 @@ namespace WinApiHelper
 			{
 				char moduleName[MAX_PATH];
 
-				if (K32GetModuleBaseNameA(processHandle, moduleHandles[i], moduleName, sizeof(moduleName) / sizeof(char)))
+				if (K32GetModuleBaseNameA(process, moduleHandles[i], moduleName, sizeof(moduleName) / sizeof(char)))
 				{
 					outfile << moduleName << " - " << "0x" << moduleHandles[i] << "\n";
 				}
@@ -58,12 +110,14 @@ namespace WinApiHelper
 
 		outfile << "-----------------------------------------------------------\n";
 
+		SymCleanup(process);
+
 		return EXCEPTION_EXECUTE_HANDLER;
 	}
 
 	void SetExceptionFilters()
 	{
-		SetUnhandledExceptionFilter(CustomUnhandledExceptionFilter);
+		SetUnhandledExceptionFilter(CrashLogger);
 	}
 
 	bool CheckGame()
