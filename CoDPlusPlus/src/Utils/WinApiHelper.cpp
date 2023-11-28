@@ -37,8 +37,7 @@ namespace WinApiHelper
 		SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_UNDNAME);
 		SymInitialize(process, nullptr, TRUE);
 
-		std::ofstream outfile;
-		outfile.open("codplusplus_crash.log", std::ios::app);
+		std::ofstream outfile("codplusplus_crash.log", std::ios::app);
 
 		time_t t = time(0);
 		std::tm tm = *std::localtime(&t);
@@ -109,6 +108,11 @@ namespace WinApiHelper
 		}
 
 		outfile << "-----------------------------------------------------------\n";
+
+		outfile.flush();
+
+		if (outfile.is_open())
+			outfile.close();
 
 		SymCleanup(process);
 

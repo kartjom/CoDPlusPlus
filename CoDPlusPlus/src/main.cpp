@@ -1,11 +1,13 @@
 #include <Windows.h>
 
+#include <Utils/Logger/FileLogger.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
 #include <Utils/ImGuiManager.h>
 #include <Engine/CoDUO.h>
 
 using namespace CoDUO;
+using namespace Utils;
 
 DWORD WINAPI MainThread(LPVOID param)
 {
@@ -17,6 +19,8 @@ DWORD WINAPI MainThread(LPVOID param)
 
 	WinApiHelper::SetExceptionFilters();
 	WinApiHelper::CreateConsole("Console");
+	FileLogger::BeginLog("codplusplus_app.log");
+
 	WinApiHelper::InjectDetours();
 
 	#ifdef CLIENT

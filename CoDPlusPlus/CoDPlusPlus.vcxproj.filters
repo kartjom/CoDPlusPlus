@@ -35,6 +35,7 @@
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Hook\Detours\Detours_CoDUO_Fixes.cpp" />
+    <ClCompile Include="src\Utils\Logger\FileLogger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -75,5 +76,7 @@
     <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Awaiter.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
+    <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
+    <ClInclude Include="src\Utils\Logger\FileLogger.h" />
   </ItemGroup>
 </Project>

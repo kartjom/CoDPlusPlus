@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utils\Logger\FileLogger.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Hook\Detours\Detours_CoDUO_Fixes.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="vendor\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Utils\Logger\FileLogger.h" />
+    <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Awaiter.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
