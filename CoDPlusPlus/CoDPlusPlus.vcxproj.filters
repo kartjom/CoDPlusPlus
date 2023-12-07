@@ -78,5 +78,6 @@
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Utils\Logger\FileLogger.h" />
+    <ClInclude Include="src\Structs\Engine\level_locals.h" />
   </ItemGroup>
 </Project>

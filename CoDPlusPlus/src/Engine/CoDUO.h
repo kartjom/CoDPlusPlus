@@ -1,4 +1,5 @@
 #pragma once
+#include <Structs/Engine/level_locals.h>
 #include <Structs/Engine/server.h>
 #include <Structs/Engine/gentity.h>
 #include <Structs/Engine/gclient.h>
@@ -17,6 +18,7 @@ namespace CoDUO
 	inline DWORD uo_game_mp_x86 = 0;
 
 	inline serverStatic_t* svs = nullptr;
+	inline level_locals_t* level = nullptr;
 	inline refdef_t* refdef = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;

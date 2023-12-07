@@ -45,5 +45,9 @@ struct gclient_t
 	int32_t oldbuttons; //0x4630
 	char pad_4634[28]; //0x4634
 	vec3_t viewangles2; //0x4650
-	char pad_465C[536]; //0x465C
+	char pad_465C[28]; //0x465C
+	int32_t inactivityTime; //0x4678
+	char pad_467C[4]; //0x467C
+	int32_t inactivityWarning; //0x4680
+	char pad_4684[496]; //0x4684
 };

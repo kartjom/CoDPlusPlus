@@ -22,6 +22,7 @@ namespace Detours
 	bool OnPlayerSay(gentity_t* player, char** text_ptr, int mode);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
+	bool OnPlayerInactivity(gclient_t* player);
 
 	void OnProjectileBounce(gentity_t* projectile);
 	void OnProjectileExplode(gentity_t* projectile);
@@ -327,6 +328,41 @@ namespace Detours
 		JumpBack(VoteCallCallback)
 	}
 
+	ImplementDetour(PlayerInactivity)
+	{
+		_asm pushad
+
+		if (CodeCallback.OnPlayerInactivity)
+		{
+			_asm
+			{
+				push eax // player
+				call OnPlayerInactivity
+
+				add esp, 0x4 // 1 arg, 4 bytes
+
+				cmp al, 1 // Skip inactivity kick
+				jne inactivity_continue
+
+				popad
+				mov eax, 1 // return value
+				ret
+			}
+		}
+
+		inactivity_continue: // Kick the player
+		_asm popad
+
+		_restore
+		{
+			mov ecx, uo_game_mp_x86
+			add ecx, 0x0030fac0
+			sub eax, [ecx]
+		}
+
+		JumpBack(PlayerInactivity)
+	}
+
 	ImplementDetour(ProjectileBounceCallback)
 	{
 		_asm pushad
@@ -510,6 +546,7 @@ namespace Detours
 			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
 			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
 			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerVote");
+			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerInactivity");
 			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnVoteCalled");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
@@ -616,6 +653,27 @@ namespace Detours
 			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
 			{
 				return true; // Skip the vote if script returned false
+			}
+		}
+
+		return false;
+	}
+
+	bool __cdecl OnPlayerInactivity(gclient_t* player)
+	{
+		if (player)
+		{
+			Scr_AddEntityNum(player->clientNum);
+			Scr_RunScript(CodeCallback.OnPlayerInactivity, 1);
+
+			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
+			{
+				cvar_t* g_inactivity = Cvar_FindVar("g_inactivity");
+
+				player->inactivityTime = (g_inactivity != nullptr ? g_inactivity->integer : 180) * 1000 + level->time;
+				player->inactivityWarning = 0;
+
+				return true; // Skip inactivity penalty if script returned false
 			}
 		}
 
