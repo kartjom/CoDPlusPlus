@@ -539,17 +539,17 @@ namespace Detours
 
 	void __cdecl LoadGameTypeScript()
 	{
-		if (Scr_LoadScript("maps/mp/gametypes/_callbacksetup"))
+		if (Scr_LoadScript("maps/mp/gametypes/_codplusplus"))
 		{
-			CodeCallback.OnInitialize = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnInitialize");
-			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerShoot");
-			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerMelee");
-			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerSay");
-			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerVote");
-			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnPlayerInactivity");
-			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnVoteCalled");
-			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileBounce");
-			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_callbacksetup", "CodeCallback_OnProjectileExplode");
+			CodeCallback.OnInitialize = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnInitialize");
+			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerShoot");
+			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerMelee");
+			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerSay");
+			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerVote");
+			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerInactivity");
+			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnVoteCalled");
+			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnProjectileBounce");
+			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnProjectileExplode");
 		}
 	}
 
