@@ -86,14 +86,29 @@ namespace ImGuiManager
 
 	void CursorToCenter()
 	{
-		RECT rect;
-		if (GetClientRect(hWnd, &rect))
-		{
-			int width = rect.right - rect.left;
-			int height = rect.bottom - rect.top;
+		int width, height;
+		RECT window_rect;
 
-			SetCursorPos(width / 2, height / 2);
+		width = GetSystemMetrics(SM_CXSCREEN);
+		height = GetSystemMetrics(SM_CYSCREEN);
+
+		GetWindowRect(hWnd, &window_rect);
+		if (window_rect.left < 0) {
+			window_rect.left = 0;
 		}
+		if (window_rect.top < 0) {
+			window_rect.top = 0;
+		}
+		if (window_rect.right >= width) {
+			window_rect.right = width - 1;
+		}
+		if (window_rect.bottom >= height - 1) {
+			window_rect.bottom = height - 1;
+		}
+		int window_center_x = (window_rect.right + window_rect.left) / 2;
+		int window_center_y = (window_rect.top + window_rect.bottom) / 2;
+
+		SetCursorPos(window_center_x, window_center_y);
 	}
 
 	bool Toggle()
