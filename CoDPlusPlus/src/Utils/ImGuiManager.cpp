@@ -84,9 +84,38 @@ namespace ImGuiManager
 		ImGui::DestroyContext();
 	}
 
-	bool Toggle() { return ShouldShow = !ShouldShow; }
-	bool Show() { return ShouldShow = true; }
-	bool Hide() { return ShouldShow = false; }
+	void CursorToCenter()
+	{
+		RECT rect;
+		if (GetClientRect(hWnd, &rect))
+		{
+			int width = rect.right - rect.left;
+			int height = rect.bottom - rect.top;
+
+			SetCursorPos(width / 2, height / 2);
+		}
+	}
+
+	bool Toggle()
+	{
+		return ShouldShow ? Hide() : Show();
+	}
+
+	bool Show()
+	{
+		CursorToCenter();
+		s_wmv->mouseInitialized = false;
+
+		return ShouldShow = true;
+	}
+
+	bool Hide()
+	{
+		CursorToCenter();
+		s_wmv->mouseInitialized = true;
+
+		return ShouldShow = false;
+	}
 
 	void InteractiveTick()
 	{

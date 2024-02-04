@@ -7,6 +7,7 @@
 #include <Structs/Engine/cvar.h>
 #include <Structs/Engine/trace.h>
 #include <Structs/Engine/refdef.h>
+#include <Structs/Engine/input.h>
 #include <Engine/ScriptLayer/Gsc/GscExtensions.h>
 #include <wtypes.h>
 
@@ -20,6 +21,7 @@ namespace CoDUO
 	inline serverStatic_t* svs = nullptr;
 	inline level_locals_t* level = nullptr;
 	inline refdef_t* refdef = nullptr;
+	inline WinMouseVars_t* s_wmv = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
 	inline cvar_t* cvar_indexes = nullptr;

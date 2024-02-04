@@ -48,6 +48,7 @@
     <ClCompile Include="vendor\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
     <ClInclude Include="src\Utils\Logger\FileLogger.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
