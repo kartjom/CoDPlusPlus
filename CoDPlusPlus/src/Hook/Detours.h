@@ -6,6 +6,8 @@ DeclareType(__stdcall, HMODULE, LoadLibraryA)(LPCSTR lpLibFileName);
 
 namespace Detours
 {
+	DeclareDetour(InjectEntryPoint);
+
 	DeclareOverrideArg1(__stdcall, HMODULE, LoadLibraryA, LPCSTR lpLibFileName);
 	
 	inline DWORD FreeLibrary_kernelbase = 0;

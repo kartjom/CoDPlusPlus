@@ -3,14 +3,20 @@
 #include <stdio.h>
 #include <fstream>
 #include <filesystem>
+#include <Utils/WinApiHelper.h>
+#include <Utils/OpenGLHelper.h>
+#include <Utils/Logger/FileLogger.h>
 
 #define MAP_BINDINGS "map_bindings.txt"
 
+using namespace Utils;
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
 
 namespace Detours
 {
+	void CoDPlusPlus_Initialize();
+
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
 	void Scr_ExecThread_GscReturnValue();
@@ -30,6 +36,23 @@ namespace Detours
 
 namespace Detours
 {
+	ImplementDetour(InjectEntryPoint)
+	{
+		_asm pushad
+
+		CoDPlusPlus_Initialize();
+
+		_asm popad
+
+		_restore
+		{
+			mov ecx, 0x00469e50
+			call ecx
+		}
+
+		JumpBack(InjectEntryPoint)
+	}
+
 	ImplementDetour(LoadFunctionMP)
 	{
 		_asm sub esp, 0x4
@@ -435,6 +458,29 @@ namespace Detours
 
 namespace Detours
 {
+	void __cdecl CoDPlusPlus_Initialize()
+	{
+		static bool IsLibraryInitialized = false;
+
+		if (!IsLibraryInitialized)
+		{
+			WinApiHelper::SetExceptionFilters();
+			WinApiHelper::CreateConsole("Console");
+			FileLogger::BeginLog("codplusplus_app.log");
+
+			WinApiHelper::InjectDetours();
+
+			#ifdef CLIENT
+				OpenGLHelper::InjectDetours();
+			#endif
+
+			CoDUO::BaseAttach();
+			FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
+
+			IsLibraryInitialized = true;
+		}
+	}
+
 	void* __cdecl GetFunctionCallback(const char* value)
 	{
 		if (gsc_functions.find(value) != gsc_functions.end())
