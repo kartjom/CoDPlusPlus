@@ -12,9 +12,9 @@
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscFunctionExt.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscMethodExt.cpp" />
     <ClCompile Include="src\Hook\Hook.cpp" />
-    <ClCompile Include="src\Hook\Detours\Detours_CoDUO.cpp" />
-    <ClCompile Include="src\Hook\Detours\Detours_OpenGL.cpp" />
-    <ClCompile Include="src\Hook\Detours\Detours_WinAPI.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\BaseGame.cpp" />
+    <ClCompile Include="src\Hook\Detours\Misc\OpenGL.cpp" />
+    <ClCompile Include="src\Hook\Detours\Misc\WinAPI.cpp" />
     <ClCompile Include="src\Utils\ImGuiManager.cpp" />
     <ClCompile Include="src\Utils\OpenGLHelper.cpp" />
     <ClCompile Include="src\Utils\WinApiHelper.cpp" />
@@ -34,8 +34,10 @@
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
-    <ClCompile Include="src\Hook\Detours\Detours_CoDUO_Fixes.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\GameFixes.cpp" />
     <ClCompile Include="src\Utils\Logger\FileLogger.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\EngineCallbacks.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\EntryPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
