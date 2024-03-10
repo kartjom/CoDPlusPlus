@@ -6,18 +6,18 @@
 namespace CoDUO::Gsc
 {
 	inline struct Callbacks {
-		uint32_t OnInitialize = 0;
+		uint32_t OnInitialize;
 
-		uint32_t OnPlayerShoot = 0;			//	 ePlayer
-		uint32_t OnPlayerMelee = 0;			//	 ePlayer, eTarget (optional)
-		uint32_t OnPlayerSay = 0;			//	 ePlayer, sText, iMode, bConsole
-		uint32_t OnPlayerVote = 0;			//	 ePlayer, sVote
-		uint32_t OnPlayerInactivity = 0;	//	 ePlayer
-		uint32_t OnVoteCalled = 0;			//	 ePlayer, sVoteType, aVoteInfo
+		uint32_t OnPlayerShoot;			//	 ePlayer
+		uint32_t OnPlayerMelee;			//	 ePlayer, eTarget (optional)
+		uint32_t OnPlayerSay;			//	 ePlayer, sText, iMode, bConsole
+		uint32_t OnPlayerVote;			//	 ePlayer, sVote
+		uint32_t OnPlayerInactivity;	//	 ePlayer
+		uint32_t OnVoteCalled;			//	 ePlayer, sVoteType, aVoteInfo
 
-		uint32_t OnProjectileBounce = 0;	//	 eProjectile
-		uint32_t OnProjectileExplode = 0;	//	 eProjectile
-	} CodeCallback;
+		uint32_t OnProjectileBounce;	//	 eProjectile
+		uint32_t OnProjectileExplode;	//	 eProjectile
+	} CodeCallback = {};
 
 	inline ScrVar Scr_ReturnValue = {};
 }
