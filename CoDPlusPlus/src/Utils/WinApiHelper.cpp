@@ -9,6 +9,7 @@
 #include <Hook/Detours.h>
 
 #include <psapi.h>
+#include <filesystem>
 #include <fstream>
 #include <format>
 #include <iomanip>
@@ -37,7 +38,8 @@ namespace WinApiHelper
 		SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_UNDNAME);
 		SymInitialize(process, nullptr, TRUE);
 
-		std::ofstream outfile("codplusplus_crash.log", std::ios::app);
+		std::filesystem::create_directory("codplusplus");
+		std::ofstream outfile("codplusplus/crash.log", std::ios::app);
 
 		time_t t = time(0);
 		std::tm tm = *std::localtime(&t);
@@ -56,6 +58,7 @@ namespace WinApiHelper
 		outfile << std::format("\nEcx 0x{:08x}", pExceptionInfo->ContextRecord->Ecx);
 		outfile << std::format("\nEax 0x{:08x}", pExceptionInfo->ContextRecord->Eax);
 
+		outfile.flush();
 		outfile << "\n\n";
 
 		// Callstack
@@ -85,6 +88,7 @@ namespace WinApiHelper
 			}
 		}
 
+		outfile.flush();
 		outfile << "\n";
 
 		// Modules

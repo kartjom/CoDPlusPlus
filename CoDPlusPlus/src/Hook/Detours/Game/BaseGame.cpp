@@ -6,8 +6,6 @@
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
 
-#define MAP_BINDINGS "map_bindings.txt"
-
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
 
@@ -158,10 +156,12 @@ namespace Detours
 
 	void __cdecl LoadMapBindings()
 	{
-		char* mapname = Cmd_Argv[1];
-		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(MAP_BINDINGS)) return;
+		constexpr const char* map_bindings = "codplusplus/map_bindings.txt";
 
-		std::ifstream file(MAP_BINDINGS, std::ifstream::in);
+		char* mapname = Cmd_Argv[1];
+		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(map_bindings)) return;
+
+		std::ifstream file(map_bindings, std::ifstream::in);
 		if (!file.is_open()) return;
 
 		std::string _default;
