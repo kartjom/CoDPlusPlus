@@ -16,6 +16,7 @@ namespace Detours
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(Tick);
 	DeclareDetour(PostInitGame);
+
 	DeclareDetour(ShootCallback);
 	DeclareDetour(MeleeCallback);
 	DeclareDetour(PlayerSayCallback);
@@ -24,6 +25,7 @@ namespace Detours
 	DeclareDetour(PlayerInactivity);
 	DeclareDetour(ProjectileBounceCallback);
 	DeclareDetour(ProjectileExplodeCallback);
+	DeclareDetour(SmokeExplodeCallback);
 
 	DeclareDetour(LoadFunctionMP);
 	DeclareDetour(LoadMethodMP);

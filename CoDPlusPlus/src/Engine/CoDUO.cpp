@@ -66,7 +66,8 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x00023698, Detours::VoteCallCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x0001aaa0, Detours::PlayerInactivity, 6);
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
+		DetourRet(uo_game_mp_x86 + 0x00030448, Detours::ProjectileExplodeCallback, 6);
+		DetourRet(uo_game_mp_x86 + 0x00030ac5, Detours::SmokeExplodeCallback, 5);
 
 		// Not used but available
 		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6); 

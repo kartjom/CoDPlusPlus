@@ -314,7 +314,7 @@ namespace Detours
 		{
 			_asm
 			{
-				push ebp // projectile
+				push edi // projectile
 				call OnProjectileExplode
 
 				add esp, 0x4 // 1 arg, 4 bytes
@@ -325,12 +325,37 @@ namespace Detours
 
 		_restore
 		{
-			sub esp, 0x54
-			push ebx
-			push ebp
+			mov eax, dword ptr [edi + 0x1a8]
 		}
 
 		JumpBack(ProjectileExplodeCallback);
+	}
+
+	ImplementDetour(SmokeExplodeCallback)
+	{
+		_asm pushad
+
+		if (CodeCallback.OnProjectileExplode)
+		{
+			_asm
+			{
+				push edi // projectile
+				call OnProjectileExplode
+
+				add esp, 0x4 // 1 arg, 4 bytes
+			}
+		}
+
+		_asm popad
+
+		_restore
+		{
+			push ebx
+			push esi
+			lea ebx, [edi + 0xc]
+		}
+
+		JumpBack(SmokeExplodeCallback);
 	}
 }
 
