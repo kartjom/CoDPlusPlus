@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClCompile Include="src\Hook\Detours\Game\EngineCallbacks.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\EntryPoint.cpp" />
-    <ClCompile Include="src\Utils\Logger\FileLogger.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\GameFixes.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
@@ -52,7 +51,6 @@
   <ItemGroup>
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
-    <ClInclude Include="src\Utils\Logger\FileLogger.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Awaiter.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />

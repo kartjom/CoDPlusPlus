@@ -7,7 +7,6 @@
   <li>New engine callbacks</li>
   <li>Many new GSC functions and methods</li>
   <li>Asynchronous HTTP requests</li>
-  <li>Asynchronous file logging</li>
   <li>Map Bindings</li>
   <li>Client-side ImGui integration</li>
   <li>Few crash and exploit fixes on the engine level</li>

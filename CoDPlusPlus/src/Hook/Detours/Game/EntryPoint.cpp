@@ -2,9 +2,7 @@
 #include <Hook/Detours.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
-#include <Utils/Logger/FileLogger.h>
 
-using namespace Utils;
 using namespace CoDUO;
 
 namespace Detours
@@ -41,9 +39,7 @@ namespace Detours
 		if (!IsLibraryInitialized)
 		{
 			WinApiHelper::SetExceptionFilters();
-			WinApiHelper::CreateConsole("Console");
-			FileLogger::BeginLog("codplusplus_app.log");
-
+			WinApiHelper::CreateConsole("CoDPlusPlus");
 			WinApiHelper::InjectDetours();
 
 			#ifdef CLIENT

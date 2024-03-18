@@ -9,6 +9,7 @@ namespace Detours
 	void Scr_ExecThread_GscReturnValue();
 
 	void LoadGameTypeScript();
+	void OnInitialize();
 	void OnPlayerShoot(gentity_t* player);
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
 	bool OnPlayerSay(gentity_t* player, char** text_ptr, int mode);
@@ -58,6 +59,27 @@ namespace Detours
 		}
 
 		JumpBack(GScr_LoadGameTypeScript)
+	}
+
+	ImplementDetour(PostInitGame)
+	{
+		_restore
+		{
+			add esp, 0xc
+			pop esi
+			pop ebp
+		}
+
+		_asm pushad
+
+		if (CodeCallback.OnInitialize)
+		{
+			OnInitialize();
+		}
+
+		_asm popad
+
+		JumpBack(PostInitGame)
 	}
 
 	ImplementDetour(ShootCallback)
@@ -358,18 +380,24 @@ namespace Detours
 
 	void __cdecl LoadGameTypeScript()
 	{
-		if (Scr_LoadScript("maps/mp/gametypes/_codplusplus"))
+		constexpr const char* _codplusplus = "maps/mp/gametypes/_codplusplus";
+		if ( Scr_LoadScript(_codplusplus) )
 		{
-			CodeCallback.OnInitialize = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnInitialize");
-			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerShoot");
-			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerMelee");
-			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerSay");
-			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerVote");
-			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnPlayerInactivity");
-			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnVoteCalled");
-			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnProjectileBounce");
-			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle("maps/mp/gametypes/_codplusplus", "CodeCallback_OnProjectileExplode");
+			CodeCallback.OnInitialize = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnInitialize");
+			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerShoot");
+			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerMelee");
+			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerSay");
+			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerVote");
+			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerInactivity");
+			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnVoteCalled");
+			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileBounce");
+			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileExplode");
 		}
+	}
+
+	void __cdecl OnInitialize()
+	{
+		Scr_RunScript(CodeCallback.OnInitialize, 0);
 	}
 
 	void __cdecl OnPlayerShoot(gentity_t* player)

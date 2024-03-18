@@ -1,10 +1,8 @@
 #include <Engine/ScriptLayer/Gsc/Async/HttpResult/HttpResult.h>
 #include <Utils/Network/HttpClient.h>
-#include <Utils/Logger/FileLogger.h>
 #include <Engine/CoDUO.h>
 #include "GscExtensions.h"
 
-using namespace Utils;
 using namespace CoDUO;
 using namespace CoDUO::Gsc::Async;
 namespace CoDUO::Gsc
@@ -55,17 +53,6 @@ namespace CoDUO::Gsc
 
 		Scr_AddInt((timeInfo.tm_wday == 0 ? 7 : timeInfo.tm_wday));
 		Scr_AddArrayStringIndexed(G_NewString("weekday"));
-	}
-
-	void Scr_LogToFile()
-	{
-		const char* str = Scr_GetString(0);
-
-		if (str)
-		{
-			std::string log(str);
-			FileLogger::EnqueueLog(log);
-		}
 	}
 
 	void Scr_GetWeaponInfo()

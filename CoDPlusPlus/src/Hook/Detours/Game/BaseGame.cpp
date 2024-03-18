@@ -5,7 +5,6 @@
 #include <filesystem>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
-#include <Utils/Logger/FileLogger.h>
 
 #define MAP_BINDINGS "map_bindings.txt"
 

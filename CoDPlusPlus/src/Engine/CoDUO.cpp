@@ -57,6 +57,8 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
+
+		DetourRet(uo_game_mp_x86 + 0x0002c46f, Detours::PostInitGame, 5);
 		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
 		DetourRet(uo_game_mp_x86 + 0x00055727, Detours::MeleeCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00022B5D, Detours::PlayerSayCallback, 7);
@@ -65,7 +67,9 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x0001aaa0, Detours::PlayerInactivity, 6);
 		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
 		DetourRet(uo_game_mp_x86 + 0x00030420, Detours::ProjectileExplodeCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
+
+		// Not used but available
+		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6); 
 
 		DetourRet(uo_game_mp_x86 + 0x0001b482, Detours::VehicleCrashFix, 6);
 		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
@@ -95,11 +99,6 @@ namespace CoDUO
 
 	void ServerTick()
 	{
-		// One time initialization, can be used for threaded Tick() in Gsc
-		if (CodeCallback.OnInitialize)
-		{
-			Scr_RunScript(CodeCallback.OnInitialize, 0);
-			CodeCallback.OnInitialize = 0;
-		}
+
 	}
 }
