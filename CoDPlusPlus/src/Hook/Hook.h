@@ -8,7 +8,7 @@ namespace Hook
 {
 	constexpr DWORD BaseAddress = 0x400000;
 
-	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret);
+	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret, void* buffer = nullptr);
 	void Patch(DWORD patchAddress, void* buffer, int len);
 	
 	template<typename T>

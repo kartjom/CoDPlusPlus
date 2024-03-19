@@ -12,7 +12,9 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 			return FALSE;
 		}
 
-		DetourRet(0x0046c79a, Detours::InjectEntryPoint, 5);
+		Detours::InjectEntryPoint_addr = 0x0046c79a;
+		Hook::Detour(Detours::InjectEntryPoint_addr, Detours::InjectEntryPoint_n, 5, &Detours::InjectEntryPoint_r, Detours::InjectEntryPoint_bytes);
+
 		DisableThreadLibraryCalls(hModule);
 	}
 

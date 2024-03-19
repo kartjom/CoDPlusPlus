@@ -6,6 +6,8 @@ DeclareType(__stdcall, HMODULE, LoadLibraryA)(LPCSTR lpLibFileName);
 
 namespace Detours
 {
+	inline DWORD InjectEntryPoint_addr;
+	inline char InjectEntryPoint_bytes[5];
 	DeclareDetour(InjectEntryPoint);
 
 	DeclareOverrideArg1(__stdcall, HMODULE, LoadLibraryA, LPCSTR lpLibFileName);

@@ -2,6 +2,7 @@
 #include <Hook/Detours.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
+#include <Hook/Hook.h>
 
 using namespace CoDUO;
 
@@ -47,6 +48,9 @@ namespace Detours
 			#endif
 
 			CoDUO::BaseAttach();
+
+			// Unhook from the game loop
+			Hook::Patch(Detours::InjectEntryPoint_addr, Detours::InjectEntryPoint_bytes, 5);
 			FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
 			IsLibraryInitialized = true;

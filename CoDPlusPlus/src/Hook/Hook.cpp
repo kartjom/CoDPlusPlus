@@ -2,9 +2,14 @@
 
 namespace Hook
 {
-	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret)
+	void Detour(DWORD hookAddress, void* jumpTo, int len, DWORD* ret, void* buffer)
 	{
 		*ret = hookAddress + len;
+
+		if (buffer)
+		{
+			memcpy_s(buffer, len, (void*)hookAddress, len);
+		}
 
 		DWORD protection;
 		VirtualProtect((void*)hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
