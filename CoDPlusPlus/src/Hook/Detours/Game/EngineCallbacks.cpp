@@ -392,10 +392,12 @@ namespace Detours
 			case VarType::Entity:
 				Scr_ReturnValue.Integer = var->Integer;
 				break;
+			case VarType::Function:
+				Scr_ReturnValue.Integer = var->Integer;
+				break;
 			default:
 				Scr_ReturnValue.Integer = var->Integer;
 			}
-
 		}
 		catch (std::exception& e)
 		{

@@ -144,6 +144,18 @@ namespace CoDUO
 		}
 	}
 
+	int32_t Scr_GetFunction(int param)
+	{
+		_asm
+		{
+			push param
+			mov eax, 0x00490370
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
 	VariableValue* Scr_GetValue(uint32_t index)
 	{
 		VariableValue* ptr = (VariableValue*)(*(uintptr_t*)0x00b6ac90 + (index + 1) * 8);

@@ -32,6 +32,7 @@ enum class VarType
 	Float = 4,
 	Integer = 5,
 	Entity = 7,
+	Function = 9,
 };
 
 struct ScrVar
