@@ -18,6 +18,7 @@ namespace Detours
 	DeclareDetour(GScr_LoadGameTypeScript);
 	DeclareDetour(Tick);
 	DeclareDetour(PostInitGame);
+	DeclareDetour(ConsoleCommand);
 
 	DeclareDetour(ShootCallback);
 	DeclareDetour(MeleeCallback);

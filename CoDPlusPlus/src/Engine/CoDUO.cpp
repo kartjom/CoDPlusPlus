@@ -2,7 +2,6 @@
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
-
 #include <iostream>
 
 using namespace CoDUO::Gsc;
@@ -50,10 +49,7 @@ namespace CoDUO
 
 		CodeCallback = {};
 
-		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
-			PendingTasks = {};
-		}
+		uo_game_mp_x86_Cleanup();
 
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
@@ -71,7 +67,8 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x00030ac5, Detours::SmokeExplodeCallback, 5);
 
 		// Not used but available
-		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6); 
+		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
+		DetourRet(uo_game_mp_x86 + 0x0004f1d2, Detours::ConsoleCommand, 5);
 
 		DetourRet(uo_game_mp_x86 + 0x0001b482, Detours::VehicleCrashFix, 6);
 		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
@@ -91,12 +88,19 @@ namespace CoDUO
 
 		CodeCallback = {};
 
-		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
-			PendingTasks = {};
-		}
+		uo_game_mp_x86_Cleanup();
 
 		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
+	}
+
+	void uo_game_mp_x86_Cleanup()
+	{
+		{
+			std::unique_lock<std::mutex> lock(TaskResultsMutex);
+			PendingTasks.clear();
+		}
+
+		gsc_commands.clear();
 	}
 
 	void ServerTick()

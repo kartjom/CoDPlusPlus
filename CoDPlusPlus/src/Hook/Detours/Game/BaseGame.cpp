@@ -13,6 +13,7 @@ namespace Detours
 {
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
+	bool RunCustomConsoleCommand(const char* name);
 	void LoadMapBindings();
 }
 
@@ -130,6 +131,44 @@ namespace Detours
 
 		JumpBack(Tick)
 	}
+
+	ImplementDetour(ConsoleCommand)
+	{
+		_asm pushad
+
+		_asm
+		{
+			lea eax, [esp + 0x20]
+			push eax // cmd_name
+
+			call RunCustomConsoleCommand
+
+			add esp, 0x4
+
+			cmp al, 1
+			je cmd_found
+		}
+
+		_asm popad
+
+		_restore
+		{
+			mov eax, uo_game_mp_x86
+			add eax, 0x001ee4ac
+			mov eax, [eax]
+		}
+
+		JumpBack(ConsoleCommand)
+
+		cmd_found:
+		_asm
+		{
+			popad
+			add esp, 0x404
+			mov eax, 0x1
+			ret
+		}
+	}
 }
 
 namespace Detours
@@ -152,6 +191,32 @@ namespace Detours
 		}
 
 		return 0;
+	}
+
+	bool __cdecl RunCustomConsoleCommand(const char* cmd_name)
+	{
+		if (gsc_commands.find(cmd_name) != gsc_commands.end())
+		{
+			int32_t handle = gsc_commands[cmd_name];
+
+			if (handle)
+			{
+				int argc = *Cmd_Argc;
+
+				Scr_MakeArray();
+				for (int i = 1; i < argc; i++)
+				{
+					Scr_AddString(Cmd_Argv[i]);
+					Scr_AddArray();
+				}
+
+				Scr_RunScript(handle, 1);
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void __cdecl LoadMapBindings()

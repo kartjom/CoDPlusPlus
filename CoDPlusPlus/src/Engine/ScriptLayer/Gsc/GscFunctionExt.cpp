@@ -23,6 +23,21 @@ namespace CoDUO::Gsc
 		}
 	}
 
+	void Scr_AddCommand()
+	{
+		if (Scr_GetNumParam() < 2) return;
+		if (Scr_GetType(0) != (int)VarType::String) return;
+		if (Scr_GetType(1) != (int)VarType::Function) return;
+
+		const char* name = Scr_GetString(0);
+		int fn = Scr_GetFunction(1);
+
+		if (!name || !fn) return;
+		if (Cmd_HasCommand(name)) return;
+
+		gsc_commands[name] = fn;
+	}
+
 	void Scr_GetSystemTime()
 	{
 		std::time_t currentTime = time(0);
@@ -32,7 +47,7 @@ namespace CoDUO::Gsc
 
 		Scr_AddInt(currentTime);
 		Scr_AddArrayStringIndexed(G_NewString("timestamp"));
-		
+
 		Scr_AddInt(timeInfo.tm_year + 1900);
 		Scr_AddArrayStringIndexed(G_NewString("year"));
 

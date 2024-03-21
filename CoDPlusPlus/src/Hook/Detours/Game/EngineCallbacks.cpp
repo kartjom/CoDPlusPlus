@@ -424,6 +424,8 @@ namespace Detours
 
 	void __cdecl OnInitialize()
 	{
+		uo_game_mp_x86_Cleanup();
+
 		Scr_RunScript(CodeCallback.OnInitialize, 0);
 	}
 

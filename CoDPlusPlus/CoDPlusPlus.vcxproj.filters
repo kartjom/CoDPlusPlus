@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Engine\Mappings\CvarMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\ConsoleMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\GscMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\PlayerMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\StringUtilsMapping.cpp" />
