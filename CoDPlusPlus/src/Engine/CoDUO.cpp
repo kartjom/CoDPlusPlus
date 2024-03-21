@@ -53,6 +53,8 @@ namespace CoDUO
 
 		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
 		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
+		DetourRet(uo_game_mp_x86 + 0x0004f1d2, Detours::ConsoleCommand, 5);
+
 		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
 
 		DetourRet(uo_game_mp_x86 + 0x0002c46f, Detours::PostInitGame, 5);
@@ -66,12 +68,11 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x00030448, Detours::ProjectileExplodeCallback, 6);
 		DetourRet(uo_game_mp_x86 + 0x00030ac5, Detours::SmokeExplodeCallback, 5);
 
-		// Not used but available
-		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::Tick, 6);
-		DetourRet(uo_game_mp_x86 + 0x0004f1d2, Detours::ConsoleCommand, 5);
-
 		DetourRet(uo_game_mp_x86 + 0x0001b482, Detours::VehicleCrashFix, 6);
 		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
+
+		// Not used but available
+		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::ServerTick, 6);
 		
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
@@ -105,6 +106,5 @@ namespace CoDUO
 
 	void ServerTick()
 	{
-
 	}
 }

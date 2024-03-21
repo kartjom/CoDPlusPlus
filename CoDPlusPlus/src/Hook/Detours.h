@@ -16,7 +16,7 @@ namespace Detours
 	DeclareDetour(FreeLibrary);
 
 	DeclareDetour(GScr_LoadGameTypeScript);
-	DeclareDetour(Tick);
+	DeclareDetour(ServerTick);
 	DeclareDetour(PostInitGame);
 	DeclareDetour(ConsoleCommand);
 

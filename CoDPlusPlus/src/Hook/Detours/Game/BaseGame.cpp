@@ -116,11 +116,11 @@ namespace Detours
 		JumpBack(SV_Map_LoadConfig)
 	}
 
-	ImplementDetour(Tick)
+	ImplementDetour(ServerTick)
 	{
 		_asm pushad
 
-		ServerTick();
+		CoDUO::ServerTick();
 
 		_asm popad
 
@@ -129,7 +129,7 @@ namespace Detours
 			sub esp, 0x254
 		}
 
-		JumpBack(Tick)
+		JumpBack(ServerTick)
 	}
 
 	ImplementDetour(ConsoleCommand)
