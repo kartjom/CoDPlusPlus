@@ -38,6 +38,33 @@ namespace CoDUO
 		}
 	}
 
+	void Cmd_RemoveCommand(const char* cmd_name)
+	{
+		_asm
+		{
+			push cmd_name
+			mov eax, 0x0042c4a0
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	bool Cmd_HasCommand(const char* cmd_name)
+	{
+		cmd_function_t* cmd;
+
+		for (cmd = *cmd_functions; cmd; cmd = cmd->next)
+		{
+			if (!strcmp(cmd_name, cmd->name))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	cvar_t* Cvar_FindVar(const char* var_name)
 	{
 		_asm

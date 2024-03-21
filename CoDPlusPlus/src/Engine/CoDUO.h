@@ -5,6 +5,7 @@
 #include <Structs/Engine/gclient.h>
 #include <Structs/Engine/weapondef.h>
 #include <Structs/Engine/cvar.h>
+#include <Structs/Engine/cmd.h>
 #include <Structs/Engine/trace.h>
 #include <Structs/Engine/refdef.h>
 #include <Structs/Engine/input.h>
@@ -27,6 +28,7 @@ namespace CoDUO
 	inline cvar_t* cvar_indexes = nullptr;
 	inline int32_t* bg_iNumWeapons = nullptr;
 
+	inline cmd_function_t** cmd_functions;
 	inline char** Cmd_Argv = nullptr;
 	inline int* Cmd_Argc = nullptr;
 };
@@ -67,6 +69,8 @@ namespace CoDUO /* CvarMapping.cpp */
 	void Cbuf_AddText(const char* text);
 	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
+	void Cmd_RemoveCommand(const char* cmd_name);
+	bool Cmd_HasCommand(const char* cmd_name);
 	cvar_t* Cvar_FindVar(const char* var_name);
 	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags);
 	cvar_t* Cvar_Set(const char* var_name, const char* value, uint32_t force);

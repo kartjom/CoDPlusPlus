@@ -20,6 +20,7 @@ namespace CoDUO
 		s_wmv = (WinMouseVars_t*)(0x009CDBBC);
 		cvar_indexes = (cvar_t*)(0x009987A0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
+		cmd_functions = (cmd_function_t**)(0x00964db8);
 		Cmd_Argv = (char**)(0x00964DC0);
 		Cmd_Argc = (int*)(0x009677C0);
 
