@@ -49,7 +49,7 @@ namespace CoDUO::Gsc
 	{
 		gsc_register("console", Scr_StringToCmd), /* string */
 		gsc_register("addcommand", Scr_AddCommand), /* string, function */
-		gsc_register("getsystemtime", Scr_GetSystemTime),
+		gsc_register("getsystemtime", Scr_GetSystemTime), /* format? */
 
 		gsc_register("getweapondef", Scr_GetWeaponInfo), /* weaponIndex */
 		gsc_register("getweaponindexbyname", Scr_GetWeaponIndexByName), /* weaponName */

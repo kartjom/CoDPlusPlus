@@ -25,10 +25,6 @@ namespace CoDUO::Gsc
 
 	void Scr_AddCommand()
 	{
-		if (Scr_GetNumParam() < 2) return;
-		if (Scr_GetType(0) != (int)VarType::String) return;
-		if (Scr_GetType(1) != (int)VarType::Function) return;
-
 		const char* name = Scr_GetString(0);
 		int fn = Scr_GetFunction(1);
 
@@ -41,33 +37,28 @@ namespace CoDUO::Gsc
 	void Scr_GetSystemTime()
 	{
 		std::time_t currentTime = time(0);
-		std::tm timeInfo = *std::localtime(&currentTime);
+		int argc = Scr_GetNumParam();
 
-		Scr_MakeArray();
+		if (argc > 0)
+		{
+			const char* format = Scr_GetString(0);
 
-		Scr_AddInt(currentTime);
-		Scr_AddArrayStringIndexed(G_NewString("timestamp"));
+			if (format)
+			{
+				std::tm tm = *std::localtime(&currentTime);
 
-		Scr_AddInt(timeInfo.tm_year + 1900);
-		Scr_AddArrayStringIndexed(G_NewString("year"));
+				std::ostringstream ss;
+				ss << std::put_time(&tm, format);
 
-		Scr_AddInt(timeInfo.tm_mon + 1);
-		Scr_AddArrayStringIndexed(G_NewString("month"));
-
-		Scr_AddInt(timeInfo.tm_mday);
-		Scr_AddArrayStringIndexed(G_NewString("day"));
-
-		Scr_AddInt(timeInfo.tm_hour);
-		Scr_AddArrayStringIndexed(G_NewString("hour"));
-
-		Scr_AddInt(timeInfo.tm_min);
-		Scr_AddArrayStringIndexed(G_NewString("min"));
-
-		Scr_AddInt(timeInfo.tm_sec);
-		Scr_AddArrayStringIndexed(G_NewString("sec"));
-
-		Scr_AddInt((timeInfo.tm_wday == 0 ? 7 : timeInfo.tm_wday));
-		Scr_AddArrayStringIndexed(G_NewString("weekday"));
+				std::string s1 = ss.str();
+				const char* s2 = s1.c_str();
+				Scr_AddString(s2);
+			}
+		}
+		else
+		{
+			Scr_AddInt(currentTime);
+		}
 	}
 
 	void Scr_GetWeaponInfo()
