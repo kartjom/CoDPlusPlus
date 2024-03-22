@@ -4,8 +4,9 @@
 
 <h2>Features</h2>
 <ul>
-  <li>New engine callbacks</li>
-  <li>Many new GSC functions and methods</li>
+  <li>New engine callbacks that can alter core functionality</li>
+  <li>Many new Gsc functions and methods</li>
+  <li>Ability to create console commands via Gsc</li>
   <li>Asynchronous HTTP requests</li>
   <li>Map Bindings</li>
   <li>Client-side ImGui integration</li>
