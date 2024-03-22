@@ -72,7 +72,7 @@ namespace CoDUO
 		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
 
 		// Not used but available
-		DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::ServerTick, 6);
+		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::ServerTick, 6);
 		
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 

@@ -32,6 +32,7 @@ namespace CoDUO::Gsc
 	void Scr_GetWeaponInfo();
 	void Scr_GetWeaponIndexByName();
 
+	void Scr_Format();
 	void Scr_String_ToUpper();
 	void Scr_String_ToLower();
 	void Scr_String_StartsWith();
@@ -54,6 +55,7 @@ namespace CoDUO::Gsc
 		gsc_register("getweapondef", Scr_GetWeaponInfo), /* weaponIndex */
 		gsc_register("getweaponindexbyname", Scr_GetWeaponIndexByName), /* weaponName */
 
+		gsc_register("format", Scr_Format), /* format, ...args */
 		gsc_register("string_toupper", Scr_String_ToUpper), /* string */
 		gsc_register("string_tolower", Scr_String_ToLower), /* string */
 		gsc_register("string_startswith", Scr_String_StartsWith), /* string, substr */

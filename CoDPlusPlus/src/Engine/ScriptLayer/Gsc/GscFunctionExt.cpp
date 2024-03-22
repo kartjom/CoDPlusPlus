@@ -3,6 +3,9 @@
 #include <Engine/CoDUO.h>
 #include "GscExtensions.h"
 
+#define FMT_HEADER_ONLY
+#include <fmt/args.h>
+
 using namespace CoDUO;
 using namespace CoDUO::Gsc::Async;
 namespace CoDUO::Gsc
@@ -100,6 +103,73 @@ namespace CoDUO::Gsc
 		{
 			Scr_AddUndefined();
 		}
+	}
+
+	void Scr_Format()
+	{
+		int argc = Scr_GetNumParam();
+		const char* format = Scr_GetString(0);
+
+		auto store = fmt::dynamic_format_arg_store<fmt::format_context>();
+
+		for (int i = 1; i < argc; i++)
+		{
+			int type = Scr_GetType(i);
+			switch ((VarType)type)
+			{
+				case VarType::Undefined:
+				{
+					store.push_back("undefined");
+					continue;
+				}
+				case VarType::String:
+				{
+					const char* str = Scr_GetString(i);
+					store.push_back(str);
+					continue;
+				}
+				case VarType::Vector:
+				{
+					vec3_t vec = Scr_GetVector(i);
+					store.push_back(fmt::format("({:.2f} {:.2f} {:.2f})", vec.x, vec.y, vec.z));
+					continue;
+				}
+				case VarType::Float:
+				{
+					float fl = Scr_GetFloat(i);
+					store.push_back(fl);
+					continue;
+				}
+				case VarType::Integer:
+				{
+					int integer = Scr_GetFloat(i);
+					store.push_back(integer);
+					continue;
+				}
+				case VarType::Entity:
+				{
+					gentity_t* ent = Scr_GetEntity(i);
+					const char* name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
+					store.push_back(name);
+					continue;
+				}
+				case VarType::Function:
+				{
+					int func = Scr_GetFunction(i);
+					store.push_back(fmt::format("<function {}>", func));
+					continue;
+				}
+				default:
+				{
+					fmt::println("Scr_Format: Unhandled type {}", type);
+					store.push_back(fmt::format("<var_type {}>", type));
+				}
+			}
+		}
+
+		std::string str = fmt::vformat(format, store);
+
+		Scr_AddString(str.c_str());
 	}
 
 	void Scr_String_ToUpper()
