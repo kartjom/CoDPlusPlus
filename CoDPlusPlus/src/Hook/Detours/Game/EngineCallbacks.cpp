@@ -365,7 +365,8 @@ namespace Detours
 	{
 		try
 		{
-			VariableValue* var = Scr_GetValue(-1); // get top of the stack
+			uintptr_t addrToStackTop = *(uintptr_t*)(0x00b6ac90);
+			VariableValue* var = (VariableValue*)addrToStackTop;
 
 			Scr_ReturnValue = {};
 			Scr_ReturnValue.Type = (VarType)var->type;
