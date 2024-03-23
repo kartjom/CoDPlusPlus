@@ -37,6 +37,17 @@ namespace CoDUO::Gsc
 		gsc_commands[name] = fn;
 	}
 
+	void Scr_AddClientCommand()
+	{
+		const char* name = Scr_GetString(0);
+		int fn = Scr_GetFunction(1);
+
+		if (!name || !fn) return;
+		if (Cmd_HasCommand(name)) return;
+
+		gsc_clientcommands[name] = fn;
+	}
+
 	void Scr_GetSystemTime()
 	{
 		std::time_t currentTime = time(0);

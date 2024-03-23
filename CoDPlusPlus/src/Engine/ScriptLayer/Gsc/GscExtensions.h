@@ -26,6 +26,7 @@ namespace CoDUO::Gsc
 {
 	void Scr_StringToCmd();
 	void Scr_AddCommand();
+	void Scr_AddClientCommand();
 
 	void Scr_GetSystemTime();
 
@@ -45,11 +46,13 @@ namespace CoDUO::Gsc
 	void Scr_HttpGet();
 
 	inline std::unordered_map<std::string, int32_t> gsc_commands;
+	inline std::unordered_map<std::string, int32_t> gsc_clientcommands;
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_functions
 	{
 		gsc_register("console", Scr_StringToCmd), /* string */
 		gsc_register("addcommand", Scr_AddCommand), /* string, function */
+		gsc_register("addclientcommand", Scr_AddClientCommand), /* string, function */
 		gsc_register("getsystemtime", Scr_GetSystemTime), /* format? */
 
 		gsc_register("getweapondef", Scr_GetWeaponInfo), /* weaponIndex */

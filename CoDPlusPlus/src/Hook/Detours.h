@@ -19,6 +19,7 @@ namespace Detours
 	DeclareDetour(ServerTick);
 	DeclareDetour(PostInitGame);
 	DeclareDetour(ConsoleCommand);
+	DeclareDetour(ClientCommand);
 
 	DeclareDetour(ShootCallback);
 	DeclareDetour(MeleeCallback);

@@ -13,7 +13,10 @@ namespace Detours
 {
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
+
 	bool RunCustomConsoleCommand(const char* name);
+	bool RunCustomClientCommand(gentity_t* player, const char* name);
+
 	void LoadMapBindings();
 }
 
@@ -160,11 +163,49 @@ namespace Detours
 
 		JumpBack(ConsoleCommand)
 
-		cmd_found:
+	
 		_asm
 		{
+			cmd_found:
 			popad
 			add esp, 0x404
+			mov eax, 0x1
+			ret
+		}
+	}
+
+	ImplementDetour(ClientCommand)
+	{
+		_asm pushad
+
+		_asm
+		{
+			lea eax, [esp + 0x28]
+			push eax // cmd_name
+			push edi // player
+
+			call RunCustomClientCommand
+
+			add esp, 0x8
+
+			cmp al, 1
+			je cmd_found
+		}
+
+		_asm popad
+
+		_restore
+		{
+			mov eax, 0x1869f
+		}
+
+		JumpBack(ClientCommand)
+
+		_asm
+		{
+			cmd_found:
+			popad
+			add esp, 0x40c
 			mov eax, 0x1
 			ret
 		}
@@ -211,6 +252,33 @@ namespace Detours
 				}
 
 				Scr_RunScript(handle, 1);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool __cdecl RunCustomClientCommand(gentity_t* player, const char* cmd_name)
+	{
+		if (player && player->client && gsc_clientcommands.find(cmd_name) != gsc_clientcommands.end())
+		{
+			int32_t handle = gsc_clientcommands[cmd_name];
+
+			if (handle)
+			{
+				int argc = *Cmd_Argc;
+
+				Scr_MakeArray();
+				for (int i = 1; i < argc; i++)
+				{
+					Scr_AddString(Cmd_Argv[i]);
+					Scr_AddArray();
+				}
+
+				Scr_AddEntityNum(player->number);
+				Scr_RunScript(handle, 2);
 
 				return true;
 			}
