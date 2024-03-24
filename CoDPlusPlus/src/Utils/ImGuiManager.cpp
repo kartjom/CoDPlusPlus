@@ -21,6 +21,7 @@
 
 using namespace OpenGLHelper;
 using namespace CoDUO;
+using namespace CoDUO::Gsc;
 
 namespace ImGuiManager
 {
@@ -190,6 +191,70 @@ namespace ImGuiManager
 					ImGui::BeginDisabled(!DevGuiState.draw_gentity);
 					ImGui::Checkbox("Draw list", &DevGuiState.draw_gentity_window);
 					ImGui::EndDisabled();
+				}
+
+				ImGui::EndTabItem();
+			}
+
+			if (uo_game_mp_x86 && ImGui::BeginTabItem("Server"))
+			{
+				if (ImGui::TreeNode("Registered Callbacks"))
+				{
+					ImGui::Spacing();
+
+					auto active = ImVec4(1, 1, 1, 1);
+					auto inactive = ImVec4(0.7f, 0.7f, 0.7f, 1);
+
+					#define DrawCallbackInfo(name) ImGui::TextColored(CodeCallback.##name ? active : inactive, #name, CodeCallback.##name); \
+					ImGui::SameLine(); \
+					ImGui::SetCursorPosX(250); \
+					ImGui::TextColored(CodeCallback.##name ? active : inactive, "%d", CodeCallback.##name)
+
+					DrawCallbackInfo(OnInitialize);
+					DrawCallbackInfo(OnPlayerShoot);
+					DrawCallbackInfo(OnPlayerMelee);
+					DrawCallbackInfo(OnPlayerSay);
+					DrawCallbackInfo(OnPlayerVote);
+					DrawCallbackInfo(OnPlayerInactivity);
+					DrawCallbackInfo(OnVoteCalled);
+					DrawCallbackInfo(OnProjectileBounce);
+					DrawCallbackInfo(OnProjectileExplode);
+
+					ImGui::TreePop();
+				}
+
+				ImGui::Spacing();
+
+				if (ImGui::TreeNode("Registered Console Commands"))
+				{
+					ImGui::Spacing();
+
+					for (auto [key, value] : gsc_commands)
+					{
+						ImGui::Text(key.c_str());
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(250);
+						ImGui::Text("%d", value);
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::Spacing();
+
+				if (ImGui::TreeNode("Registered Client Commands"))
+				{
+					ImGui::Spacing();
+
+					for (auto [key, value] : gsc_clientcommands)
+					{
+						ImGui::Text(key.c_str());
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(250);
+						ImGui::Text("%d", value);
+					}
+
+					ImGui::TreePop();
 				}
 
 				ImGui::EndTabItem();
