@@ -175,10 +175,22 @@ namespace ImGuiManager
 
 		if (ImGui::BeginTabBar("##TabBar"))
 		{
+			if (ImGui::BeginTabItem("Client"))
+			{
+				if (ImGui::SliderFloat("Field of View", &DevGuiState.fov, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
+				{
+					Cvar_Set("cg_fov", fmt::format("{}", DevGuiState.fov).c_str(), 1);
+				}
+
+				ImGui::EndTabItem();
+			}
+
 			if (ImGui::BeginTabItem("Utility"))
 			{
-				if (ImGui::SliderFloat("Field of View", &DevGuiState.fov, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp)) {
-					Cvar_Set("cg_fov", fmt::format("{}", DevGuiState.fov).c_str(), 1);
+				static bool showConsole = true;
+				if (ImGui::Checkbox("Show Console", &showConsole))
+				{
+					ShowWindow(GetConsoleWindow(), showConsole);
 				}
 
 				ImGui::EndTabItem();
