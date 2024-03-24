@@ -405,7 +405,7 @@ namespace Detours
 		}
 		catch (std::exception& e)
 		{
-			printf("Scr_ExecThread_GscReturnValue: %s\n", e.what());
+			std::println("Scr_ExecThread_GscReturnValue: {}", e.what());
 		}
 	}
 
