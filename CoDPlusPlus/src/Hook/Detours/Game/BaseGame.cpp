@@ -236,9 +236,15 @@ namespace Detours
 
 	bool __cdecl RunCustomConsoleCommand(const char* cmd_name)
 	{
-		if (gsc_commands.find(cmd_name) != gsc_commands.end())
+		std::string name_lowercase(cmd_name);
+		for (int i = 0; name_lowercase[i]; i++)
 		{
-			int32_t handle = gsc_commands[cmd_name];
+			name_lowercase[i] = tolower(name_lowercase[i]);
+		}
+
+		if (gsc_commands.find(name_lowercase) != gsc_commands.end())
+		{
+			int32_t handle = gsc_commands[name_lowercase];
 
 			if (handle)
 			{
@@ -262,9 +268,15 @@ namespace Detours
 
 	bool __cdecl RunCustomClientCommand(gentity_t* player, const char* cmd_name)
 	{
-		if (player && player->client && gsc_clientcommands.find(cmd_name) != gsc_clientcommands.end())
+		std::string name_lowercase(cmd_name);
+		for (int i = 0; name_lowercase[i]; i++)
 		{
-			int32_t handle = gsc_clientcommands[cmd_name];
+			name_lowercase[i] = tolower(name_lowercase[i]);
+		}
+
+		if (player && player->client && gsc_clientcommands.find(name_lowercase) != gsc_clientcommands.end())
+		{
+			int32_t handle = gsc_clientcommands[name_lowercase];
 
 			if (handle)
 			{

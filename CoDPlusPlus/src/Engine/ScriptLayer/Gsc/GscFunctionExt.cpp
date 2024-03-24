@@ -33,9 +33,16 @@ namespace CoDUO::Gsc
 		int fn = Scr_GetFunction(1);
 
 		if (!name || !fn) return;
-		if (Cmd_HasCommand(name)) return;
 
-		gsc_commands[name] = fn;
+		std::string name_lowercase(name);
+		for (int i = 0; name_lowercase[i]; i++)
+		{
+			name_lowercase[i] = tolower(name_lowercase[i]);
+		}
+
+		if (Cmd_HasCommand(name_lowercase.c_str())) return;
+
+		gsc_commands[name_lowercase] = fn;
 	}
 
 	void Scr_AddClientCommand()
@@ -44,9 +51,16 @@ namespace CoDUO::Gsc
 		int fn = Scr_GetFunction(1);
 
 		if (!name || !fn) return;
-		if (Cmd_HasCommand(name)) return;
 
-		gsc_clientcommands[name] = fn;
+		std::string name_lowercase(name);
+		for (int i = 0; name_lowercase[i]; i++)
+		{
+			name_lowercase[i] = tolower(name_lowercase[i]);
+		}
+
+		if (Cmd_HasCommand(name_lowercase.c_str())) return;
+
+		gsc_clientcommands[name_lowercase] = fn;
 	}
 
 	void Scr_GetSystemTime()
