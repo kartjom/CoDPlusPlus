@@ -10,14 +10,23 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_opengl3.h"
 
-#include <iostream>
+#include <print>
 #include <format>
 #include <Structs/vec3_t.h>
 #include <Utils/OpenGLHelper.h>
 #include <Engine/CoDUO.h>
 
+#define FMT_HEADER_ONLY
+#include <fmt/core.h>
+
 using namespace OpenGLHelper;
 using namespace CoDUO;
+
+namespace ImGuiManager
+{
+	void DevGuiMenu();
+	void DrawServerEntities();
+}
 
 namespace ImGuiManager
 {
@@ -27,7 +36,7 @@ namespace ImGuiManager
 
 		if (WindowFromDC(hDc) != hWnd && IsInitialized) // Window handle changed, need to re-init
 		{
-			std::cout << "[ImGui] - Window handle changed, destroying context" << std::endl;
+			std::println("[ImGui] - Window handle changed, destroying context");
 
 			ImGui_ImplOpenGL3_Shutdown();
 			ImGui_ImplWin32_Shutdown();
@@ -53,7 +62,7 @@ namespace ImGuiManager
 		io.IniFilename = nullptr;
 
 		IsInitialized = true;
-		std::cout << "[ImGui] - Initialized" << std::endl;
+		std::println("[ImGui] - Initialized");
 	}
 
 	HGLRC BeginFrame(HDC hDc)
@@ -135,23 +144,76 @@ namespace ImGuiManager
 	void InteractiveTick()
 	{
 		//ImGui::ShowDemoWindow();
+
+		DevGuiMenu();
+
+		if (!InteractiveMode)
+		{
+			Hide();
+		}
 	}
 
 	void Tick()
 	{
-		static int shouldShow = 0;
-		if (GetAsyncKeyState(VK_DELETE) & 1)
+		DrawServerEntities();
+	}
+
+	void DevGuiMenu()
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+		ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_FirstUseEver);
+
+		if (!ImGui::Begin("CoDPlusPlus DevGui", &InteractiveMode))
 		{
-			shouldShow = (++shouldShow) % 3;
+			ImGui::End();
+			return;
 		}
 
-		if (!uo_game_mp_x86 || !shouldShow) return;
+		if (ImGui::BeginTabBar("##TabBar"))
+		{
+			if (ImGui::BeginTabItem("Utility"))
+			{
+				if (ImGui::SliderFloat("Field of View", &DevGuiState.fov, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp)) {
+					Cvar_Set("cg_fov", fmt::format("{}", DevGuiState.fov).c_str(), 1);
+				}
+
+				ImGui::EndTabItem();
+			}
+
+			if (ImGui::BeginTabItem("Rendering"))
+			{
+				if (uo_game_mp_x86)
+				{
+					ImGui::Checkbox("Draw entities", &DevGuiState.draw_gentity);
+
+					ImGui::BeginDisabled(!DevGuiState.draw_gentity);
+					ImGui::Checkbox("Draw list", &DevGuiState.draw_gentity_window);
+					ImGui::EndDisabled();
+				}
+
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
+		}
+
+		ImGui::End();
+	}
+
+	void DrawServerEntities()
+	{
+		if (!uo_game_mp_x86 || !DevGuiState.draw_gentity) return;
 
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		ImGui::SetNextWindowSize(ImVec2(refdef->width, refdef->height));
-		ImGui::Begin("Canvas", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
+		ImGui::Begin("DrawServerEntities", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
 
+		char ct_formatted[72];
+		char origin_formatted[48];
+		char list_entry[120];
 		int entsOnList = 0;
+
 		for (int i = 0; i <= GENTITY_COUNT; i++)
 		{
 			gentity_t* ent = &g_entities[i];
@@ -159,34 +221,29 @@ namespace ImGuiManager
 
 			const char* classname = SL_ConvertToString(ent->classname);
 			if (!classname) continue;
-			
+
 			const char* targetname = nullptr;
 			if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
 
 			vec3_t screen;
 			if (WorldToScreen(ent->currentOrigin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
-			{
-				char ct_formatted[72];
-				const auto res1 = std::format_to_n(ct_formatted, 72, "[{}] {} {}", i, classname, targetname ? targetname : "");
-				*res1.out = '\0';
-
-				char origin_formatted[48];
-				const auto res2 = std::format_to_n(origin_formatted, 48, "{:.2f} {:.2f} {:.2f}", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z);
-				*res2.out = '\0';
+			{			
+				*fmt::format_to(ct_formatted, "[{}] {} {}", i, classname, targetname ? targetname : "") = '\0';
+				*fmt::format_to(origin_formatted, "{:.2f} {:.2f} {:.2f}", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z) = '\0';
 
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted);
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted);
-			
-				if (shouldShow > 1 && entsOnList < 20)
+
+				if (DevGuiState.draw_gentity_window && entsOnList < 20)
 				{
 					ImGui::SetNextWindowPos(ImVec2(10, 20));
 					ImGui::SetNextWindowSize(ImVec2(600, 350));
-					ImGui::Begin("List", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs);
-						char list_entry[120];
-						const auto res3 = std::format_to_n(list_entry, 120, "{} | {}", ct_formatted, origin_formatted);
-						*res3.out = '\0';
-						ImGui::Text(list_entry);
-						entsOnList++;
+					ImGui::Begin("DrawServerEntities_Window", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs);
+					
+					*fmt::format_to(list_entry, "{} | {}", ct_formatted, origin_formatted) = '\0';
+
+					ImGui::Text(list_entry);
+					entsOnList++;
 					ImGui::End();
 				}
 			}

@@ -11,6 +11,12 @@ namespace ImGuiManager
     inline bool IsInitialized = false;
     inline bool InteractiveMode = false;
 
+    inline struct {
+        float fov = 80.f;
+        bool draw_gentity = false;
+        bool draw_gentity_window = false;
+    } DevGuiState = {};
+
     void Initialize(HDC hDc);
 
     HGLRC BeginFrame(HDC hDc);

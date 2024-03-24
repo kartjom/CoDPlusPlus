@@ -172,8 +172,6 @@ namespace WinApiHelper
 {
 	LRESULT CALLBACK h_WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		if (GetAsyncKeyState(VK_END) & 1) ImGuiManager::Toggle();
-
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseDrawCursor = ImGuiManager::InteractiveMode;
 

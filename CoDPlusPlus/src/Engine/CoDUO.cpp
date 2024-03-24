@@ -2,6 +2,7 @@
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
+#include <Utils/ImGuiManager.h>
 #include <print>
 
 using namespace CoDUO::Gsc;
@@ -25,6 +26,10 @@ namespace CoDUO
 
 		DetourRet(0x00457702, Detours::SV_Map_LoadConfig, 8);
 		DetourRet(0x0048f40e, Detours::Scr_ExecThread_GscReturnValue, 5);
+
+		#ifdef CLIENT
+			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
+		#endif
 
 		std::println("[CoDUOMP] - BaseAttach");
 	}
