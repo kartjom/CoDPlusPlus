@@ -5,6 +5,7 @@
 
 #define FMT_HEADER_ONLY
 #include <fmt/args.h>
+#include <print>
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc::Async;
@@ -410,7 +411,7 @@ namespace CoDUO::Gsc
 					}
 					catch (std::exception& ex)
 					{
-						printf("[ERROR] - Scr_HttpGet.http_task: %s\n", ex.what());
+						std::println("[ERROR] - Scr_HttpGet.http_task: {}", ex.what());
 					}
 
 					httpResult->Dispose();
@@ -425,7 +426,7 @@ namespace CoDUO::Gsc
 				httpResult->Dispose();
 				Scr_AddInt(-1);
 
-				printf("[ERROR] - Scr_HttpGet: %s\n", ex.what());
+				std::println("[ERROR] - Scr_HttpGet: {}", ex.what());
 			}
 		}
 		else

@@ -1,8 +1,8 @@
 #ifdef CLIENT
 
-#include <iostream>
 #include <Hook/Detours.h>
 #include <Utils/ImGuiManager.h>
+#include <print>
 
 namespace Detours
 {
@@ -22,7 +22,7 @@ namespace Detours
 		}
 		catch (...)
 		{
-			std::cout << "[wglSwapBuffers] - Exception" << std::endl;
+			std::println("[wglSwapBuffers] - Exception");
 		}
 
 		return Original(wglSwapBuffers)(hDc);

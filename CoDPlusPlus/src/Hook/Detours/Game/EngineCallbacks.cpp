@@ -1,5 +1,6 @@
 #include <Engine/CoDUO.h>
 #include <Hook/Detours.h>
+#include <print>
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
@@ -361,6 +362,36 @@ namespace Detours
 
 namespace Detours
 {
+	void dump()
+	{
+		switch (Scr_ReturnValue.Type)
+		{
+		case VarType::Undefined:
+			std::println("r: undefined");
+			break;
+		case VarType::String:
+			std::println("r: str '{}'", Scr_ReturnValue.String);
+			break;
+		case VarType::Vector:
+			std::println("r: vector ({:.2f} {:.2f} {:.2f})", Scr_ReturnValue.Vector.x, Scr_ReturnValue.Vector.y, Scr_ReturnValue.Vector.z);
+			break;
+		case VarType::Float:
+			std::println("r: float {}", Scr_ReturnValue.Float);
+			break;
+		case VarType::Integer:
+			std::println("r: int {}", Scr_ReturnValue.Integer);
+			break;
+		case VarType::Entity:
+			std::println("r: entity {}", Scr_ReturnValue.Integer);
+			break;
+		case VarType::Function:
+			std::println("r: function {}", Scr_ReturnValue.Integer);
+			break;
+		default:
+			std::println("r: default {}", Scr_ReturnValue.Integer);
+		}
+	}
+
 	void __cdecl Scr_ExecThread_GscReturnValue()
 	{
 		try
@@ -399,6 +430,8 @@ namespace Detours
 			default:
 				Scr_ReturnValue.Integer = var->Integer;
 			}
+
+			dump();
 		}
 		catch (std::exception& e)
 		{

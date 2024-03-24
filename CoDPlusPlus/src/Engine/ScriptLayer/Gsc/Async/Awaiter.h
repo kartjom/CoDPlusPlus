@@ -1,4 +1,5 @@
 #pragma once
+#include <print>
 #include <mutex>
 #include <memory>
 #include <unordered_map>
@@ -50,7 +51,7 @@ namespace CoDUO::Gsc::Async
 		{
 			AwaitStatus.store(AwaiterStatus::Finished);
 
-			printf("[Awaiter] - Task %d finished\n", Handle.load());
+			std::println("[Awaiter] - Task {} finished", Handle.load());
 		}
 
 		void Dispose()
@@ -60,7 +61,7 @@ namespace CoDUO::Gsc::Async
 				PendingTasks.erase(Handle);
 			}
 
-			printf("[Awaiter] - Task %d disposed\n", Handle.load());
+			std::println("[Awaiter] - Task {} disposed", Handle.load());
 		}
 
 		virtual void PushGscData() = 0;

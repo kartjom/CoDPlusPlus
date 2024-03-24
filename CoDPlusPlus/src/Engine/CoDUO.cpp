@@ -2,7 +2,7 @@
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
-#include <iostream>
+#include <print>
 
 using namespace CoDUO::Gsc;
 using namespace CoDUO::Gsc::Async;
@@ -26,7 +26,7 @@ namespace CoDUO
 		DetourRet(0x00457702, Detours::SV_Map_LoadConfig, 8);
 		DetourRet(0x0048f40e, Detours::Scr_ExecThread_GscReturnValue, 5);
 
-		std::cout << "[CoDUOMP] - BaseAttach" << std::endl;
+		std::println("[CoDUOMP] - BaseAttach");
 	}
 
 	void uo_game_mp_x86_OnAttach()
@@ -77,7 +77,7 @@ namespace CoDUO
 		
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
-		std::cout << "[uo_game_mp_x86] - OnAttach" << std::endl;
+		std::println("[uo_game_mp_x86] - OnAttach");
 	}
 
 	void uo_game_mp_x86_OnDetach()
@@ -92,7 +92,7 @@ namespace CoDUO
 
 		uo_game_mp_x86_Cleanup();
 
-		std::cout << "[uo_game_mp_x86] - OnDetach" << std::endl;
+		std::println("[uo_game_mp_x86] - OnDetach");
 	}
 
 	void uo_game_mp_x86_Cleanup()
