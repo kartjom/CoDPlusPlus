@@ -14,7 +14,7 @@ namespace Detours
 
 			HGLRC o_WglContext = ImGuiManager::BeginFrame(hDc);
 			ImGuiManager::Tick();
-			if (ImGuiManager::ShouldShow)
+			if (ImGuiManager::InteractiveMode)
 			{
 				ImGuiManager::InteractiveTick();
 			}

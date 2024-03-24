@@ -113,7 +113,7 @@ namespace ImGuiManager
 
 	bool Toggle()
 	{
-		return ShouldShow ? Hide() : Show();
+		return InteractiveMode ? Hide() : Show();
 	}
 
 	bool Show()
@@ -121,7 +121,7 @@ namespace ImGuiManager
 		CursorToCenter();
 		s_wmv->mouseInitialized = false;
 
-		return ShouldShow = true;
+		return InteractiveMode = true;
 	}
 
 	bool Hide()
@@ -129,7 +129,7 @@ namespace ImGuiManager
 		CursorToCenter();
 		s_wmv->mouseInitialized = true;
 
-		return ShouldShow = false;
+		return InteractiveMode = false;
 	}
 
 	void InteractiveTick()

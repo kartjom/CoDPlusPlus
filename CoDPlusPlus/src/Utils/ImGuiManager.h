@@ -9,7 +9,7 @@ namespace ImGuiManager
     inline HGLRC wglContext = nullptr;
 
     inline bool IsInitialized = false;
-    inline bool ShouldShow = false;
+    inline bool InteractiveMode = false;
 
     void Initialize(HDC hDc);
 

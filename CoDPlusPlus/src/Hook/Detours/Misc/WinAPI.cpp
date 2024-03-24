@@ -73,7 +73,7 @@ namespace Detours
 {
 	ImplementOverride(BOOL, __stdcall, SetPhysicalCursorPos)(int x, int y)
 	{
-		if (ImGuiManager::ShouldShow)
+		if (ImGuiManager::InteractiveMode)
 		{
 			return false;
 		}

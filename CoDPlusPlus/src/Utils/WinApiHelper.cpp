@@ -175,9 +175,9 @@ namespace WinApiHelper
 		if (GetAsyncKeyState(VK_END) & 1) ImGuiManager::Toggle();
 
 		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDrawCursor = ImGuiManager::ShouldShow;
+		io.MouseDrawCursor = ImGuiManager::InteractiveMode;
 
-		if (ImGuiManager::ShouldShow)
+		if (ImGuiManager::InteractiveMode)
 		{
 			if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
 			{
