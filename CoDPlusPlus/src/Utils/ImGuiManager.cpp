@@ -15,6 +15,7 @@
 #include <Structs/vec3_t.h>
 #include <Utils/OpenGLHelper.h>
 #include <Engine/CoDUO.h>
+#include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
 
 #define FMT_HEADER_ONLY
 #include <fmt/core.h>
@@ -22,6 +23,7 @@
 using namespace OpenGLHelper;
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
+using namespace CoDUO::Gsc::Async;
 
 namespace ImGuiManager
 {
@@ -229,7 +231,7 @@ namespace ImGuiManager
 				{
 					ImGui::Spacing();
 
-					for (auto [key, value] : gsc_commands)
+					for (auto& [key, value] : gsc_commands)
 					{
 						ImGui::Text(key.c_str());
 						ImGui::SameLine();
@@ -246,12 +248,54 @@ namespace ImGuiManager
 				{
 					ImGui::Spacing();
 
-					for (auto [key, value] : gsc_clientcommands)
+					for (auto& [key, value] : gsc_clientcommands)
 					{
 						ImGui::Text(key.c_str());
 						ImGui::SameLine();
 						ImGui::SetCursorPosX(250);
 						ImGui::Text("%d", value);
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::Spacing();
+
+				if (ImGui::TreeNode("Active Async Tasks"))
+				{
+					ImGui::Spacing();
+
+					{
+						std::unique_lock<std::mutex> lock(TaskResultsMutex);
+
+						for (auto& [key, value] : PendingTasks)
+						{
+							switch (value->Type.load())
+							{
+							case TaskType::Http:
+								ImGui::Text("[%d] Http", key);
+								break;
+							default:
+								ImGui::Text("[%d] Task", key);
+							}
+					
+							ImGui::SameLine();
+							ImGui::SetCursorPosX(250);
+
+							switch (value->AwaitStatus.load())
+							{
+							case AwaiterStatus::New:
+								ImGui::Text("New");
+								break;
+							case AwaiterStatus::InProgress:
+								ImGui::Text("In progress");
+								break;
+							case AwaiterStatus::Finished:
+								ImGui::Text("Finished");
+								break;
+							}
+							
+						}
 					}
 
 					ImGui::TreePop();
