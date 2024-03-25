@@ -156,6 +156,16 @@ namespace ImGuiManager
 
 	void Tick()
 	{
+		if (DevGuiState.force_fov)
+		{
+			static cvar_t* cg_fov = Cvar_Get("cg_fov", "80", CVAR_ARCHIVE | CVAR_CHEAT);
+
+			if (DevGuiState.fov != cg_fov->value)
+			{
+				Cvar_Set("cg_fov", va("%.0f", DevGuiState.fov), 1);
+			}
+		}
+
 		DrawServerEntities();
 	}
 
@@ -180,13 +190,10 @@ namespace ImGuiManager
 				if (ImGui::SliderFloat("Field of View", &cg_fov->value, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
 				{
 					DevGuiState.fov = cg_fov->value;
-
-					char* value_const = va("%.0f", cg_fov->value);
-					Cvar_Set("cg_fov", value_const, 1);
-
-					Z_Free(cg_fov->resetString);
-					cg_fov->resetString = CopyString(value_const);
+					Cvar_Set("cg_fov", va("%.0f", cg_fov->value), 1);
 				}
+
+				ImGui::Checkbox("Force custom FoV", &DevGuiState.force_fov);
 
 				ImGui::EndTabItem();
 			}

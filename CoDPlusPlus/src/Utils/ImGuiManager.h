@@ -13,7 +13,10 @@ namespace ImGuiManager
 
     inline struct {
         float fov;
+        bool force_fov;
+
         bool show_console;
+
         bool draw_gentity;
         bool draw_gentity_window;
     } DevGuiState = {};
