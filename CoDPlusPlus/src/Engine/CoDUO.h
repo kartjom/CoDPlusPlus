@@ -88,10 +88,12 @@ namespace CoDUO /* WeaponMapping.cpp */
 
 namespace CoDUO /* StringUtilsMapping.cpp */
 {
-	char* CopyString(const char* in);
+	char* CopyString(const char* input);
 	int32_t G_NewString(const char* string);
 	const char* SL_ConvertToString(uint32_t index);
 	void SL_RemoveRefToString(uint16_t index);
+
+	void Z_Free(void* mem);
 
 	const char* Info_ValueForKey(const char* buffer, const char* key);
 	void Info_SetValueForKey(char* buffer, const char* key, const char* value);

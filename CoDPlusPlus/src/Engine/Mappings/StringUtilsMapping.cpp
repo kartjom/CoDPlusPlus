@@ -2,11 +2,11 @@
 
 namespace CoDUO
 {
-	char* CopyString(const char* in)
+	char* CopyString(const char* input)
 	{
 		_asm
 		{
-			mov ebx, in
+			mov ebx, input
 			mov eax, 0x00435560
 			call eax
 		}
@@ -43,6 +43,18 @@ namespace CoDUO
 			mov ax, index
 			mov ecx, 0x00482b00
 			call ecx
+		}
+	}
+
+	void Z_Free(void* mem)
+	{
+		_asm
+		{
+			push mem
+			mov eax, 0x0056d9cf
+			call eax
+
+			add esp, 0x4
 		}
 	}
 
