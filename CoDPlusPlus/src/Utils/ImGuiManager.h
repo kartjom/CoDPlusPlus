@@ -13,8 +13,9 @@ namespace ImGuiManager
 
     inline struct {
         float fov = 80.f;
-        bool draw_gentity = false;
-        bool draw_gentity_window = false;
+        bool show_console;
+        bool draw_gentity;
+        bool draw_gentity_window;
     } DevGuiState = {};
 
     void Initialize(HDC hDc);
