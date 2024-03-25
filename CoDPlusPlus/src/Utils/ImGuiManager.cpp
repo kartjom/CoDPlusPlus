@@ -162,8 +162,8 @@ namespace ImGuiManager
 	void DevGuiMenu()
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-		ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_FirstUseEver);
+		ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+		ImGui::SetNextWindowSize(ImVec2(600, 300), ImGuiCond_Once);
 
 		if (!ImGui::Begin("CoDPlusPlus DevGui", &InteractiveMode))
 		{
@@ -175,9 +175,17 @@ namespace ImGuiManager
 		{
 			if (ImGui::BeginTabItem("Client"))
 			{
-				if (ImGui::SliderFloat("Field of View", &DevGuiState.fov, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
+				static cvar_t* cg_fov = Cvar_Get("cg_fov", "80", CVAR_ARCHIVE | CVAR_CHEAT);
+
+				if (ImGui::SliderFloat("Field of View", &cg_fov->value, 80.0f, 100.0f, "%.0f", ImGuiSliderFlags_AlwaysClamp))
 				{
-					Cvar_Set("cg_fov", fmt::format("{}", DevGuiState.fov).c_str(), 1);
+					DevGuiState.fov = cg_fov->value;
+
+					char* value_const = va("%.0f", cg_fov->value);
+					Cvar_Set("cg_fov", value_const, 1);
+
+					Z_Free(cg_fov->resetString);
+					cg_fov->resetString = CopyString(value_const);
 				}
 
 				ImGui::EndTabItem();

@@ -12,7 +12,7 @@ namespace ImGuiManager
     inline bool InteractiveMode = false;
 
     inline struct {
-        float fov = 80.f;
+        float fov;
         bool show_console;
         bool draw_gentity;
         bool draw_gentity_window;
