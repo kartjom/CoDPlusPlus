@@ -2,6 +2,16 @@
 
 namespace CoDUO
 {
+	char* CopyString(const char* in)
+	{
+		_asm
+		{
+			mov ebx, in
+			mov eax, 0x00435560
+			call eax
+		}
+	}
+
 	int32_t G_NewString(const char* string)
 	{
 		_asm

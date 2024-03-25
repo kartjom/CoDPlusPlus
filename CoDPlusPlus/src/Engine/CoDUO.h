@@ -86,6 +86,7 @@ namespace CoDUO /* WeaponMapping.cpp */
 
 namespace CoDUO /* StringUtilsMapping.cpp */
 {
+	char* CopyString(const char* in);
 	int32_t G_NewString(const char* string);
 	const char* SL_ConvertToString(uint32_t index);
 	void SL_RemoveRefToString(uint16_t index);
