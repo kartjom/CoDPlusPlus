@@ -185,11 +185,15 @@ namespace ImGuiManager
 
 			if (ImGui::BeginTabItem("Utility"))
 			{
-				static bool showConsole = true;
-				if (ImGui::Checkbox("Show Console", &showConsole))
+				HWND console = GetConsoleWindow();
+
+				DevGuiState.show_console = IsWindowVisible(console);
+				ImGui::BeginDisabled(!console);
+				if (ImGui::Checkbox("Show Console", &DevGuiState.show_console))
 				{
-					ShowWindow(GetConsoleWindow(), showConsole);
+					ShowWindow(console, DevGuiState.show_console);
 				}
+				ImGui::EndDisabled();
 
 				ImGui::EndTabItem();
 			}
