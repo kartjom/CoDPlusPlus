@@ -223,7 +223,11 @@ namespace ImGuiManager
 					ImGui::Checkbox("Draw entities", &DevGuiState.draw_gentity);
 
 					ImGui::BeginDisabled(!DevGuiState.draw_gentity);
-					ImGui::Checkbox("Draw list", &DevGuiState.draw_gentity_window);
+						ImGui::Checkbox("Draw list", &DevGuiState.draw_gentity_window);
+					ImGui::EndDisabled();
+
+					ImGui::BeginDisabled(!DevGuiState.draw_gentity || !DevGuiState.draw_gentity_window);
+						ImGui::SliderInt("Max count", &DevGuiState.gentity_window_max, 1, 1022, "%d", ImGuiSliderFlags_AlwaysClamp);
 					ImGui::EndDisabled();
 				}
 
@@ -407,17 +411,23 @@ namespace ImGuiManager
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted);
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted);
 
-				if (DevGuiState.draw_gentity_window && entsOnList < 20)
+				if (DevGuiState.draw_gentity_window && entsOnList < DevGuiState.gentity_window_max)
 				{
-					ImGui::SetNextWindowPos(ImVec2(10, 20));
-					ImGui::SetNextWindowSize(ImVec2(600, 350));
-					ImGui::Begin("DrawServerEntities_Window", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs);
-					
-					*fmt::format_to(list_entry, "{} | {}", ct_formatted, origin_formatted) = '\0';
+					ImGui::SetNextWindowPos(ImVec2(10, 20), ImGuiCond_Once);
+					ImGui::SetNextWindowSize(ImVec2(600, 350), ImGuiCond_Once);
+					if (ImGui::Begin("Entity List", 0))
+					{
+						ImGui::Text("[%d]", i);
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(60);
+						ImGui::Text(targetname ? "%s %s" : "%s", classname, targetname);
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(400);
+						ImGui::Text(origin_formatted);
 
-					ImGui::Text(list_entry);
-					entsOnList++;
-					ImGui::End();
+						entsOnList++;
+						ImGui::End();
+					}		
 				}
 			}
 		}

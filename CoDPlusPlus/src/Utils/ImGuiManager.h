@@ -12,13 +12,14 @@ namespace ImGuiManager
     inline bool InteractiveMode = false;
 
     inline struct {
-        float fov;
-        bool force_fov;
+        float fov = 80.f;
+        bool force_fov = false;
 
         bool show_console;
 
-        bool draw_gentity;
-        bool draw_gentity_window;
+        bool draw_gentity = false;
+        bool draw_gentity_window = false;
+        int gentity_window_max = 32;
     } DevGuiState = {};
 
     void Initialize(HDC hDc);
