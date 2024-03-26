@@ -19,7 +19,6 @@ namespace ImGuiManager
 
         bool draw_gentity = false;
         bool draw_gentity_window = false;
-        int gentity_window_max = 32;
     } DevGuiState = {};
 
     void Initialize(HDC hDc);

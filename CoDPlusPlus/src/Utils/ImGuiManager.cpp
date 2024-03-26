@@ -29,6 +29,7 @@ namespace ImGuiManager
 {
 	void DevGuiMenu();
 	void DrawServerEntities();
+	void DrawServerEntityList();
 }
 
 namespace ImGuiManager
@@ -167,6 +168,7 @@ namespace ImGuiManager
 		}
 
 		DrawServerEntities();
+		DrawServerEntityList();
 	}
 
 	void DevGuiMenu()
@@ -220,15 +222,8 @@ namespace ImGuiManager
 			{
 				if (uo_game_mp_x86)
 				{
-					ImGui::Checkbox("Draw entities", &DevGuiState.draw_gentity);
-
-					ImGui::BeginDisabled(!DevGuiState.draw_gentity);
-						ImGui::Checkbox("Draw list", &DevGuiState.draw_gentity_window);
-					ImGui::EndDisabled();
-
-					ImGui::BeginDisabled(!DevGuiState.draw_gentity || !DevGuiState.draw_gentity_window);
-						ImGui::SliderInt("Max count", &DevGuiState.gentity_window_max, 1, 1022, "%d", ImGuiSliderFlags_AlwaysClamp);
-					ImGui::EndDisabled();
+					ImGui::Checkbox("Draw entities on screen", &DevGuiState.draw_gentity);
+					ImGui::Checkbox("Draw entity list", &DevGuiState.draw_gentity_window);
 				}
 
 				ImGui::EndTabItem();
@@ -389,7 +384,6 @@ namespace ImGuiManager
 		char ct_formatted[72];
 		char origin_formatted[48];
 		char list_entry[120];
-		int entsOnList = 0;
 
 		for (int i = 0; i <= GENTITY_COUNT; i++)
 		{
@@ -410,29 +404,63 @@ namespace ImGuiManager
 
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y), ImColor(1.0f, 1.0f, 1.0f, 1.0f), ct_formatted);
 				ImGui::GetWindowDrawList()->AddText(ImVec2(screen.x, screen.y + 16), ImColor(0.75f, 0.75f, 0.75f, 1.0f), origin_formatted);
-
-				if (DevGuiState.draw_gentity_window && entsOnList < DevGuiState.gentity_window_max)
-				{
-					ImGui::SetNextWindowPos(ImVec2(10, 20), ImGuiCond_Once);
-					ImGui::SetNextWindowSize(ImVec2(600, 350), ImGuiCond_Once);
-					if (ImGui::Begin("Entity List", 0))
-					{
-						ImGui::Text("[%d]", i);
-						ImGui::SameLine();
-						ImGui::SetCursorPosX(60);
-						ImGui::Text(targetname ? "%s %s" : "%s", classname, targetname);
-						ImGui::SameLine();
-						ImGui::SetCursorPosX(400);
-						ImGui::Text(origin_formatted);
-
-						entsOnList++;
-						ImGui::End();
-					}		
-				}
 			}
 		}
 
 		ImGui::End();
+	}
+
+	void DrawServerEntityList()
+	{
+		if (!uo_game_mp_x86 || !DevGuiState.draw_gentity_window) return;
+
+		static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchSame;
+
+		ImGui::SetNextWindowPos(ImVec2(15, 25), ImGuiCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(600, 350), ImGuiCond_Once);
+		if (ImGui::Begin("Entity List", &DevGuiState.draw_gentity_window))
+		{
+			if (ImGui::BeginTable("table_scrolly", 4, flags))
+			{
+				ImGui::TableSetupScrollFreeze(0, 1);
+				ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 40);
+				ImGui::TableSetupColumn("Classname", ImGuiTableColumnFlags_None);
+				ImGui::TableSetupColumn("Targetname", ImGuiTableColumnFlags_None);
+				ImGui::TableSetupColumn("Origin", ImGuiTableColumnFlags_WidthFixed, 200);
+				ImGui::TableHeadersRow();
+
+				// Populate table rows
+				for (int i = 0; i <= GENTITY_COUNT; i++)
+				{
+					gentity_t* ent = &g_entities[i];
+					if (!ent->classname) continue;
+
+					const char* classname = SL_ConvertToString(ent->classname);
+					if (!classname) continue;
+
+					const char* targetname = nullptr;
+					if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
+
+					// Add row to the table
+					ImGui::TableNextRow();
+
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Text("%d", i);
+
+					ImGui::TableSetColumnIndex(1);
+					ImGui::Text(classname);
+					
+					ImGui::TableSetColumnIndex(2);
+					ImGui::Text(targetname ? "%s" : "", targetname);
+
+					ImGui::TableSetColumnIndex(3);
+					ImGui::Text("%.2f %.2f %.2f", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z);
+				}
+
+				ImGui::EndTable();
+			}
+		}
+		ImGui::End(); // End "Entity List" window
 	}
 }
 
