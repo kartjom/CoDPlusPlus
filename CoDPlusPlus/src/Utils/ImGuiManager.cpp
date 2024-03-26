@@ -193,7 +193,10 @@ namespace ImGuiManager
 					Cvar_Set("cg_fov", va("%.0f", cg_fov->value), 1);
 				}
 
-				ImGui::Checkbox("Force custom FoV", &DevGuiState.force_fov);
+				if (ImGui::Checkbox("Force custom FoV", &DevGuiState.force_fov))
+				{
+					DevGuiState.fov = cg_fov->value;
+				}
 
 				ImGui::EndTabItem();
 			}
