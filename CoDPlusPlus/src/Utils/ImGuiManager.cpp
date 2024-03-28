@@ -415,6 +415,7 @@ namespace ImGuiManager
 		if (!uo_game_mp_x86 || !DevGuiState.draw_gentity_window) return;
 
 		static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingStretchSame;
+		ImGuiContext& g = *ImGui::GetCurrentContext();
 
 		ImGui::SetNextWindowPos(ImVec2(15, 25), ImGuiCond_Once);
 		ImGui::SetNextWindowSize(ImVec2(600, 350), ImGuiCond_Once);
@@ -422,6 +423,8 @@ namespace ImGuiManager
 		{
 			if (ImGui::BeginTable("table_scrolly", 4, flags))
 			{
+				ImGuiTable* table = g.CurrentTable;
+
 				ImGui::TableSetupScrollFreeze(0, 1);
 				ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 40);
 				ImGui::TableSetupColumn("Classname", ImGuiTableColumnFlags_None);
@@ -447,14 +450,19 @@ namespace ImGuiManager
 					ImGui::TableSetColumnIndex(0);
 					ImGui::Text("%d", i);
 
-					ImGui::TableSetColumnIndex(1);
-					ImGui::Text(classname);
-					
-					ImGui::TableSetColumnIndex(2);
+					ImGui::TableNextColumn();
+					ImGui::TextUnformatted(classname);
+
+					ImGui::TableNextColumn();
 					ImGui::Text(targetname ? "%s" : "", targetname);
 
-					ImGui::TableSetColumnIndex(3);
+					ImGui::TableNextColumn();
 					ImGui::Text("%.2f %.2f %.2f", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z);
+
+					if (ImGuiExt::TableRowHovered(table))
+					{
+						table->RowBgColor[1] = ImGui::GetColorU32(ImGuiCol_Border);
+					}
 				}
 
 				ImGui::EndTable();
@@ -464,4 +472,28 @@ namespace ImGuiManager
 	}
 }
 
+namespace ImGuiExt
+{
+	bool TableRowHovered(ImGuiTable* table)
+	{
+		if (table)
+		{
+			ImGui::TableSetColumnIndex(table->Columns.size() - 1);
+			ImRect row_rect(
+				table->WorkRect.Min.x,
+				table->RowPosY1,
+				table->WorkRect.Max.x,
+				table->RowPosY2
+			);
+			row_rect.ClipWith(table->BgClipRect);
+
+			return
+				ImGui::IsMouseHoveringRect(row_rect.Min, row_rect.Max, false) &&
+				ImGui::IsWindowHovered(ImGuiHoveredFlags_None) &&
+				!ImGui::IsAnyItemHovered();
+		}
+
+		return false;
+	}
+}
 #endif

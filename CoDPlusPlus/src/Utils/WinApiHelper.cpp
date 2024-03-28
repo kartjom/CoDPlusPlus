@@ -201,6 +201,10 @@ namespace WinApiHelper
 				return 0;
 			}
 		}
+		else
+		{
+			io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
+		}
 
 		// Alt Context Menu
 		if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) return 0;

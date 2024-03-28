@@ -2,6 +2,7 @@
 #pragma once
 
 #include <Windows.h>
+#include "imgui_internal.h"
 
 namespace ImGuiManager
 {
@@ -35,5 +36,10 @@ namespace ImGuiManager
     bool Show();
     bool Hide();
 };
+
+namespace ImGuiExt
+{
+    bool TableRowHovered(ImGuiTable* table);
+}
 
 #endif
