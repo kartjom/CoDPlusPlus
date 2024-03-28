@@ -29,7 +29,9 @@ struct gentity_t
 	int32_t ownerNum; //0x0154
 	char pad_0158[8]; //0x0158
 	struct gclient_t* client; //0x0160
-	char pad_0164[32]; //0x0164
+	char pad_0164[8]; //0x0164
+	int32_t inuse; //0x016C
+	char pad_0170[20]; //0x0170
 	int32_t classname; //0x0184
 	int32_t spawnflags; //0x0188
 	int32_t flags; //0x018C
