@@ -37,9 +37,4 @@ namespace ImGuiManager
     bool Hide();
 };
 
-namespace ImGuiExt
-{
-    bool TableRowHovered(ImGuiTable* table);
-}
-
 #endif
