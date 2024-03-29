@@ -29,7 +29,7 @@ namespace CoDUO
 		{
 			case ET_GENERAL: return "ET_GENERAL";
 			case ET_PLAYER: return "ET_PLAYER";
-			case ET_CORPSE: return "ET_CORPSE";
+			case ET_PLAYER_CORPSE: return "ET_PLAYER_CORPSE";
 			case ET_ITEM: return "ET_ITEM";
 			case ET_MISSLE: return "ET_MISSLE";
 			case ET_MOVER: return "ET_MOVER";
@@ -37,9 +37,10 @@ namespace CoDUO
 			case ET_INVISIBLE: return "ET_INVISIBLE";
 			case ET_SCRIPTMOVER: return "ET_SCRIPTMOVER";
 			case ET_SOUND_BLEND: return "ET_SOUND_BLEND";
+			case ET_LOOP_FX: return "ET_LOOP_FX";
 			case ET_TURRET: return "ET_TURRET";
 			case ET_VEHICLE: return "ET_VEHICLE";
-			case ET_COLLMAP: return "ET_COLLMAP";
+			case ET_VEHICLE_COLLMAP: return "ET_VEHICLE_COLLMAP";
 		}
 
 		if (eType >= ET_EVENTS) return "ET_EVENTS";
