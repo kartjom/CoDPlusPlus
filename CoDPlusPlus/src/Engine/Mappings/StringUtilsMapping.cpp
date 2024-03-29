@@ -23,6 +23,27 @@ namespace CoDUO
 		}
 	}
 
+	const char* G_EntityTypeString(int32_t eType)
+	{
+		switch (eType)
+		{
+			case ET_GENERAL: return "ET_GENERAL";
+			case ET_PLAYER: return "ET_PLAYER";
+			case ET_CORPSE: return "ET_CORPSE";
+			case ET_ITEM: return "ET_ITEM";
+			case ET_MISSLE: return "ET_MISSLE";
+			case ET_MOVER: return "ET_MOVER";
+			case ET_PORTAL: return "ET_PORTAL";
+			case ET_INVISIBLE: return "ET_INVISIBLE";
+			case ET_SCRIPTMOVER: return "ET_SCRIPTMOVER";
+			case ET_SOUND_BLEND: return "ET_SOUND_BLEND";
+			case ET_TURRET: return "ET_TURRET";
+			case ET_VEHICLE: return "ET_VEHICLE";
+			case ET_COLLMAP: return "ET_COLLMAP";
+			default: return "ET_UNKNOWN";
+		}
+	}
+
 	const char* SL_ConvertToString(uint32_t index)
 	{
 		_asm
