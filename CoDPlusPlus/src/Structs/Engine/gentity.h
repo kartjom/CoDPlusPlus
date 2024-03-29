@@ -21,6 +21,7 @@ typedef enum {
 	ET_TURRET = 11,
 	ET_VEHICLE = 12,
 	ET_COLLMAP = 14,
+	ET_EVENTS = 16,
 } entityType_t;
 
 struct gentity_t
@@ -43,7 +44,8 @@ struct gentity_t
 	vec3_t currentOrigin; //0x013C
 	char pad_0148[12]; //0x0148
 	int32_t ownerNum; //0x0154
-	char pad_0158[8]; //0x0158
+	int32_t r_eventTime; //0x0158
+	char pad_015C[4]; //0x015C
 	struct gclient_t* client; //0x0160
 	char pad_0164[8]; //0x0164
 	int32_t inuse; //0x016C
@@ -51,7 +53,9 @@ struct gentity_t
 	int32_t classname; //0x0184
 	int32_t spawnflags; //0x0188
 	int32_t flags; //0x018C
-	char pad_0190[16]; //0x0190
+	int32_t eventTime; //0x0190
+	int32_t freeAfterEvent; //0x0194
+	char pad_0198[8]; //0x0198
 	int32_t clipmask; //0x01A0
 	uint32_t frames; //0x01A4
 	struct gentity_t* parent; //0x01A8

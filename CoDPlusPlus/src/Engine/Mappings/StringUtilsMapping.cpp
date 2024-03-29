@@ -40,8 +40,11 @@ namespace CoDUO
 			case ET_TURRET: return "ET_TURRET";
 			case ET_VEHICLE: return "ET_VEHICLE";
 			case ET_COLLMAP: return "ET_COLLMAP";
-			default: return "ET_UNKNOWN";
 		}
+
+		if (eType >= ET_EVENTS) return "ET_EVENTS";
+
+		return "ET_UNKNOWN";
 	}
 
 	const char* SL_ConvertToString(uint32_t index)
