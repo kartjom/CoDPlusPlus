@@ -418,13 +418,14 @@ namespace ImGuiManager
 		static int selected = -1;
 
 		ImGui::SetNextWindowPos(ImVec2(15, 25), ImGuiCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(600, 350), ImGuiCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(800, 600), ImGuiCond_Once);
 		if (ImGui::Begin("Entity List", &DevGuiState.draw_gentity_window))
 		{
-			if (ImGui::BeginTable("table_scrolly", 4, flags))
+			if (ImGui::BeginTable("table_scrolly", 5, flags))
 			{
 				ImGui::TableSetupScrollFreeze(0, 1);
 				ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 40);
+				ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 130);
 				ImGui::TableSetupColumn("Classname", ImGuiTableColumnFlags_None);
 				ImGui::TableSetupColumn("Targetname", ImGuiTableColumnFlags_None);
 				ImGui::TableSetupColumn("Origin", ImGuiTableColumnFlags_WidthFixed, 200);
@@ -452,9 +453,18 @@ namespace ImGuiManager
 					{
 						selected = i;
 					}
+
+					if (!ent->inuse)
+					{
+						ImGui::EndDisabled();
+						continue;
+					}
+
+					ImGui::TableNextColumn();
+					ImGui::TextUnformatted( G_EntityTypeString(ent->eType) );
 					
 					ImGui::TableNextColumn();
-					if (ent->inuse && ent->eType == 1)
+					if (ent->eType == ET_PLAYER)
 					{
 						ImGui::Text("%s '%s'", classname, ent->client->name);
 					}
@@ -467,7 +477,7 @@ namespace ImGuiManager
 					ImGui::Text(targetname ? "%s" : "", targetname);
 
 					ImGui::TableNextColumn();
-					ImGui::Text(ent->inuse ? "%.2f %.2f %.2f" : "", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z);
+					ImGui::Text("%.2f %.2f %.2f", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z);
 					ImGui::EndDisabled();
 				}
 
