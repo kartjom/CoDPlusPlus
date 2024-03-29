@@ -7,6 +7,22 @@
 #define WORLDSPAWN 1022
 #define NO_GENTITY 1023
 
+typedef enum {
+	ET_GENERAL = 0,
+	ET_PLAYER = 1,
+	ET_CORPSE = 2,
+	ET_ITEM = 3,
+	ET_MISSLE = 4,
+	ET_MOVER = 5,
+	ET_PORTAL = 6,
+	ET_INVISIBLE = 7,
+	ET_SCRIPTMOVER = 8,
+	ET_SOUND_BLEND = 9,
+	ET_TURRET = 11,
+	ET_VEHICLE = 12,
+	ET_COLLMAP = 14,
+} entityType_t;
+
 struct gentity_t
 {
 	int32_t number; //0x0000
