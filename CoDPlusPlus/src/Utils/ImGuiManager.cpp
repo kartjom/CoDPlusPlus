@@ -471,6 +471,14 @@ namespace ImGuiManager
 
 							ImGui::CloseCurrentPopup();
 						}
+
+						if (ImGui::Button("Bring"))
+						{
+							gentity_t* host = &g_entities[0];
+							G_SetOrigin(ent, host->currentOrigin);
+
+							ImGui::CloseCurrentPopup();
+						}
 						
 						if (ImGui::Button("Delete"))
 						{
