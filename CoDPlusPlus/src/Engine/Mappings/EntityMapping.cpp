@@ -22,4 +22,25 @@ namespace CoDUO
 		ent->think = G_FreeEntity;
 		ent->nextthink = level->time + 100;
 	}
+
+	void G_SetOrigin(gentity_t* ent, vec3_t origin)
+	{
+		VectorCopy(origin, ent->trBase);
+
+		ent->trType = 0;
+		ent->trTime = 0;
+		ent->trDuration = 0;
+		VectorClear(ent->trDelta);
+
+		VectorCopy(origin, ent->currentOrigin);
+
+		if (ent->client)
+		{
+			VectorCopy(origin, ent->client->origin);
+		}
+		else
+		{
+			syscall(0x35, ent); // trap_LinkEntity
+		}
+	}
 }

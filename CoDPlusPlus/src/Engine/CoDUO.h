@@ -69,6 +69,8 @@ namespace CoDUO /* EntityMapping.cpp */
 {
 	void G_FreeEntity(gentity_t* ent);
 	void G_DeleteEntity(gentity_t* ent);
+
+	void G_SetOrigin(gentity_t* ent, vec3_t origin);
 }
 
 namespace CoDUO /* CvarMapping.cpp */
