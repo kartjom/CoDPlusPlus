@@ -463,17 +463,22 @@ namespace ImGuiManager
 					if (ent->inuse && ImGui::BeginPopupContextItem())
 					{
 						selected = i;
+
+						if (ImGui::Button("Teleport"))
+						{
+							gentity_t* host = &g_entities[0];
+							G_SetOrigin(host, ent->currentOrigin);
+
+							ImGui::CloseCurrentPopup();
+						}
 						
 						if (ImGui::Button("Delete"))
 						{
 							G_DeleteEntity(ent);
-						}
 
-						ImGui::Spacing();
-						if (ImGui::Button("Close"))
-						{
 							ImGui::CloseCurrentPopup();
 						}
+
 						ImGui::EndPopup();
 					}
 
