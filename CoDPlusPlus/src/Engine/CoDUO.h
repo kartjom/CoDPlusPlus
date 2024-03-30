@@ -65,6 +65,12 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_AddArrayStringIndexed(int32_t str_index);
 }
 
+namespace CoDUO /* EntityMapping.cpp */
+{
+	void G_FreeEntity(gentity_t* ent);
+	void G_DeleteEntity(gentity_t* ent);
+}
+
 namespace CoDUO /* CvarMapping.cpp */
 {
 	void Cbuf_AddText(const char* text);

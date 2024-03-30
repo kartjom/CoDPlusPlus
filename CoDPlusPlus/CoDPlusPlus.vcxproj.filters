@@ -37,6 +37,7 @@
     <ClCompile Include="src\Hook\Detours\Game\GameFixes.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\EngineCallbacks.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\EntryPoint.cpp" />
+    <ClCompile Include="src\Engine\Mappings\EntityMapping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
