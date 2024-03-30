@@ -460,6 +460,23 @@ namespace ImGuiManager
 						continue;
 					}
 
+					if (ent->inuse && ImGui::BeginPopupContextItem())
+					{
+						selected = i;
+						
+						if (ImGui::Button("Delete"))
+						{
+							G_DeleteEntity(ent);
+						}
+
+						ImGui::Spacing();
+						if (ImGui::Button("Close"))
+						{
+							ImGui::CloseCurrentPopup();
+						}
+						ImGui::EndPopup();
+					}
+
 					ImGui::TableNextColumn();
 					ImGui::TextUnformatted( G_EntityTypeString(ent->eType) );
 					
