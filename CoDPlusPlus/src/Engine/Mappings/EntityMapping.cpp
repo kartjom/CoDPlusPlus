@@ -40,7 +40,17 @@ namespace CoDUO
 		}
 		else
 		{
-			syscall(0x35, ent); // trap_LinkEntity
+			SV_LinkEntity(ent);
+		}
+	}
+
+	void SV_LinkEntity(gentity_t* ent)
+	{
+		_asm
+		{
+			mov edi, ent
+			mov eax, 0x00467050
+			call eax
 		}
 	}
 }
