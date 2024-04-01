@@ -19,18 +19,20 @@ namespace Utils
         void Dispose();
 
         template <class F>
-        void Enqueue(F&& task)
+        bool Enqueue(F&& task)
         {
             if (!initialized || stop)
             {
                 std::println("[Thread Pool] - Enqueue failed due to uninitialized or disposed pool");
-                return;
+                return false;
             }
 
             std::unique_lock<std::mutex> lock(queueMutex);
             tasks.emplace(std::forward<F>(task));
             lock.unlock();
             condition.notify_one();
+
+            return true;
         };
 
     private:

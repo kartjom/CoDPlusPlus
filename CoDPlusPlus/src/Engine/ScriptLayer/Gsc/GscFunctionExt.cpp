@@ -404,8 +404,7 @@ namespace CoDUO::Gsc
 			{
 				httpResult->Initialize();
 
-				ThreadPool.Enqueue([=]()
-				{
+				bool success = ThreadPool.Enqueue([=]() {
 					auto res = HttpClient::Get(std::string(host), std::string(endpoint));
 
 					if ((bool)res.error())
@@ -422,7 +421,15 @@ namespace CoDUO::Gsc
 					httpResult->Finish();
 				});
 
-				Scr_AddInt(httpResult->Handle); // awaiter handle
+				if (success)
+				{
+					Scr_AddInt(httpResult->Handle); // awaiter handle
+				}
+				else
+				{
+					httpResult->Dispose();
+					Scr_AddInt(-1);
+				}
 			}
 			catch (std::exception& ex)
 			{
