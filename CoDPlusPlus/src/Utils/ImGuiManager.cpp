@@ -15,7 +15,7 @@
 #include <Structs/vec3_t.h>
 #include <Utils/OpenGLHelper.h>
 #include <Engine/CoDUO.h>
-#include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
+#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
 
 #define FMT_HEADER_ONLY
 #include <fmt/core.h>
@@ -346,15 +346,15 @@ namespace ImGuiManager
 							ImGui::SameLine();
 							ImGui::SetCursorPosX(250);
 
-							switch (value->AwaitStatus.load())
+							switch (value->Status.load())
 							{
-							case AwaiterStatus::New:
+							case TaskStatus::New:
 								ImGui::Text("New");
 								break;
-							case AwaiterStatus::InProgress:
+							case TaskStatus::InProgress:
 								ImGui::Text("In progress");
 								break;
-							case AwaiterStatus::Finished:
+							case TaskStatus::Finished:
 								ImGui::Text("Finished");
 								break;
 							}

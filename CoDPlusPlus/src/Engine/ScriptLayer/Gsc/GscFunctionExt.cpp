@@ -357,7 +357,7 @@ namespace CoDUO::Gsc
 			return;
 		}
 
-		std::shared_ptr<Awaitable> result;
+		std::shared_ptr<Task> result;
 		{
 			std::unique_lock<std::mutex> lock(TaskResultsMutex);
 
@@ -372,14 +372,14 @@ namespace CoDUO::Gsc
 			result = (*it).second;
 		}
 
-		if (result->AwaitStatus.load() == AwaiterStatus::InProgress)
+		if (result->Status.load() == TaskStatus::InProgress)
 		{
 			Scr_AddBool(true);
 			Scr_AddArrayStringIndexed(G_NewString("pending"));
 			return;
 		}
 
-		if (result->AwaitStatus.load() == AwaiterStatus::Finished)
+		if (result->Status.load() == TaskStatus::Finished)
 		{
 			Scr_AddBool(false);
 			Scr_AddArrayStringIndexed(G_NewString("pending"));

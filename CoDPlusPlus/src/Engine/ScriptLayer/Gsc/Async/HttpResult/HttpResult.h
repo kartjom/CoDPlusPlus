@@ -1,9 +1,9 @@
 #pragma once
-#include <Engine/ScriptLayer/Gsc/Async/Awaiter.h>
+#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
 
 namespace CoDUO::Gsc::Async
 {
-	struct HttpResult : public Awaitable
+	struct HttpResult : public Task
 	{
 		int StatusCode;
 		std::string Body;
