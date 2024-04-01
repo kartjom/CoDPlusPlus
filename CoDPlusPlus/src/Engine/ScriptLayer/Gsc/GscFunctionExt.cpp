@@ -359,10 +359,10 @@ namespace CoDUO::Gsc
 
 		std::shared_ptr<Task> result;
 		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
+			std::unique_lock<std::mutex> lock(TaskListMutex);
 
-			auto it = PendingTasks.find(handle);
-			if (it == PendingTasks.end()) // Resource doesn't exist
+			auto it = AllocatedTasks.find(handle);
+			if (it == AllocatedTasks.end()) // Resource doesn't exist
 			{
 				Scr_AddBool(false);
 				Scr_AddArrayStringIndexed(G_NewString("pending"));

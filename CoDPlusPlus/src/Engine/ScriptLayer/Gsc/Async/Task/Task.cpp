@@ -12,14 +12,15 @@ namespace CoDUO::Gsc::Async
 		Status.store(TaskStatus::InProgress);
 
 		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
-			PendingTasks.emplace(Handle, shared_from_this());
+			std::unique_lock<std::mutex> lock(TaskListMutex);
+			AllocatedTasks.emplace(Handle, shared_from_this());
 		}
 	}
 
 	void Task::Finish()
 	{
 		Status.store(TaskStatus::Finished);
+		FinishedAt.store(time(0));
 
 		std::println("[Task] - Async task {} finished", Handle.load());
 	}
@@ -27,8 +28,8 @@ namespace CoDUO::Gsc::Async
 	void Task::Dispose()
 	{
 		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
-			PendingTasks.erase(Handle);
+			std::unique_lock<std::mutex> lock(TaskListMutex);
+			AllocatedTasks.erase(Handle);
 		}
 
 		std::println("[Task] - Async task {} disposed", Handle.load());

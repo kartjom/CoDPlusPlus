@@ -103,8 +103,8 @@ namespace CoDUO
 	void uo_game_mp_x86_Cleanup()
 	{
 		{
-			std::unique_lock<std::mutex> lock(TaskResultsMutex);
-			PendingTasks.clear();
+			std::unique_lock<std::mutex> lock(TaskListMutex);
+			AllocatedTasks.clear();
 		}
 
 		gsc_commands.clear();

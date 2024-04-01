@@ -20,14 +20,16 @@ namespace CoDUO::Gsc::Async
 		Http,
 	};
 
-	inline TaskList PendingTasks;
-	inline std::mutex TaskResultsMutex;
+	inline TaskList AllocatedTasks;
+	inline std::mutex TaskListMutex;
 
 	struct Task : public std::enable_shared_from_this<Task>
 	{
 		std::atomic<TaskType> Type = TaskType::Unknown;
 		std::atomic<TaskStatus> Status = TaskStatus::New;
+
 		std::atomic<int> Handle;
+		std::atomic<int> FinishedAt;
 
 		void Initialize();
 		void Finish();

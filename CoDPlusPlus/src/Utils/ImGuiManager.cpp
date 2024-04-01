@@ -330,9 +330,9 @@ namespace ImGuiManager
 					ImGui::Spacing();
 
 					{
-						std::unique_lock<std::mutex> lock(TaskResultsMutex);
+						std::unique_lock<std::mutex> lock(TaskListMutex);
 
-						for (auto& [key, value] : PendingTasks)
+						for (auto& [key, value] : AllocatedTasks)
 						{
 							switch (value->Type.load())
 							{
