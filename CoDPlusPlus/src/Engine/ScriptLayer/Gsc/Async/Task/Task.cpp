@@ -57,7 +57,7 @@ namespace CoDUO::Gsc::Async::TaskManager
 					return value->Status == TaskStatus::Finished && currentTime > value->FinishedAt + 10;
 				});
 
-				if (count > 1)
+				if (count > 0)
 				{
 					std::println("[Task] - Garbage collected {} items", count);
 				}
