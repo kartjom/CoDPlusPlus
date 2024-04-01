@@ -38,6 +38,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Utils\ImGuiManager.cpp" />
     <ClCompile Include="src\Utils\OpenGLHelper.cpp" />
+    <ClCompile Include="src\Utils\ThreadPool\ThreadPool.cpp" />
     <ClCompile Include="src\Utils\WinApiHelper.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.cpp" />
     <ClCompile Include="vendor\glad\src\glad.c" />
@@ -79,6 +80,7 @@
     <ClInclude Include="src\Structs\Engine\weapondef.h" />
     <ClInclude Include="src\Utils\ImGuiManager.h" />
     <ClInclude Include="src\Utils\OpenGLHelper.h" />
+    <ClInclude Include="src\Utils\ThreadPool\ThreadPool.h" />
     <ClInclude Include="src\Utils\WinApiHelper.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.h" />
     <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />

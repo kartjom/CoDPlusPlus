@@ -1,10 +1,14 @@
 #include <Engine/CoDUO.h>
-#include <Hook/Detours.h>
+#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
+#include <Hook/Detours.h>
 #include <Hook/Hook.h>
 
+using namespace Utils;
 using namespace CoDUO;
+using namespace CoDUO::Gsc::Async;
 
 namespace Detours
 {
@@ -46,6 +50,9 @@ namespace Detours
 			#ifdef CLIENT
 				OpenGLHelper::InjectDetours();
 			#endif
+
+			TaskManager::InitializeGarbageCollector();
+			ThreadPool.Initialize(64);
 
 			CoDUO::BaseAttach();
 

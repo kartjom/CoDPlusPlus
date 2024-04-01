@@ -1,4 +1,5 @@
 #include <Engine/ScriptLayer/Gsc/Async/HttpResult/HttpResult.h>
+#include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/Network/HttpClient.h>
 #include <Engine/CoDUO.h>
 #include "GscExtensions.h"
@@ -7,6 +8,7 @@
 #include <fmt/args.h>
 #include <print>
 
+using namespace Utils;
 using namespace CoDUO;
 using namespace CoDUO::Gsc::Async;
 namespace CoDUO::Gsc
@@ -402,36 +404,23 @@ namespace CoDUO::Gsc
 			{
 				httpResult->Initialize();
 
-				std::thread http_task([=]()
+				ThreadPool.Enqueue([=]()
 				{
-					try
+					auto res = HttpClient::Get(std::string(host), std::string(endpoint));
+
+					if ((bool)res.error())
 					{
-						auto res = HttpClient::Get(std::string(host), std::string(endpoint));
-
-						if ((bool)res.error())
-						{
-							httpResult->StatusCode = -1;
-							httpResult->Body = httplib::to_string(res.error());
-						}
-						else
-						{
-							httpResult->StatusCode = res->status;
-							httpResult->Body = res->body;
-						}
-
-						httpResult->Finish();
-
-						std::this_thread::sleep_for(std::chrono::seconds(3)); // Wait to dispose
+						httpResult->StatusCode = -1;
+						httpResult->Body = httplib::to_string(res.error());
 					}
-					catch (std::exception& ex)
+					else
 					{
-						std::println("[ERROR] - Scr_HttpGet.http_task: {}", ex.what());
+						httpResult->StatusCode = res->status;
+						httpResult->Body = res->body;
 					}
 
-					httpResult->Dispose();
+					httpResult->Finish();
 				});
-
-				http_task.detach();
 
 				Scr_AddInt(httpResult->Handle); // awaiter handle
 			}

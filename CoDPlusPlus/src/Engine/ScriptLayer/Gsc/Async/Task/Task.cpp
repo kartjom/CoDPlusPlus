@@ -1,4 +1,5 @@
 #include "Task.h"
+#include <chrono>
 #include <print>
 
 namespace CoDUO::Gsc::Async
@@ -33,5 +34,38 @@ namespace CoDUO::Gsc::Async
 		}
 
 		std::println("[Task] - Async task {} disposed", Handle.load());
+	}
+}
+
+namespace CoDUO::Gsc::Async::TaskManager
+{
+	void InitializeGarbageCollector()
+	{
+		std::thread gc([] {
+			while (true)
+			{
+				using namespace std::chrono_literals;
+				std::this_thread::sleep_for(10s);
+
+				int currentTime = time(0);
+
+				std::unique_lock<std::mutex> lock(TaskListMutex);
+
+				const auto count = std::erase_if(AllocatedTasks, [=](const auto& item)
+				{
+					auto const& [key, value] = item;
+					return value->Status == TaskStatus::Finished && currentTime > value->FinishedAt + 10;
+				});
+
+				if (count > 1)
+				{
+					std::println("[Task] - Garbage collected {} items", count);
+				}
+			}
+		});
+
+		gc.detach();
+
+		std::println("[Task] - Initialized garbage collector");
 	}
 }

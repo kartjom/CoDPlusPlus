@@ -38,3 +38,8 @@ namespace CoDUO::Gsc::Async
 		virtual void PushGscData() = 0;
 	};
 }
+
+namespace CoDUO::Gsc::Async::TaskManager
+{
+	void InitializeGarbageCollector();
+}

@@ -39,6 +39,7 @@
     <ClCompile Include="src\Engine\Mappings\EntityMapping.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.cpp" />
+    <ClCompile Include="src\Utils\ThreadPool\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -84,5 +85,6 @@
     <ClInclude Include="src\Structs\Engine\cmd.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.h" />
+    <ClInclude Include="src\Utils\ThreadPool\ThreadPool.h" />
   </ItemGroup>
 </Project>
