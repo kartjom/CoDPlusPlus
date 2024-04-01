@@ -5,7 +5,10 @@ namespace CoDUO::Gsc::Async
 {
 	void Task::Initialize()
 	{
-		Handle.store(NewAwaiterHandle());
+		static int nextAwaiterHandle = 0;
+		if (nextAwaiterHandle < 0) nextAwaiterHandle = 0;
+
+		Handle.store(nextAwaiterHandle++);
 		Status.store(TaskStatus::InProgress);
 
 		{
@@ -18,7 +21,7 @@ namespace CoDUO::Gsc::Async
 	{
 		Status.store(TaskStatus::Finished);
 
-		std::println("[Awaiter] - Task {} finished", Handle.load());
+		std::println("[Task] - Async task {} finished", Handle.load());
 	}
 
 	void Task::Dispose()
@@ -28,17 +31,6 @@ namespace CoDUO::Gsc::Async
 			PendingTasks.erase(Handle);
 		}
 
-		std::println("[Awaiter] - Task {} disposed", Handle.load());
-	}
-}
-
-namespace CoDUO::Gsc::Async
-{
-	int32_t NewAwaiterHandle()
-	{
-		static int32_t NextAwaiterHandle = 0;
-		if (NextAwaiterHandle < 0) NextAwaiterHandle = 0;
-
-		return NextAwaiterHandle++;
+		std::println("[Task] - Async task {} disposed", Handle.load());
 	}
 }

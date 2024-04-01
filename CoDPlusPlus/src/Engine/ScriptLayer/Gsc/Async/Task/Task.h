@@ -5,6 +5,8 @@
 
 namespace CoDUO::Gsc::Async
 {
+	using TaskList = std::unordered_map<int, std::shared_ptr<struct Task>>;
+
 	enum TaskStatus
 	{
 		New = 0,
@@ -18,7 +20,7 @@ namespace CoDUO::Gsc::Async
 		Http,
 	};
 
-	inline std::unordered_map<int, std::shared_ptr<struct Task>> PendingTasks;
+	inline TaskList PendingTasks;
 	inline std::mutex TaskResultsMutex;
 
 	struct Task : public std::enable_shared_from_this<Task>
@@ -33,9 +35,4 @@ namespace CoDUO::Gsc::Async
 
 		virtual void PushGscData() = 0;
 	};
-}
-
-namespace CoDUO::Gsc::Async
-{
-	int NewAwaiterHandle();
 }
