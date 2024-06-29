@@ -52,7 +52,7 @@ namespace Detours
 			#endif
 
 			TaskManager::InitializeGarbageCollector();
-			ThreadPool.Initialize(64);
+			ThreadPool.Initialize();
 
 			CoDUO::BaseAttach();
 

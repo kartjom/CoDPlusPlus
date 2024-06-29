@@ -1,47 +1,51 @@
 #pragma once
-#include <vector>
-#include <queue>
+
+#define WIN32_LEAN_AND_MEAN 
+#include <Windows.h>
+
 #include <thread>
 #include <functional>
-#include <mutex>
-#include <condition_variable>
 #include <print>
+#include <thread>
+#include <memory>
 
 namespace Utils
 {
+    struct TaskContext
+    {
+        std::function<void()> task;
+    };
+
     inline class ThreadPool
     {
     public:
         ThreadPool();
         ~ThreadPool();
 
-        void Initialize(size_t numThreads);
+        void Initialize();
         void Dispose();
 
         template <class F>
         bool Enqueue(F&& task)
         {
-            if (!initialized || stop)
+            if (pool == NULL)
             {
                 std::println("[Thread Pool] - Enqueue failed due to uninitialized or disposed pool");
                 return false;
             }
 
-            std::unique_lock<std::mutex> lock(queueMutex);
-            tasks.emplace(std::forward<F>(task));
-            lock.unlock();
-            condition.notify_one();
+            TaskContext* taskContext = new TaskContext();
+            taskContext->task = std::forward<F>(task);
 
-            return true;
+            return this->EnqueueInternal(taskContext);
         };
 
-    private:
-        std::vector<std::thread> workers;
-        std::queue<std::function<void()>> tasks;
+        bool EnqueueInternal(TaskContext* taskContext);
 
-        std::mutex queueMutex;
-        std::condition_variable condition;
-        bool initialized;
-        bool stop;
+    private:
+        PTP_POOL pool = NULL;
+        TP_CALLBACK_ENVIRON callbackEnv;
+        PTP_CLEANUP_GROUP cleanupGroup;  
+
     } ThreadPool;
 }

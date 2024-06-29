@@ -3,7 +3,6 @@
 namespace Utils
 {
     ThreadPool::ThreadPool()
-        : initialized(false), stop(false)
     {
     }
     
@@ -12,63 +11,83 @@ namespace Utils
         Dispose();
     }
 
-    void ThreadPool::Initialize(size_t numThreads)
+    void ThreadPool::Initialize()
     {
-        initialized = true;
-
-        int created = 0;
-        for (size_t i = 0; i < numThreads; i++)
+        pool = CreateThreadpool(NULL);
+        if (pool == NULL)
         {
-            try
-            {
-                workers.emplace_back([this] {
-                    for (;;)
-                    {
-                        std::unique_lock<std::mutex> lock(queueMutex);
-                        condition.wait(lock, [this] { return stop || !tasks.empty(); });
-
-                        if (stop && tasks.empty())
-                            return;
-
-                        if (tasks.empty()) continue;
-
-                        auto task = std::move(tasks.front());
-                        tasks.pop();
-                        lock.unlock();
-
-                        try
-                        {
-                            task();
-                        }
-                        catch (std::exception& e)
-                        {
-                            std::println("[Thread Pool] - exception when executing task: {}", e.what());
-                        }
-                    }
-                });
-
-                created++;
-            }
-            catch (std::exception& e)
-            {
-                std::println("[Thread Pool] - exception when creating thread {}: {}", i, e.what());
-            }
+            std::println("[Thread Pool] - CreateThreadpool failed. Error: {}", GetLastError());
+            return;
         }
 
-        std::println("[Thread Pool] - Initialized {} threads", created);
+        SetThreadpoolThreadMinimum(pool, std::thread::hardware_concurrency());
+        SetThreadpoolThreadMaximum(pool, 64);
+
+        // Initialize the callback environment
+        InitializeThreadpoolEnvironment(&callbackEnv);
+
+        // Create a cleanup group for managing resources
+        cleanupGroup = CreateThreadpoolCleanupGroup();
+        if (cleanupGroup == NULL)
+        {
+            std::println("[Thread Pool] - CreateThreadpoolCleanupGroup failed. Error: {}", GetLastError());
+            CloseThreadpool(pool);
+            pool = NULL;
+
+            return;
+        }
+
+        // Associate the thread pool with the cleanup group
+        SetThreadpoolCallbackPool(&callbackEnv, pool);
+        SetThreadpoolCallbackCleanupGroup(&callbackEnv, cleanupGroup, NULL);
+
+        std::println("[Thread Pool] - Initialized");
     }
 
     void ThreadPool::Dispose()
     {
-        std::unique_lock<std::mutex> lock(queueMutex);
-        stop = true;
+        if (pool == NULL) return;
 
-        lock.unlock();
-        condition.notify_all();
+        CloseThreadpoolCleanupGroupMembers(cleanupGroup, FALSE, NULL);
+        CloseThreadpoolCleanupGroup(cleanupGroup);
+        DestroyThreadpoolEnvironment(&callbackEnv);
+        CloseThreadpool(pool);
 
-        for (std::thread& worker : workers)
+        pool = NULL;
+
+        std::println("[Thread Pool] - Disposed");
+    }
+
+    void CALLBACK WorkCallback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work)
+    {
+        TaskContext* taskContext = (TaskContext*)parameter;
+
+        try
         {
-            worker.join();
+            taskContext->task();
         }
+        catch (std::exception& e)
+        {
+            std::println("[Thread Pool] - exception when executing task: Error: {}", e.what());
+        }
+        
+        delete taskContext;
+        CloseThreadpoolWork(work);
+    }
+
+    bool ThreadPool::EnqueueInternal(TaskContext* taskContext)
+    {
+        PTP_WORK work = CreateThreadpoolWork(WorkCallback, taskContext, &callbackEnv);
+        if (work == NULL)
+        {
+            std::println("[Thread Pool] - CreateThreadpoolWork failed. Error: {}", GetLastError());
+            delete taskContext;
+
+            return false;
+        }
+
+        SubmitThreadpoolWork(work);
+
+        return true;
     }
 }
