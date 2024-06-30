@@ -11,9 +11,9 @@ namespace CoDUO::Gsc::Async
 	void HttpResult::PushGscData()
 	{
 		Scr_AddInt(this->StatusCode);
-		Scr_AddArrayStringIndexed(G_NewString("status"));
+		Scr_AddArrayStringIndexed(SL_GetString("status", 1));
 
 		Scr_AddString(this->Body.c_str());
-		Scr_AddArrayStringIndexed(G_NewString("body"));
+		Scr_AddArrayStringIndexed(SL_GetString("body", 1));
 	}
 }

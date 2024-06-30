@@ -100,6 +100,7 @@ namespace CoDUO /* StringUtilsMapping.cpp */
 	char* CopyString(const char* input);
 	int32_t G_NewString(const char* string);
 	const char* G_EntityTypeString(int32_t eType);
+	unsigned int SL_GetString(const char* str, unsigned char user);
 	const char* SL_ConvertToString(uint32_t index);
 	void SL_RemoveRefToString(uint16_t index);
 

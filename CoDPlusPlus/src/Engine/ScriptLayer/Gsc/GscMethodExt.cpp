@@ -99,10 +99,10 @@ namespace CoDUO::Gsc
 			Scr_MakeArray();
 
 			Scr_AddFloat(tr.fraction);
-			Scr_AddArrayStringIndexed(G_NewString("fraction"));
+			Scr_AddArrayStringIndexed(SL_GetString("fraction", 1));
 
 			Scr_AddVector(tr.endpos);
-			Scr_AddArrayStringIndexed(G_NewString("position"));
+			Scr_AddArrayStringIndexed(SL_GetString("position", 1));
 
 			if (tr.entityNum == 1022 || tr.entityNum == 1023)
 			{
@@ -112,25 +112,25 @@ namespace CoDUO::Gsc
 			{
 				Scr_AddEntityNum(tr.entityNum);
 			}
-			Scr_AddArrayStringIndexed(G_NewString("entity"));
+			Scr_AddArrayStringIndexed(SL_GetString("entity", 1));
 
 			if (tr.fraction < 1.0f)
 			{
 				Scr_AddVector(tr.normal);
-				Scr_AddArrayStringIndexed(G_NewString("normal"));
+				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
 				char* surfaceType = trace_GetSurfaceType(tr.type);
 				Scr_AddString(surfaceType);
-				Scr_AddArrayStringIndexed(G_NewString("surfacetype"));
+				Scr_AddArrayStringIndexed(SL_GetString("surfacetype", 1));
 			}
 			else
 			{
 				vec3_t normal{};
 				Scr_AddVector(normal);
-				Scr_AddArrayStringIndexed(G_NewString("normal"));
+				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
 				Scr_AddString("default");
-				Scr_AddArrayStringIndexed(G_NewString("surfacetype"));
+				Scr_AddArrayStringIndexed(SL_GetString("surfacetype", 1));
 			}
 		}
 		else
@@ -193,16 +193,16 @@ namespace CoDUO::Gsc
 				Scr_MakeArray();
 
 				Scr_AddInt(slot.weapondef->number);
-				Scr_AddArrayStringIndexed(G_NewString("number"));
+				Scr_AddArrayStringIndexed(SL_GetString("number", 1));
 
 				Scr_AddString(slot.weapondef->name);
-				Scr_AddArrayStringIndexed(G_NewString("name"));
+				Scr_AddArrayStringIndexed(SL_GetString("name", 1));
 
 				Scr_AddInt(slot.clip);
-				Scr_AddArrayStringIndexed(G_NewString("clip"));
+				Scr_AddArrayStringIndexed(SL_GetString("clip", 1));
 
 				Scr_AddInt(slot.reserve);
-				Scr_AddArrayStringIndexed(G_NewString("reserve"));
+				Scr_AddArrayStringIndexed(SL_GetString("reserve", 1));
 			}
 			else
 			{

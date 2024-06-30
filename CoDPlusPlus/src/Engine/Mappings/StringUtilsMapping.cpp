@@ -48,6 +48,19 @@ namespace CoDUO
 		return "ET_UNKNOWN";
 	}
 
+	unsigned int SL_GetString(const char* str, unsigned char user)
+	{
+		_asm
+		{
+			push user
+			push str
+			mov eax, 0x00482BE0
+			call eax
+
+			add esp, 0x8
+		}
+	}
+
 	const char* SL_ConvertToString(uint32_t index)
 	{
 		_asm

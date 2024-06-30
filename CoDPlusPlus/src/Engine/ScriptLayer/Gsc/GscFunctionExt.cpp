@@ -102,16 +102,16 @@ namespace CoDUO::Gsc
 			Scr_MakeArray();
 
 			Scr_AddInt(weapon->number);
-			Scr_AddArrayStringIndexed(G_NewString("number"));
+			Scr_AddArrayStringIndexed(SL_GetString("number", 1));
 
 			Scr_AddString(weapon->name);
-			Scr_AddArrayStringIndexed(G_NewString("name"));
+			Scr_AddArrayStringIndexed(SL_GetString("name", 1));
 
 			Scr_AddInt(weapon->clipSize);
-			Scr_AddArrayStringIndexed(G_NewString("clipSize"));
+			Scr_AddArrayStringIndexed(SL_GetString("clipSize", 1));
 
 			Scr_AddInt(weapon->maxAmmo);
-			Scr_AddArrayStringIndexed(G_NewString("maxAmmo"));
+			Scr_AddArrayStringIndexed(SL_GetString("maxAmmo", 1));
 		}
 		else
 		{
@@ -355,7 +355,7 @@ namespace CoDUO::Gsc
 		if (handle < 0) // Invalid handle
 		{
 			Scr_AddBool(false);
-			Scr_AddArrayStringIndexed(G_NewString("pending"));
+			Scr_AddArrayStringIndexed(SL_GetString("pending", 1));
 			return;
 		}
 
@@ -367,7 +367,7 @@ namespace CoDUO::Gsc
 			if (it == AllocatedTasks.end()) // Resource doesn't exist
 			{
 				Scr_AddBool(false);
-				Scr_AddArrayStringIndexed(G_NewString("pending"));
+				Scr_AddArrayStringIndexed(SL_GetString("pending", 1));
 				return;
 			}
 
@@ -377,14 +377,14 @@ namespace CoDUO::Gsc
 		if (result->Status.load() == TaskStatus::InProgress)
 		{
 			Scr_AddBool(true);
-			Scr_AddArrayStringIndexed(G_NewString("pending"));
+			Scr_AddArrayStringIndexed(SL_GetString("pending", 1));
 			return;
 		}
 
 		if (result->Status.load() == TaskStatus::Finished)
 		{
 			Scr_AddBool(false);
-			Scr_AddArrayStringIndexed(G_NewString("pending"));
+			Scr_AddArrayStringIndexed(SL_GetString("pending", 1));
 
 			result->PushGscData();
 			return;
