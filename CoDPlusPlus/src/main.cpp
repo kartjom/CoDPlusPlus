@@ -1,7 +1,15 @@
 #include <Windows.h>
-#include <Hook/Hook.h>
-#include <Hook/Detours.h>
+#include <Engine/CoDUO.h>
+#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/WinApiHelper.h>
+#include <Utils/OpenGLHelper.h>
+#include <Hook/Detours.h>
+#include <Hook/Hook.h>
+
+using namespace Utils;
+using namespace CoDUO;
+using namespace CoDUO::Gsc::Async;
 
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 {
@@ -12,9 +20,20 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 			return FALSE;
 		}
 
-		Detours::InjectEntryPoint_addr = 0x0046c79a;
-		Hook::Detour(Detours::InjectEntryPoint_addr, Detours::InjectEntryPoint_n, 5, &Detours::InjectEntryPoint_r, Detours::InjectEntryPoint_bytes);
+		WinApiHelper::SetExceptionFilters();
+		WinApiHelper::CreateConsole("CoDPlusPlus");
+		WinApiHelper::InjectDetours();
 
+		#ifdef CLIENT
+			OpenGLHelper::InjectDetours();
+		#endif
+
+		TaskManager::InitializeGarbageCollector();
+		ThreadPool.Initialize();
+
+		CoDUO::BaseAttach();
+
+		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 		DisableThreadLibraryCalls(hModule);
 	}
 
