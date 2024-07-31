@@ -383,7 +383,6 @@ namespace ImGuiManager
 
 		char ct_formatted[72];
 		char origin_formatted[48];
-		char list_entry[120];
 
 		for (int i = 0; i <= GENTITY_COUNT; i++)
 		{

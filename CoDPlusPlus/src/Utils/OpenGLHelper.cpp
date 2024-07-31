@@ -37,13 +37,13 @@ namespace OpenGLHelper
         float px, py;
         float z;
 
-        px = tan(fovx * M_PI / 360.0);
-        py = tan(fovy * M_PI / 360.0);
+        px = tan(fovx * M_PI / 360.0f);
+        py = tan(fovy * M_PI / 360.0f);
 
         transform = dst - src;
 
-        xc = windowWidth / 2.0;
-        yc = windowHeight / 2.0;
+        xc = windowWidth / 2.0f;
+        yc = windowHeight / 2.0f;
 
         z = DotProduct(transform, left);
 
