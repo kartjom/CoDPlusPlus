@@ -7,7 +7,8 @@
 #define WORLDSPAWN 1022
 #define NO_GENTITY 1023
 
-typedef enum {
+enum entityType_t
+{
 	ET_GENERAL = 0,
 	ET_PLAYER = 1,
 	ET_PLAYER_CORPSE = 2,
@@ -23,18 +24,39 @@ typedef enum {
 	ET_VEHICLE = 12,
 	ET_VEHICLE_COLLMAP = 14,
 	ET_EVENTS = 16,
-} entityType_t;
+};
+
+enum trType_t
+{
+	TR_STATIONARY,
+	TR_INTERPOLATE,             // non-parametric, but interpolate between snapshots
+	TR_LINEAR,
+	TR_LINEAR_STOP,
+	TR_LINEAR_STOP_BACK,        //----(SA)	added.  so reverse movement can be different than forward
+	TR_SINE,                    // value = base + sin( time / duration ) * delta
+	TR_GRAVITY,
+	TR_GRAVITY_LOW,
+	TR_GRAVITY_FLOAT,           // super low grav with no gravity acceleration (floating feathers/fabric/leaves/...)
+	TR_GRAVITY_PAUSED,          //----(SA)	has stopped, but will still do a short trace to see if it should be switched back to TR_GRAVITY
+	TR_ACCELERATE,
+	TR_DECCELERATE
+};
+
+struct trajectory_t
+{
+	trType_t trType;
+	int trTime;
+	int trDuration;             // if non 0, trTime + trDuration = stop time
+	vec3_t trBase;
+	vec3_t trDelta;             // velocity, etc
+};
 
 struct gentity_t
 {
 	int32_t number; //0x0000
-	int32_t eType; //0x0004
+	entityType_t eType; //0x0004
 	char pad_0008[4]; //0x0008
-	int32_t trType; //0x000C
-	int32_t trTime; //0x0010
-	int32_t trDuration; //0x0014
-	vec3_t trBase; //0x0018
-	vec3_t trDelta; //0x0024
+	trajectory_t pos; //0x000C
 	char pad_0030[12]; //0x0030
 	vec3_t viewangles; //0x003C
 	char pad_0048[132]; //0x0048

@@ -25,12 +25,12 @@ namespace CoDUO
 
 	void G_SetOrigin(gentity_t* ent, vec3_t origin)
 	{
-		VectorCopy(origin, ent->trBase);
+		VectorCopy(origin, ent->pos.trBase);
 
-		ent->trType = 0;
-		ent->trTime = 0;
-		ent->trDuration = 0;
-		VectorClear(ent->trDelta);
+		ent->pos.trType = TR_STATIONARY;
+		ent->pos.trTime = 0;
+		ent->pos.trDuration = 0;
+		VectorClear(ent->pos.trDelta);
 
 		VectorCopy(origin, ent->currentOrigin);
 
