@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <Engine/CoDUO.h>
-#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Engine/Async/Task/Task.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>

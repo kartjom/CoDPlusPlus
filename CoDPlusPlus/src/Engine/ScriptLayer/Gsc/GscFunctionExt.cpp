@@ -1,4 +1,4 @@
-#include <Engine/ScriptLayer/Gsc/Async/HttpResult/HttpResult.h>
+#include <Engine/Async/HttpResult/HttpResult.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/Network/HttpClient.h>
 #include <Engine/CoDUO.h>

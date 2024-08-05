@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Engine/Async/Task/Task.h>
 
 namespace CoDUO::Gsc::Async
 {

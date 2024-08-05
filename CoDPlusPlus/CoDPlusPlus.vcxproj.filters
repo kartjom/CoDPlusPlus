@@ -36,8 +36,8 @@
     <ClCompile Include="src\Hook\Detours\Game\GameFixes.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\EngineCallbacks.cpp" />
     <ClCompile Include="src\Engine\Mappings\EntityMapping.cpp" />
-    <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.cpp" />
-    <ClCompile Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.cpp" />
+    <ClCompile Include="src\Engine\Async\HttpResult\HttpResult.cpp" />
+    <ClCompile Include="src\Engine\Async\Task\Task.cpp" />
     <ClCompile Include="src\Utils\ThreadPool\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -77,12 +77,12 @@
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="vendor\cpp-httplib\include\httplib.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
-    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.h" />
+    <ClInclude Include="src\Engine\Async\Task\Task.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\cmd.h" />
-    <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\HttpResult\HttpResult.h" />
+    <ClInclude Include="src\Engine\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\Async\Task\Task.h" />
     <ClInclude Include="src\Utils\ThreadPool\ThreadPool.h" />
   </ItemGroup>

@@ -15,7 +15,7 @@
 #include <Structs/vec3_t.h>
 #include <Utils/OpenGLHelper.h>
 #include <Engine/CoDUO.h>
-#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Engine/Async/Task/Task.h>
 
 #define FMT_HEADER_ONLY
 #include <fmt/core.h>

@@ -1,7 +1,7 @@
 #include "CoDUO.h"
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
-#include <Engine/ScriptLayer/Gsc/Async/Task/Task.h>
+#include <Engine/Async/Task/Task.h>
 #include <Utils/ImGuiManager.h>
 #include <print>
 
