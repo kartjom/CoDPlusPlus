@@ -23,6 +23,14 @@ struct vec3_t
 {
 	float x, y, z;
 
+	vec3_t()
+		: x(0), y(0), z(0)
+	{}
+
+	vec3_t(float x, float y, float z)
+		: x(x), y(y), z(z)
+	{}
+
 	operator float* ()
 	{
 		return &x;

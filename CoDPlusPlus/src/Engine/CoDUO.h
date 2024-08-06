@@ -14,11 +14,13 @@
 
 typedef char* (__cdecl* syscall_t)(int32_t, ...);
 typedef char* (__cdecl* va_t)(const char*, ...);
+typedef void (__cdecl* Com_Printf_t)(const char*, ...);
 
 namespace CoDUO
 {
 	inline syscall_t syscall = (syscall_t)(0x004685A0);
 	inline va_t va = (va_t)(0x0044fab0);
+	inline Com_Printf_t Com_Printf = (Com_Printf_t)(0x00439cc0);
 	inline DWORD uo_game_mp_x86 = 0;
 
 	inline serverStatic_t* svs = nullptr;
