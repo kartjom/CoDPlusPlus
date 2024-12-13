@@ -52,11 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\Async\HttpResult\HttpResult.h" />
+    <ClInclude Include="src\Engine\Async\Task\Task.h" />
     <ClInclude Include="src\Structs\Engine\cmd.h" />
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
-    <ClInclude Include="src\Engine\Async\Task\Task.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
