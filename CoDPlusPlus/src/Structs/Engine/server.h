@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 enum netadrtype_t {
 	NA_BOT,
@@ -48,9 +48,8 @@ struct netchan_t
 	char unsentBuffer[32768]; //0x8038
 }; //Size: 0x10038
 
-class client_t
+struct client_t
 {
-public:
 	clientState_t state; //0x0000
 	char pad_0004[8]; //0x0004
 	char userinfo[1024]; //0x000C
