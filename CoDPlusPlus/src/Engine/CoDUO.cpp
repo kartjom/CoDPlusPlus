@@ -12,17 +12,12 @@ namespace CoDUO
 {
 	void BaseAttach()
 	{
-		Hook::MemoryPatch().Inject(0x0043dd86, { 0xEB }); // Read Only
-		Hook::MemoryPatch().Inject(0x0043dda3, { 0xEB }); // Write Protected
-		Hook::MemoryPatch().Inject(0x0043ddc1, { 0xEB }); // Cheat Protected
-
-		refdef = (refdef_t*)(0x0489a100);
-		s_wmv = (WinMouseVars_t*)(0x009cdbbc);
-		cvar_indexes = (cvar_t*)(0x009987a0);
-		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
-		cmd_functions = (cmd_function_t**)(0x00964db8);
-		Cmd_Argv = (char**)(0x00964dc0);
-		Cmd_Argc = (int*)(0x009677c0);
+		using namespace Hook::Patch;
+		{
+			ReadOnlyPatch.Inject(0x0043dd86, { 0xEB });
+			WriteProtectedPatch.Inject(0x0043dda3, { 0xEB });
+			CheatProtectedPatch.Inject(0x0043ddc1, { 0xEB });
+		}
 
 		using namespace Hook::Detour;
 		{

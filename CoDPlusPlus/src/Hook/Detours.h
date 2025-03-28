@@ -2,6 +2,13 @@
 #include "Hook.h"
 #include <wtypes.h>
 
+namespace Hook::Patch
+{
+	inline Hook::MemoryPatch ReadOnlyPatch;
+	inline Hook::MemoryPatch WriteProtectedPatch;
+	inline Hook::MemoryPatch CheatProtectedPatch;
+}
+
 namespace Hook::Detour /* Core.cpp */
 {
 	inline Hook::DetourHook ScrThread_ReturnValueHook;

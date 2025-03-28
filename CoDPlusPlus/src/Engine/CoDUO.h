@@ -16,26 +16,30 @@ typedef char* (__cdecl* syscall_t)(int32_t, ...);
 typedef char* (__cdecl* va_t)(const char*, ...);
 typedef void (__cdecl* Com_Printf_t)(const char*, ...);
 
-namespace CoDUO
+namespace CoDUO /* CoDUOMP */
 {
 	inline syscall_t syscall = (syscall_t)(0x004685A0);
-	inline va_t va = (va_t)(0x0044fab0);
 	inline Com_Printf_t Com_Printf = (Com_Printf_t)(0x00439cc0);
+	inline va_t va = (va_t)(0x0044fab0);
+
+	inline refdef_t* refdef = (refdef_t*)(0x0489a100);
+	inline WinMouseVars_t* s_wmv = (WinMouseVars_t*)(0x009cdbbc);
+	inline cvar_t* cvar_indexes = (cvar_t*)(0x009987a0);
+	inline cmd_function_t** cmd_functions = (cmd_function_t**)(0x00964db8);
+	inline char** Cmd_Argv = (char**)(0x00964dc0);
+	inline int* Cmd_Argc = (int*)(0x009677c0);
+};
+
+namespace CoDUO /* uo_game_mp_x86 */
+{
 	inline DWORD uo_game_mp_x86 = 0;
 
 	inline serverStatic_t* svs = nullptr;
 	inline level_locals_t* level = nullptr;
-	inline refdef_t* refdef = nullptr;
-	inline WinMouseVars_t* s_wmv = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
-	inline cvar_t* cvar_indexes = nullptr;
 	inline int32_t* bg_iNumWeapons = nullptr;
-
-	inline cmd_function_t** cmd_functions;
-	inline char** Cmd_Argv = nullptr;
-	inline int* Cmd_Argc = nullptr;
-};
+}
 
 namespace CoDUO /* GscMapping.cpp */
 {
