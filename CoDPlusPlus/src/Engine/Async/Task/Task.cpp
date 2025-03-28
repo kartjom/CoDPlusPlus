@@ -1,4 +1,4 @@
-#include "Task.h"
+﻿#include "Task.h"
 #include <chrono>
 #include <print>
 
@@ -23,7 +23,7 @@ namespace CoDUO::Gsc::Async
 		Status.store(TaskStatus::Finished);
 		FinishedAt.store(time(0));
 
-		std::println("[Task] - Async task {} finished", Handle.load());
+		std::println("[Threading] - Async task {} finished", Handle.load());
 	}
 
 	void Task::Dispose()
@@ -33,7 +33,7 @@ namespace CoDUO::Gsc::Async
 			AllocatedTasks.erase(Handle);
 		}
 
-		std::println("[Task] - Async task {} disposed", Handle.load());
+		std::println("[Threading] - Async task {} disposed", Handle.load());
 	}
 }
 
@@ -59,13 +59,13 @@ namespace CoDUO::Gsc::Async::TaskManager
 
 				if (count > 0)
 				{
-					std::println("[Task] - Garbage collected {} items", count);
+					std::println("[Threading] - Garbage collected {} items", count);
 				}
 			}
 		});
 
 		gc.detach();
 
-		std::println("[Task] - Initialized garbage collector");
+		std::println("[Threading] - Garbage Collector Initialized");
 	}
 }

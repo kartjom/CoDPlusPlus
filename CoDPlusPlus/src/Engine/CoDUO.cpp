@@ -30,20 +30,19 @@ namespace CoDUO
 			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
 		#endif
 
-		std::println("[CoDUOMP] - BaseAttach");
+		std::println("[CoDPlusPlus] - Core Initialized");
 	}
 
 	void uo_game_mp_x86_OnAttach()
 	{
+		uo_game_mp_x86_Cleanup();
+
+		CodeCallback = {};
 		svs = (serverStatic_t*)(0x4907BC0);
 		level = (level_locals_t*)(uo_game_mp_x86 + 0x0030fac0);
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086a58);
 		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ed3c);
-
-		CodeCallback = {};
-
-		uo_game_mp_x86_Cleanup();
 
 		using namespace Hook::Detour;
 		{
@@ -81,22 +80,21 @@ namespace CoDUO
 
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
-		std::println("[uo_game_mp_x86] - OnAttach");
+		std::println("[CoDPlusPlus] - Server Initialized");
 	}
 
 	void uo_game_mp_x86_OnDetach()
 	{
+		uo_game_mp_x86_Cleanup();
+
+		CodeCallback = {};
 		svs = nullptr;
 		level = nullptr;
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;
 
-		CodeCallback = {};
-
-		uo_game_mp_x86_Cleanup();
-
-		std::println("[uo_game_mp_x86] - OnDetach");
+		std::println("[CoDPlusPlus] - Server Disposed");
 	}
 
 	void uo_game_mp_x86_Cleanup()

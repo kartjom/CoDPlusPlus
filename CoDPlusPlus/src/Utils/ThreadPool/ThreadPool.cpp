@@ -1,4 +1,4 @@
-#include "ThreadPool.h"
+﻿#include "ThreadPool.h"
 
 namespace Utils
 {
@@ -16,7 +16,7 @@ namespace Utils
         pool = CreateThreadpool(NULL);
         if (pool == NULL)
         {
-            std::println("[Thread Pool] - CreateThreadpool failed. Error: {}", GetLastError());
+            std::println("[Threading] - CreateThreadpool failed. Error: {}", GetLastError());
             return;
         }
 
@@ -30,7 +30,7 @@ namespace Utils
         cleanupGroup = CreateThreadpoolCleanupGroup();
         if (cleanupGroup == NULL)
         {
-            std::println("[Thread Pool] - CreateThreadpoolCleanupGroup failed. Error: {}", GetLastError());
+            std::println("[Threading] - CreateThreadpoolCleanupGroup failed. Error: {}", GetLastError());
             CloseThreadpool(pool);
             pool = NULL;
 
@@ -41,7 +41,7 @@ namespace Utils
         SetThreadpoolCallbackPool(&callbackEnv, pool);
         SetThreadpoolCallbackCleanupGroup(&callbackEnv, cleanupGroup, NULL);
 
-        std::println("[Thread Pool] - Initialized");
+        std::println("[Threading] - Thread Pool Initialized");
     }
 
     void ThreadPool::Dispose()
@@ -55,7 +55,7 @@ namespace Utils
 
         pool = NULL;
 
-        std::println("[Thread Pool] - Disposed");
+        std::println("[Threading] - Thread Pool Disposed");
     }
 
     void CALLBACK WorkCallback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work)
@@ -68,7 +68,7 @@ namespace Utils
         }
         catch (std::exception& e)
         {
-            std::println("[Thread Pool] - exception when executing task: Error: {}", e.what());
+            std::println("[Threading] - exception when executing task: Error: {}", e.what());
         }
         
         delete taskContext;
@@ -80,7 +80,7 @@ namespace Utils
         PTP_WORK work = CreateThreadpoolWork(WorkCallback, taskContext, &callbackEnv);
         if (work == NULL)
         {
-            std::println("[Thread Pool] - CreateThreadpoolWork failed. Error: {}", GetLastError());
+            std::println("[Threading] - CreateThreadpoolWork failed. Error: {}", GetLastError());
             delete taskContext;
 
             return false;

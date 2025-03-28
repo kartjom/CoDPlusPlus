@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define WIN32_LEAN_AND_MEAN 
 #include <Windows.h>
@@ -30,7 +30,7 @@ namespace Utils
         {
             if (pool == NULL)
             {
-                std::println("[Thread Pool] - Enqueue failed due to uninitialized or disposed pool");
+                std::println("[Threading] - Enqueue failed due to uninitialized or disposed pool");
                 return false;
             }
 
