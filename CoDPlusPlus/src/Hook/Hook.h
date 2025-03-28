@@ -6,17 +6,51 @@
 
 namespace Hook
 {
-	constexpr DWORD BaseAddress = 0x400000;
-
-	class DetourHook
+	class BaseHook
 	{
+	protected:
+		bool _IsHooked = false;
+
 	public:
+		inline bool IsHooked() const
+		{
+			return _IsHooked;
+		}
+
+		inline void SetHooked(bool value)
+		{
+			_IsHooked = value;
+		}
+
+		inline void EnsureHooked(const char* errorMessage)
+		{
+			if (!this->IsHooked())
+			{
+				MessageBoxA(NULL, errorMessage, "Error", MB_OK | MB_ICONERROR);
+				exit(-1);
+			}
+		}
+
+		inline void EnsureNotHooked(const char* errorMessage)
+		{
+			if (this->IsHooked())
+			{
+				MessageBoxA(NULL, errorMessage, "Error", MB_OK | MB_ICONERROR);
+				exit(-1);
+			}
+		}
+	};
+
+	class DetourHook : public BaseHook
+	{
+	private:
 		uintptr_t Address; // where we hook
 		uintptr_t Trampoline; // where we jump to
-		uintptr_t Return; // where we return to
-		uintptr_t Length; // number of bytes we override
-
+		int Length; // number of bytes we override
 		std::vector<BYTE> OriginalBytes;
+
+	public:
+		uintptr_t Return; // where we jump back
 
 		inline DetourHook()
 			: Address(0), Trampoline(0), Return(0), Length(0), OriginalBytes()
@@ -25,6 +59,14 @@ namespace Hook
 
 		inline void Inject(uintptr_t hookAddress, void* jumpTo, int len)
 		{
+			this->EnsureNotHooked("Detour hook is already applied");
+
+			if (len < 5)
+			{
+				MessageBoxA(NULL, "Detour length must be at least 5 bytes", "Error", MB_OK | MB_ICONERROR);
+				exit(-1);
+			}
+
 			Address = hookAddress;
 			Trampoline = (uintptr_t)jumpTo;
 			Return = hookAddress + len;
@@ -36,23 +78,46 @@ namespace Hook
 			OriginalBytes.resize(len);
 			memcpy_s(OriginalBytes.data(), len, (void*)hookAddress, len);
 
-			DWORD relativeAddress = ((DWORD)jumpTo - hookAddress) - 5;
+			uintptr_t relativeAddress = ((uintptr_t)jumpTo - hookAddress) - 5;
 
 			*(BYTE*)hookAddress = 0xE9; // JMP
-			*(DWORD*)(hookAddress + 1) = relativeAddress;
+			*(uintptr_t*)(hookAddress + 1) = relativeAddress;
 
 			VirtualProtect((void*)hookAddress, len, protection, &protection);
+
+			this->SetHooked(true);
+		}
+
+		inline void Remove()
+		{
+			this->EnsureHooked("Detour hook is not applied");
+
+			DWORD protection;
+			VirtualProtect((void*)Address, Length, PAGE_EXECUTE_READWRITE, &protection);
+			memcpy((void*)Address, OriginalBytes.data(), Length);
+			VirtualProtect((void*)Address, Length, protection, &protection);
+
+			Address = 0;
+			Trampoline = 0;
+			Return = 0;
+			Length = 0;
+			OriginalBytes.clear();
+
+			this->SetHooked(false);
 		}
 	};
 
 	template<typename FnType>
-	class TrampolineHook
+	class TrampolineHook : public BaseHook
 	{
+	private:
+		DetourHook Detour;
+
 	public:
 		FnType OriginalFn;
 
 		inline TrampolineHook()
-			: OriginalFn(nullptr)
+			: Detour(), OriginalFn(nullptr)
 		{
 		}
 
@@ -68,70 +133,98 @@ namespace Hook
 			Inject(original, hooked, len);
 		}
 
-	private:
-		inline void Detour32(BYTE* src, BYTE* dst, const uintptr_t len)
+		inline void Remove()
 		{
-			DWORD curProtection;
-			VirtualProtect(src, len, PAGE_EXECUTE_READWRITE, &curProtection);
+			this->EnsureHooked("Trampoline hook is not applied");
 
-			uintptr_t relativeAddress = dst - src - 5;
+			Detour.Remove();
+			VirtualFree((void*)OriginalFn, 0, MEM_RELEASE);
 
-			*src = 0xE9;
+			OriginalFn = nullptr;
 
-			*(uintptr_t*)(src + 1) = relativeAddress;
-
-			VirtualProtect(src, len, curProtection, &curProtection);
+			this->SetHooked(false);
 		}
 
+	private:
 		inline BYTE* TrampHook32(BYTE* src, BYTE* dst, const uintptr_t len)
 		{
-			if (len < 5) return 0;
+			this->EnsureNotHooked("Trampoline hook is already applied");
 
-			//Create Gateway
+			if (len < 5)
+			{
+				MessageBoxA(NULL, "Trampoline hook length must be at least 5 bytes", "Error", MB_OK | MB_ICONERROR);
+				exit(-1);
+			}
+
+			// Create Gateway
 			BYTE* gateway = (BYTE*)VirtualAlloc(0, len, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 
-			//write the stolen bytes to the gateway
+			// Write the stolen bytes to the gateway
 			memcpy_s(gateway, len, src, len);
 
-			//Get the gateway to destination address
+			// Get the gateway to destination address
 			uintptr_t gatewayRelativeAddr = src - gateway - 5;
 
-			// add the jmp opcode to the end of the gateway
+			// Add the jmp opcode to the end of the gateway
 			*(gateway + len) = 0xE9;
 
-			//Write the address of the gateway to the jmp
+			// Write the address of the gateway to the jmp
 			*(uintptr_t*)((uintptr_t)gateway + len + 1) = gatewayRelativeAddr;
 
-			//Perform the detour
-			Detour32(src, dst, len);
+			// Perform the detour
+			Detour.Inject((uintptr_t)src, dst, len);
+
+			this->SetHooked(true);
 
 			return gateway;
 		}
 	};
 
-	class MemoryPatch
+	class MemoryPatch : public BaseHook
 	{
-	public:
+	private:
+		uintptr_t Address;
+		int Length;
 		std::vector<BYTE> OriginalBytes;
 
+	public:
 		inline MemoryPatch()
-			: OriginalBytes()
+			: Address(0), Length(0), OriginalBytes()
 		{
 		}
 
 		inline void Inject(uintptr_t patchAddress, const std::vector<BYTE>& bytes)
 		{
-			int length = bytes.size();
+			this->EnsureNotHooked("Patch is already applied");
+
+			Address = patchAddress;
+			Length = bytes.size();
 
 			DWORD protection;
-			VirtualProtect((void*)patchAddress, length, PAGE_EXECUTE_READWRITE, &protection);
+			VirtualProtect((void*)patchAddress, Length, PAGE_EXECUTE_READWRITE, &protection);
 
-			OriginalBytes.resize(length);
-			memcpy_s(OriginalBytes.data(), length, (void*)patchAddress, length);
+			OriginalBytes.resize(Length);
+			memcpy_s(OriginalBytes.data(), Length, (void*)patchAddress, Length);
 
-			memcpy((void*)patchAddress, bytes.data(), length);
+			memcpy((void*)patchAddress, bytes.data(), Length);
+			VirtualProtect((void*)patchAddress, Length, protection, &protection);
 
-			VirtualProtect((void*)patchAddress, length, protection, &protection);
+			this->SetHooked(true);
+		}
+
+		inline void Remove()
+		{
+			this->EnsureHooked("Patch is not applied");
+
+			DWORD protection;
+			VirtualProtect((void*)Address, Length, PAGE_EXECUTE_READWRITE, &protection);
+			memcpy((void*)Address, OriginalBytes.data(), Length);
+			VirtualProtect((void*)Address, Length, protection, &protection);
+
+			Address = 0;
+			OriginalBytes.clear();
+
+			this->SetHooked(false);
 		}
 	};
 };

@@ -86,13 +86,13 @@ namespace Hook::Detour /* Utility */
 
 namespace Hook::Detour /* WinAPI.cpp */
 {
-	typedef HMODULE(__stdcall* LoadLibraryA_t)(LPCSTR lpLibFileName);
+	typedef HMODULE(__stdcall* LoadLibraryA_t)(LPCSTR);
 	inline Hook::TrampolineHook<LoadLibraryA_t> LoadLibraryAHook;
-	HMODULE __stdcall hkLoadLibraryA(LPCSTR lpLibFileName);
+	HMODULE __stdcall hkLoadLibraryA(LPCSTR);
 
-	typedef NTSTATUS(__stdcall* LdrUnloadDll_t)(PVOID BaseAddress);
+	typedef NTSTATUS(__stdcall* LdrUnloadDll_t)(PVOID);
 	inline Hook::TrampolineHook<LdrUnloadDll_t> LdrUnloadDllHook;
-	NTSTATUS __stdcall hkLdrUnloadDll(PVOID BaseAddress);
+	NTSTATUS __stdcall hkLdrUnloadDll(PVOID);
 }
 
 #ifdef CLIENT

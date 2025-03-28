@@ -94,6 +94,29 @@ namespace CoDUO
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;
 
+		// Dll is unloaded anyways - no need to detach hooks, only mark them as unhooked
+		using namespace Hook::Detour;
+		{
+			LoadGameTypeScriptHook.SetHooked(false);
+			LookupFunctionHook.SetHooked(false);
+			LookupMethodHook.SetHooked(false);
+			LookupCommandHook.SetHooked(false);
+			LookupClientCommandHook.SetHooked(false);
+			InitializeHook.SetHooked(false);
+			PlayerShootHook.SetHooked(false);
+			PlayerMeleeHook.SetHooked(false);
+			PlayerSayHook.SetHooked(false);
+			PlayerInactivityHook.SetHooked(false);
+			PlayerVoteHook.SetHooked(false);
+			VoteCalledHook.SetHooked(false);
+			ProjectileBounceHook.SetHooked(false);
+			ProjectileExplodeHook.SetHooked(false);
+			SmokeExplodeHook.SetHooked(false);
+			VehicleCrashFixHook.SetHooked(false);
+			VEH_UnlinkPlayerFixHook.SetHooked(false);
+			// ServerTickHook.SetHooked(false);
+		}
+
 		std::println("[CoDPlusPlus] - Server Disposed");
 	}
 

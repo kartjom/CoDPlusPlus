@@ -1,4 +1,4 @@
-#ifdef CLIENT
+﻿#ifdef CLIENT
 
 #include "ImGuiManager.h"
 #include "WinApiHelper.h"
@@ -463,7 +463,7 @@ namespace ImGuiManager
 					{
 						selected = i;
 
-						if (ImGui::Button("Teleport"))
+						if (ImGui::Button("Go to"))
 						{
 							gentity_t* host = &g_entities[0];
 							G_SetOrigin(host, ent->currentOrigin);
