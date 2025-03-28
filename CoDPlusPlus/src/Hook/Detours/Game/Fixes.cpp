@@ -1,12 +1,12 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 #include <Hook/Detours.h>
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
 
-namespace Detours
+namespace Hook::Detour
 {
-	ImplementDetour(VehicleCrashFix)
+	_declspec(naked) void VehicleCrashFix_n() noexcept
 	{
 		_asm
 		{
@@ -14,12 +14,12 @@ namespace Detours
 			jz eax_null // jump if null
 		}
 
-		_restore
+		_asm // restore
 		{
 			mov edx, dword ptr[eax + 0xd0]
 		}
 
-		JumpBack(VehicleCrashFix)
+		_asm jmp[VehicleCrashFixHook.Return] // jump back
 
 		eax_null:
 		_asm // eax is null
@@ -30,7 +30,7 @@ namespace Detours
 		}
 	}
 
-	ImplementDetour(VEH_UnlinkPlayerFix)
+	_declspec(naked) void VEH_UnlinkPlayerFix_n() noexcept
 	{
 		// Disables 'VEH_UnlinkPlayer: Player is not using a vehicle' script error
 		_asm

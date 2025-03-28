@@ -1,15 +1,15 @@
-#ifdef CLIENT
-
+﻿#ifdef CLIENT
 #include <Hook/Detours.h>
 #include <Utils/ImGuiManager.h>
 #include <print>
 
-namespace Detours
+namespace Hook::Detour
 {
-	ImplementOverride(BOOL, __stdcall, wglSwapBuffers)(HDC hDc)
+	void __stdcall hkGLimp_EndFrame()
 	{
 		try
 		{
+			HDC hDc = *(HDC*)(0x39826E4); // glwstate_t.hDC
 			ImGuiManager::Initialize(hDc);
 
 			HGLRC o_WglContext = ImGuiManager::BeginFrame(hDc);
@@ -25,18 +25,7 @@ namespace Detours
 			std::println("[wglSwapBuffers] - Exception");
 		}
 
-		return Original(wglSwapBuffers)(hDc);
-	}
-
-	ImplementDetour(wglSwapBuffers)
-	{
-		_asm
-		{
-			call dword ptr[Wrapper(wglSwapBuffers)]
-		}
-
-		JumpBack(wglSwapBuffers)
+		GLimp_EndFrameHook.OriginalFn();
 	}
 }
-
 #endif

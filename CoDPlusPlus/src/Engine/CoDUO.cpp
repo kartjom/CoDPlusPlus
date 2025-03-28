@@ -1,4 +1,4 @@
-#include "CoDUO.h"
+﻿#include "CoDUO.h"
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <Engine/Async/Task/Task.h>
@@ -7,25 +7,29 @@
 
 using namespace CoDUO::Gsc;
 using namespace CoDUO::Gsc::Async;
+
 namespace CoDUO
 {
 	void BaseAttach()
 	{
-		BYTE payloadBuffer[] = { 0xEB }; // Console cvars
-		Hook::Patch(0x0043DD86, payloadBuffer, 1); // Read Only
-		Hook::Patch(0x0043DDA3, payloadBuffer, 1); // Write Protected
-		Hook::Patch(0x0043DDC1, payloadBuffer, 1); // Cheat Protected
+		Hook::MemoryPatch().Inject(0x0043dd86, { 0xEB }); // Read Only
+		Hook::MemoryPatch().Inject(0x0043dda3, { 0xEB }); // Write Protected
+		Hook::MemoryPatch().Inject(0x0043ddc1, { 0xEB }); // Cheat Protected
 
-		refdef = (refdef_t*)(0x0489A100);
-		s_wmv = (WinMouseVars_t*)(0x009CDBBC);
-		cvar_indexes = (cvar_t*)(0x009987A0);
+		refdef = (refdef_t*)(0x0489a100);
+		s_wmv = (WinMouseVars_t*)(0x009cdbbc);
+		cvar_indexes = (cvar_t*)(0x009987a0);
 		cvar_indexes = cvar_indexes->next; // first one is junk, remove if something's broken
 		cmd_functions = (cmd_function_t**)(0x00964db8);
-		Cmd_Argv = (char**)(0x00964DC0);
-		Cmd_Argc = (int*)(0x009677C0);
+		Cmd_Argv = (char**)(0x00964dc0);
+		Cmd_Argc = (int*)(0x009677c0);
 
-		DetourRet(0x00457702, Detours::SV_Map_LoadConfig, 8);
-		DetourRet(0x0048f40e, Detours::Scr_ExecThread_GscReturnValue, 5);
+		using namespace Hook::Detour;
+		{
+			// Core functionality
+			ScrThread_ReturnValueHook.Inject(0x0048f40e, ScrThread_ReturnValue_n, 5);
+			MapBindingsHook.Inject(0x00457702, MapBindings_n, 8);
+		}
 
 		#ifdef CLIENT
 			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
@@ -36,50 +40,50 @@ namespace CoDUO
 
 	void uo_game_mp_x86_OnAttach()
 	{
-		if (uo_game_mp_x86 == 0)
-		{
-			MessageBox(NULL,
-				(LPCWSTR)L"uo_game_mp_x86.dll not found. Make sure the file is in the mod directory.",
-				(LPCWSTR)L"Fatal error",
-				MB_ICONERROR | MB_OK | MB_DEFBUTTON2);
-
-			exit(-69);
-		}
-
 		svs = (serverStatic_t*)(0x4907BC0);
 		level = (level_locals_t*)(uo_game_mp_x86 + 0x0030fac0);
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
-		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086A58);
-		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ED3C);
+		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086a58);
+		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ed3c);
 
 		CodeCallback = {};
 
 		uo_game_mp_x86_Cleanup();
 
-		DetourRet(uo_game_mp_x86 + 0x0003D230, Detours::LoadFunctionMP, 6);
-		DetourRet(uo_game_mp_x86 + 0x0003D330, Detours::LoadMethodMP, 8);
-		DetourRet(uo_game_mp_x86 + 0x0004f1d2, Detours::ConsoleCommand, 5);
-		DetourRet(uo_game_mp_x86 + 0x0002556a, Detours::ClientCommand, 5);
+		using namespace Hook::Detour;
+		{
+			// Loaders
+			LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, LoadGameTypeScript_n, 8);
 
-		DetourRet(uo_game_mp_x86 + 0x000361c0, Detours::GScr_LoadGameTypeScript, 8);
+			LookupFunctionHook.Inject(uo_game_mp_x86 + 0x0003D230, LookupFunction_n, 6);
+			LookupMethodHook.Inject(uo_game_mp_x86 + 0x0003D330, LookupMethod_n, 8);
 
-		DetourRet(uo_game_mp_x86 + 0x0002c46f, Detours::PostInitGame, 5);
-		DetourRet(uo_game_mp_x86 + 0x0005689d, Detours::ShootCallback, 6);
-		DetourRet(uo_game_mp_x86 + 0x00055727, Detours::MeleeCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x00022B5D, Detours::PlayerSayCallback, 7);
-		DetourRet(uo_game_mp_x86 + 0x0002444c, Detours::PlayerVoteCallback, 9);
-		DetourRet(uo_game_mp_x86 + 0x00023698, Detours::VoteCallCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x0001aaa0, Detours::PlayerInactivity, 6);
-		DetourRet(uo_game_mp_x86 + 0x0002ff58, Detours::ProjectileBounceCallback, 5);
-		DetourRet(uo_game_mp_x86 + 0x00030448, Detours::ProjectileExplodeCallback, 6);
-		DetourRet(uo_game_mp_x86 + 0x00030ac5, Detours::SmokeExplodeCallback, 5);
+			LookupCommandHook.Inject(uo_game_mp_x86 + 0x0004f1d2, LookupCommand_n, 5);
+			LookupClientCommandHook.Inject(uo_game_mp_x86 + 0x0002556a, LookupClientCommand_n, 5);
 
-		DetourRet(uo_game_mp_x86 + 0x0001b482, Detours::VehicleCrashFix, 6);
-		DetourRet(uo_game_mp_x86 + 0x0004804a, Detours::VEH_UnlinkPlayerFix, 5);
+			// Gsc Callbacks
+			InitializeHook.Inject(uo_game_mp_x86 + 0x0002c46f, Initialize_n, 5);
 
-		// Not used but available
-		//DetourRet(uo_game_mp_x86 + 0x0001b1e6, Detours::ServerTick, 6);
+			PlayerShootHook.Inject(uo_game_mp_x86 + 0x0005689d, PlayerShoot_n, 6);
+			PlayerMeleeHook.Inject(uo_game_mp_x86 + 0x00055727, PlayerMelee_n, 5);
+			PlayerSayHook.Inject(uo_game_mp_x86 + 0x00022b5d, PlayerSay_n, 7);
+			PlayerInactivityHook.Inject(uo_game_mp_x86 + 0x0001aaa0, PlayerInactivity_n, 6);
+
+			PlayerVoteHook.Inject(uo_game_mp_x86 + 0x0002444c, PlayerVote_n, 9);
+			VoteCalledHook.Inject(uo_game_mp_x86 + 0x00023698, VoteCalled_n, 5);
 		
+			ProjectileBounceHook.Inject(uo_game_mp_x86 + 0x0002ff58, ProjectileBounce_n, 5);
+			ProjectileExplodeHook.Inject(uo_game_mp_x86 + 0x00030448, ProjectileExplode_n, 6);
+			SmokeExplodeHook.Inject(uo_game_mp_x86 + 0x00030ac5, SmokeExplode_n, 5);
+
+			// Fixes
+			VehicleCrashFixHook.Inject(uo_game_mp_x86 + 0x0001b482, VehicleCrashFix_n, 6);
+			VEH_UnlinkPlayerFixHook.Inject(uo_game_mp_x86 + 0x0004804a, VEH_UnlinkPlayerFix_n, 5);
+
+			// Utility
+			// ServerTickHook.Inject(uo_game_mp_x86 + 0x0001b1e6, ServerTick_n, 6);
+		}
+
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 
 		std::println("[uo_game_mp_x86] - OnAttach");
@@ -109,9 +113,5 @@ namespace CoDUO
 
 		gsc_commands.clear();
 		gsc_clientcommands.clear();
-	}
-
-	void ServerTick()
-	{
 	}
 }

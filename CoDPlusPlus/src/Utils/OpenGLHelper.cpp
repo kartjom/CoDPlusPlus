@@ -1,4 +1,4 @@
-#ifdef CLIENT
+﻿#ifdef CLIENT
 
 #include <Utils/OpenGLHelper.h>
 #include <Hook/Hook.h>
@@ -12,12 +12,13 @@
 #include <math.h>
 
 using namespace CoDUO;
+using namespace Hook::Detour;
+
 namespace OpenGLHelper
 {
 	void InjectDetours()
 	{
-		Detours::wglSwapBuffers_o = Hook::LoadFromDLL<wglSwapBuffers_t>("opengl32.dll", "wglSwapBuffers");
-		DetourRet(Hook::BaseAddress + 0xF6723, Detours::wglSwapBuffers, 6);
+        GLimp_EndFrameHook.Inject((BYTE*)(0x004f66c0), (BYTE*)hkGLimp_EndFrame, 5);
 	}
 
     float DotProduct(vec3_t v1, vec3_t v2)

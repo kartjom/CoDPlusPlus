@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Structs/Engine/level_locals.h>
 #include <Structs/Engine/server.h>
 #include <Structs/Engine/gentity.h>
@@ -145,6 +145,4 @@ namespace CoDUO
 	void uo_game_mp_x86_OnAttach();
 	void uo_game_mp_x86_OnDetach();
 	void uo_game_mp_x86_Cleanup();
-
-	void ServerTick();
 }

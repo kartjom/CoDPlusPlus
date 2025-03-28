@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 #include <Hook/Detours.h>
 #include <stdio.h>
 #include <fstream>
@@ -9,35 +9,53 @@
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
 
-namespace Detours
+namespace Hook::Detour
 {
+	void LoadGameTypeScript();
+
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
 
 	bool RunCustomConsoleCommand(const char* name);
 	bool RunCustomClientCommand(gentity_t* player, const char* name);
-
-	void LoadMapBindings();
 }
 
-namespace Detours
+namespace Hook::Detour
 {
-	ImplementDetour(LoadFunctionMP)
+	_declspec(naked) void LoadGameTypeScript_n() noexcept
+	{
+		_asm pushad
+		LoadGameTypeScript();
+		_asm popad
+
+		_asm // restore
+		{
+			sub esp, 0x44
+
+			mov eax, uo_game_mp_x86
+			add eax, 0x00082650
+
+			mov eax, [eax]
+		}
+
+		_asm jmp[LoadGameTypeScriptHook.Return] // jump back
+	}
+
+	_declspec(naked) void LookupFunction_n() noexcept
 	{
 		_asm sub esp, 0x4
-		_asm pushad
 
+		_asm pushad
 		_asm
 		{
 			mov eax, [esp + 0x28]
 			mov eax, [eax]
-			push eax
+			push eax // value
 			call GetFunctionCallback
-			add esp, 0x4
+			add esp, 0x4 // 1 arg, 4 bytes
 
 			mov[esp + 0x20], eax
 		}
-
 		_asm popad
 
 		_asm
@@ -47,13 +65,13 @@ namespace Detours
 			jne function_found
 		}
 
-		_restore
+		_asm // restore
 		{
 			mov eax, dword ptr ss : [esp + 0x4]
 			mov edx, dword ptr ds : [eax]
 		}
 
-		JumpBack(LoadFunctionMP)
+		_asm jmp[LookupFunctionHook.Return] // jump back
 
 		_asm
 		{
@@ -62,22 +80,21 @@ namespace Detours
 		}
 	}
 
-	ImplementDetour(LoadMethodMP)
+	_declspec(naked) void LookupMethod_n() noexcept
 	{
 		_asm sub esp, 0x4
-		_asm pushad
 
+		_asm pushad
 		_asm
 		{
 			mov eax, [esp + 0x28]
 			mov eax, [eax]
-			push eax
+			push eax // value
 			call GetMethodCallback
-			add esp, 0x4
+			add esp, 0x4 // 1 arg, 4 bytes
 
 			mov[esp + 0x20], eax
 		}
-
 		_asm popad
 
 		_asm
@@ -87,13 +104,13 @@ namespace Detours
 			jne method_found
 		}
 
-		_restore
+		_asm // restore
 		{
 			mov eax, dword ptr ss : [esp + 0x8]
 			mov edx, dword ptr ss : [esp + 0x4]
 		}
 
-		JumpBack(LoadMethodMP)
+		_asm jmp[LookupMethodHook.Return] // jump back
 
 		_asm
 		{
@@ -102,43 +119,9 @@ namespace Detours
 		}
 	}
 
-	ImplementDetour(SV_Map_LoadConfig)
+	_declspec(naked) void LookupCommand_n() noexcept
 	{
 		_asm pushad
-
-		LoadMapBindings();
-
-		_asm popad
-
-		_restore
-		{
-			mov esi, dword ptr ds : [0x9677C0]
-			test esi, esi
-		}
-
-		JumpBack(SV_Map_LoadConfig)
-	}
-
-	ImplementDetour(ServerTick)
-	{
-		_asm pushad
-
-		CoDUO::ServerTick();
-
-		_asm popad
-
-		_restore
-		{
-			sub esp, 0x254
-		}
-
-		JumpBack(ServerTick)
-	}
-
-	ImplementDetour(ConsoleCommand)
-	{
-		_asm pushad
-
 		_asm
 		{
 			lea eax, [esp + 0x20]
@@ -146,23 +129,21 @@ namespace Detours
 
 			call RunCustomConsoleCommand
 
-			add esp, 0x4
+			add esp, 0x4 // 1 arg, 4 bytes
 
 			cmp al, 1
 			je cmd_found
 		}
-
 		_asm popad
 
-		_restore
+		_asm // restore
 		{
 			mov eax, uo_game_mp_x86
 			add eax, 0x001ee4ac
 			mov eax, [eax]
 		}
 
-		JumpBack(ConsoleCommand)
-
+		_asm jmp[LookupCommandHook.Return] // jump back
 	
 		_asm
 		{
@@ -174,10 +155,9 @@ namespace Detours
 		}
 	}
 
-	ImplementDetour(ClientCommand)
+	_declspec(naked) void LookupClientCommand_n() noexcept
 	{
 		_asm pushad
-
 		_asm
 		{
 			lea eax, [esp + 0x28]
@@ -186,20 +166,19 @@ namespace Detours
 
 			call RunCustomClientCommand
 
-			add esp, 0x8
+			add esp, 0x8 // 2 args, 8 bytes
 
 			cmp al, 1
 			je cmd_found
 		}
-
 		_asm popad
 
-		_restore
+		_asm // restore
 		{
 			mov eax, 0x1869f
 		}
 
-		JumpBack(ClientCommand)
+		_asm jmp[LookupClientCommandHook.Return] // jump back
 
 		_asm
 		{
@@ -212,8 +191,25 @@ namespace Detours
 	}
 }
 
-namespace Detours
+namespace Hook::Detour
 {
+	void __cdecl LoadGameTypeScript()
+	{
+		constexpr const char* _codplusplus = "maps/mp/gametypes/_codplusplus";
+		if (Scr_LoadScript(_codplusplus))
+		{
+			CodeCallback.OnInitialize = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnInitialize");
+			CodeCallback.OnPlayerShoot = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerShoot");
+			CodeCallback.OnPlayerMelee = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerMelee");
+			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerSay");
+			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerVote");
+			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerInactivity");
+			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnVoteCalled");
+			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileBounce");
+			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileExplode");
+		}
+	}
+
 	void* __cdecl GetFunctionCallback(const char* value)
 	{
 		if (gsc_functions.find(value) != gsc_functions.end())
@@ -297,47 +293,5 @@ namespace Detours
 		}
 
 		return false;
-	}
-
-	void __cdecl LoadMapBindings()
-	{
-		constexpr const char* map_bindings = "codplusplus/map_bindings.txt";
-
-		char* mapname = Cmd_Argv[1];
-		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(map_bindings)) return;
-
-		std::ifstream file(map_bindings, std::ifstream::in);
-		if (!file.is_open()) return;
-
-		std::string _default;
-
-		std::string line;
-		while (std::getline(file, line))
-		{
-			std::istringstream iss(line);
-			std::string key, value;
-			if (std::getline(iss, key, '=') && std::getline(iss, value))
-			{
-				if (_default.empty() && _stricmp(key.c_str(), "default") == 0)
-				{
-					_default = value;
-					continue;
-				}
-
-				if (_stricmp(key.c_str(), mapname) == 0)
-				{
-					Cvar_Set("fs_game", value.c_str(), 1);
-
-					file.close();
-					return;
-				}
-			}
-		}
-		file.close();
-
-		if (!_default.empty())
-		{
-			Cvar_Set("fs_game", _default.c_str(), 1);
-		}
 	}
 }

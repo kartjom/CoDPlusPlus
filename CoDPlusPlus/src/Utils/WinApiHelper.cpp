@@ -1,4 +1,4 @@
-#include <Utils/WinApiHelper.h>
+﻿#include <Utils/WinApiHelper.h>
 #include <Utils/ImGuiManager.h>
 
 #include <imgui.h>
@@ -16,6 +16,8 @@
 #include <ImageHlp.h>
 
 #pragma comment(lib, "dbghelp.lib")
+
+using namespace Hook::Detour;
 
 namespace WinApiHelper
 {
@@ -50,7 +52,6 @@ namespace WinApiHelper
 		
 		outfile << std::format("\nEsp 0x{:08x}", pExceptionInfo->ContextRecord->Esp);
 		outfile << std::format("\nEbp 0x{:08x}", pExceptionInfo->ContextRecord->Ebp);
-
 		outfile << std::format("\nEdi 0x{:08x}", pExceptionInfo->ContextRecord->Edi);
 		outfile << std::format("\nEsi 0x{:08x}", pExceptionInfo->ContextRecord->Esi);
 		outfile << std::format("\nEbx 0x{:08x}", pExceptionInfo->ContextRecord->Ebx);
@@ -152,16 +153,8 @@ namespace WinApiHelper
 
 	void InjectDetours()
 	{
-		Detours::LoadLibraryA_o = Hook::LoadFromDLL<LoadLibraryA_t>("kernel32.dll", "LoadLibraryA");
-		DetourRet(Hook::BaseAddress + 0x6B8FB, Detours::LoadLibraryA, 6);
-
-		Detours::FreeLibrary_kernelbase = Hook::LoadFromDLL<DWORD>("kernelbase.dll", "FreeLibrary");
-		DetourRet(Hook::LoadFromDLL<DWORD>("kernel32.dll", "FreeLibrary") + 6, Detours::FreeLibrary, 6);
-
-	#ifdef CLIENT
-		Detours::SetPhysicalCursorPos_o = Hook::LoadFromDLL<SetPhysicalCursorPos_t>("user32.dll", "SetPhysicalCursorPos");
-		DetourRet(Hook::BaseAddress + 0x69C3B, Detours::SetPhysicalCursorPos, 6);
-	#endif
+		LoadLibraryAHook.Inject("kernelbase.dll", "LoadLibraryA", (BYTE*)hkLoadLibraryA, 5);
+		LdrUnloadDllHook.Inject("ntdll.dll", "LdrUnloadDll", (BYTE*)hkLdrUnloadDll, 5);
 	}
 }
 

@@ -11,8 +11,7 @@
     <ClCompile Include="src\Engine\CoDUO.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscFunctionExt.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscMethodExt.cpp" />
-    <ClCompile Include="src\Hook\Hook.cpp" />
-    <ClCompile Include="src\Hook\Detours\Game\BaseGame.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\Loaders.cpp" />
     <ClCompile Include="src\Hook\Detours\Misc\OpenGL.cpp" />
     <ClCompile Include="src\Hook\Detours\Misc\WinAPI.cpp" />
     <ClCompile Include="src\Utils\ImGuiManager.cpp" />
@@ -33,18 +32,19 @@
     <ClCompile Include="src\Render\Materials\Shader.cpp" />
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
-    <ClCompile Include="src\Hook\Detours\Game\GameFixes.cpp" />
-    <ClCompile Include="src\Hook\Detours\Game\EngineCallbacks.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\Fixes.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\CodeCallbacks.cpp" />
     <ClCompile Include="src\Engine\Mappings\EntityMapping.cpp" />
     <ClCompile Include="src\Engine\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Engine\Async\Task\Task.cpp" />
     <ClCompile Include="src\Utils\ThreadPool\ThreadPool.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\Core.cpp" />
+    <ClCompile Include="src\Hook\Detours\Game\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
     <ClInclude Include="src\Hook\Detours.h" />
-    <ClInclude Include="src\Hook\Detours_defines.h" />
     <ClInclude Include="src\Hook\Hook.h" />
     <ClInclude Include="src\Structs\Engine\refdef.h" />
     <ClInclude Include="src\Structs\vec3_t.h" />
