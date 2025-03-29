@@ -83,7 +83,6 @@ namespace CoDUO /* EntityMapping.cpp */
 namespace CoDUO /* CvarMapping.cpp */
 {
 	void Cbuf_AddText(const char* text);
-	void trap_SendConsoleCommand(int exec_when, const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	void Cmd_RemoveCommand(const char* cmd_name);
 	bool Cmd_HasCommand(const char* cmd_name);

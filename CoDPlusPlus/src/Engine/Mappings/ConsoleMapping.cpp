@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
@@ -9,19 +9,6 @@ namespace CoDUO
 			mov eax, text
 			mov esi, 0x0042bc10
 			call esi
-		}
-	}
-
-	void trap_SendConsoleCommand(int exec_when, const char* text)
-	{
-		_asm
-		{
-			push text
-			push exec_when
-			push 0x17
-			call syscall
-
-			add esp, 0xC
 		}
 	}
 

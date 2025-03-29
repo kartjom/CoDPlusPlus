@@ -1,4 +1,4 @@
-#include <Engine/Async/HttpResult/HttpResult.h>
+﻿#include <Engine/Async/HttpResult/HttpResult.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/Network/HttpClient.h>
 #include <Engine/CoDUO.h>
@@ -11,21 +11,18 @@
 using namespace Utils;
 using namespace CoDUO;
 using namespace CoDUO::Gsc::Async;
+
 namespace CoDUO::Gsc
 {
 	void Scr_StringToCmd()
 	{
+		static char buffer[1024];
 		const char* str = Scr_GetString(0);
 
 		if (str)
 		{
-			size_t strSize = strlen(str) + 1;
-
-			char* cmd = (char*)alloca(strSize + 1);
-			memcpy(cmd, str, strSize);
-			cmd[strSize] = '\n';
-
-			Cbuf_AddText(cmd);
+			snprintf(buffer, 1024, "%s\n", str);
+			Cbuf_AddText(buffer);
 		}
 	}
 
