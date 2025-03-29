@@ -172,6 +172,7 @@ namespace Hook
 			*(uintptr_t*)((uintptr_t)gateway + len + 1) = gatewayRelativeAddr;
 
 			// Perform the detour
+			Detour.SetHooked(false);
 			Detour.Inject((uintptr_t)src, dst, len);
 
 			this->SetHooked(true);
