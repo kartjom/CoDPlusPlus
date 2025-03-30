@@ -5,7 +5,7 @@
 
 namespace Hook::Detour
 {
-	void __stdcall hkGLimp_EndFrame()
+	void __cdecl hkGLimp_EndFrame()
 	{
 		try
 		{

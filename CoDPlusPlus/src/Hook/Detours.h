@@ -98,8 +98,8 @@ namespace Hook::Detour /* WinAPI.cpp */
 #ifdef CLIENT
 namespace Hook::Detour /* OpenGL.cpp */
 {
-	typedef void(__stdcall* GLimp_EndFrame_t)();
+	typedef void(__cdecl* GLimp_EndFrame_t)();
 	inline Hook::TrampolineHook<GLimp_EndFrame_t> GLimp_EndFrameHook;
-	void __stdcall hkGLimp_EndFrame();
+	void __cdecl hkGLimp_EndFrame();
 }
 #endif
