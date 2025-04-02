@@ -3,8 +3,10 @@
 #include <Hook/Detours.h>
 #include <Engine/Async/Task/Task.h>
 #include <Utils/ImGuiManager.h>
+#include <Utils/ThreadPool/ThreadPool.h>
 #include <print>
 
+using namespace Utils;
 using namespace CoDUO::Gsc;
 using namespace CoDUO::Gsc::Async;
 
@@ -122,6 +124,7 @@ namespace CoDUO
 
 	void uo_game_mp_x86_Cleanup()
 	{
+		ThreadPool.Clear();
 		{
 			std::unique_lock<std::mutex> lock(TaskListMutex);
 			AllocatedTasks.clear();

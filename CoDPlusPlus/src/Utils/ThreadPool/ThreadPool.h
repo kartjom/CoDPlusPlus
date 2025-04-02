@@ -24,6 +24,7 @@ namespace Utils
 
         void Initialize();
         void Dispose();
+        void Clear();
 
         template <class F>
         bool Enqueue(F&& task)

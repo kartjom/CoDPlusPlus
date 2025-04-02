@@ -20,8 +20,9 @@ namespace Utils
             return;
         }
 
-        SetThreadpoolThreadMinimum(pool, std::thread::hardware_concurrency());
-        SetThreadpoolThreadMaximum(pool, 64);
+        int threadCount = std::thread::hardware_concurrency();
+        SetThreadpoolThreadMinimum(pool, threadCount);
+        SetThreadpoolThreadMaximum(pool, threadCount * 2);
 
         // Initialize the callback environment
         InitializeThreadpoolEnvironment(&callbackEnv);
@@ -56,6 +57,13 @@ namespace Utils
         pool = NULL;
 
         std::println("[Threading] - Thread Pool Disposed");
+    }
+
+    void ThreadPool::Clear()
+    {
+        if (pool == NULL) return;
+
+        CloseThreadpoolCleanupGroupMembers(cleanupGroup, TRUE, nullptr);
     }
 
     void CALLBACK WorkCallback(PTP_CALLBACK_INSTANCE instance, PVOID parameter, PTP_WORK work)
