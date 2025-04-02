@@ -70,11 +70,13 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline Hook::TrampolineHook<G_BounceMissile_t> G_BounceMissileHook;
 	void __cdecl hkG_BounceMissile(gentity_t*, trace_t*);
 
-	inline Hook::DetourHook ProjectileExplodeHook;
-	void ProjectileExplode_n() noexcept;
+	typedef void(__cdecl* G_ExplodeMissile_t)(gentity_t*);
+	inline Hook::TrampolineHook<G_ExplodeMissile_t> G_ExplodeMissileHook;
+	void __cdecl hkG_ExplodeMissile(gentity_t*);
 
-	inline Hook::DetourHook SmokeExplodeHook;
-	void SmokeExplode_n() noexcept;
+	typedef void(__cdecl* G_ExplodeSmoke_t)(gentity_t*);
+	inline Hook::TrampolineHook<G_ExplodeSmoke_t> G_ExplodeSmokeHook;
+	void __cdecl hkG_ExplodeSmoke(gentity_t*);
 }
 
 namespace Hook::Detour /* Fixes.cpp */

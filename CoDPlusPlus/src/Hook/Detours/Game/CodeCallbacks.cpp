@@ -12,7 +12,6 @@ namespace Hook::Detour
 	bool OnPlayerInactivity(gclient_t* player);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
-	void OnProjectileExplode(gentity_t* projectile);
 }
 
 namespace Hook::Detour
@@ -224,52 +223,26 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void ProjectileExplode_n() noexcept
+	void __cdecl hkG_ExplodeMissile(gentity_t* ent)
 	{
-		_asm pushad
-		if (CodeCallback.OnProjectileExplode)
+		G_ExplodeMissileHook.OriginalFn(ent);
+
+		if (CodeCallback.OnProjectileExplode && ent)
 		{
-			_asm
-			{
-				push edi // projectile
-				call OnProjectileExplode
-
-				add esp, 0x4 // 1 arg, 4 bytes
-			}
+			Scr_AddEntityNum(ent->number);
+			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 		}
-		_asm popad
-
-		_asm // restore
-		{
-			mov eax, dword ptr [edi + 0x1a8]
-		}
-
-		_asm jmp[ProjectileExplodeHook.Return]; // jump back
 	}
 
-	_declspec(naked) void SmokeExplode_n() noexcept
+	void __cdecl hkG_ExplodeSmoke(gentity_t* ent)
 	{
-		_asm pushad
-		if (CodeCallback.OnProjectileExplode)
+		G_ExplodeSmokeHook.OriginalFn(ent);
+
+		if (CodeCallback.OnProjectileExplode && ent)
 		{
-			_asm
-			{
-				push edi // projectile
-				call OnProjectileExplode
-
-				add esp, 0x4 // 1 arg, 4 bytes
-			}
+			Scr_AddEntityNum(ent->number);
+			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 		}
-		_asm popad
-
-		_asm // restore
-		{
-			push ebx
-			push esi
-			lea ebx, [edi + 0xc]
-		}
-
-		_asm jmp[SmokeExplodeHook.Return]; // jump back
 	}
 }
 
@@ -346,14 +319,5 @@ namespace Hook::Detour
 		}
 
 		return false;
-	}
-
-	void __cdecl OnProjectileExplode(gentity_t* projectile)
-	{
-		if (projectile)
-		{
-			Scr_AddEntityNum(projectile->number);
-			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
-		}
 	}
 }
