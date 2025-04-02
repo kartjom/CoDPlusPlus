@@ -1,4 +1,5 @@
 ﻿#include <Engine/CoDUO.h>
+#include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <print>
 
@@ -7,10 +8,7 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	void OnInitialize();
-	void OnPlayerShoot(gentity_t* player);
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
-	bool OnPlayerSay(gentity_t* player, char** text_ptr, int mode);
 	bool OnPlayerInactivity(gclient_t* player);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
@@ -20,43 +18,29 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	_declspec(naked) void Initialize_n() noexcept
+	/* int levelTime - ECX */
+	void __cdecl hkG_InitGame(int randomSeed, int restart, int savePersist)
 	{
-		_asm // restore
+		_asm mov ecx, CapturedContext.ecx // int levelTime
+		G_InitGameHook.OriginalFn(randomSeed, restart, savePersist);
+
+		uo_game_mp_x86_Cleanup();
+
+		if (CodeCallback.OnInitialize)
 		{
-			add esp, 0xc
-			pop esi
-			pop ebp
+			Scr_RunScript(CodeCallback.OnInitialize, 0);
 		}
-
-		_asm pushad
-		OnInitialize();
-		_asm popad
-
-		_asm jmp[InitializeHook.Return] // jump back
 	}
 
-	_declspec(naked) void PlayerShoot_n() noexcept
+	void __cdecl hkFireWeaponAntilag(gentity_t* player)
 	{
-		_asm pushad
-		if (CodeCallback.OnPlayerShoot)
+		FireWeaponAntilagHook.OriginalFn(player);
+
+		if (CodeCallback.OnPlayerShoot && player && player->client)
 		{
-			_asm
-			{
-				push edi // player
-				call OnPlayerShoot
-
-				add esp, 0x4 // 1 arg, 4 bytes
-			}
+			Scr_AddEntityNum(player->number);
+			Scr_RunScript(CodeCallback.OnPlayerShoot, 1);
 		}
-		_asm popad
-
-		_asm // restore
-		{
-			mov eax, dword ptr ss : [ebp + 0x160]
-		}
-
-		_asm jmp[PlayerShootHook.Return] // jump back
 	}
 
 	_declspec(naked) void PlayerMelee_n() noexcept
@@ -87,49 +71,54 @@ namespace Hook::Detour
 		_asm jmp[PlayerMeleeHook.Return] // jump back
 	}
 
-	_declspec(naked) void PlayerSay_n() noexcept
+	/* gentity_t* ent - ECX */
+	void __cdecl hkG_Say(gentity_t* target, int mode, char* chatText)
 	{
-		_asm pushad
-		if (CodeCallback.OnPlayerSay)
+		gentity_t* ent = (gentity_t*)CapturedContext.ecx;
+		std::string gsc_text = chatText;
+		int gsc_mode = mode;
+		bool gsc_console;
+
+		int length = gsc_text.length();
+		if (gsc_text[0] == 0x14 && gsc_text[length - 1] == 0x15)
 		{
-			_asm
-			{
-				mov eax, esp
+			gsc_text[length - 1] = 0; // remove end character
 
-				add eax, 0x20C
-				mov edi, [eax]
-				push edi // mode
-
-				add eax, 0x4
-				//mov edi, [eax]
-				//push edi // text
-				push eax // ptr to text ptr
-
-				push ecx // player
-
-				call OnPlayerSay
-
-				add esp, 0xC // 3 args, 12 bytes
-
-				cmp al, 1 // Skip G_Say
-				jne say_continue
-
-				popad
-				pop ebp
-				pop ebx
-				add esp, 0x1DC
-				ret
-			}
+			gsc_mode = 2; // vchat
+			gsc_text.erase(0, 1); // skip first character
+			gsc_console = false;
 		}
-	say_continue:
-		_asm popad
-
-		_asm // restore
+		else if (gsc_text[0] == 0x15)
 		{
-			mov dword ptr ss : [esp + 0x1E0], eax
+			gsc_text.erase(0, 1);
+			gsc_console = false;
+		}
+		else
+		{
+			gsc_console = true;
 		}
 
-		_asm jmp[PlayerSayHook.Return] // jump back
+		Scr_AddBool(gsc_console);
+		Scr_AddInt(gsc_mode);
+		Scr_AddString(gsc_text.c_str());
+		Scr_AddEntityNum(ent->number);
+		Scr_RunScript(CodeCallback.OnPlayerSay, 4);
+
+		if (Scr_ReturnValue.Type == VarType::String)
+		{
+			if (Scr_ReturnValue.String.empty())
+				return; // don't display message
+
+			char* replaced = (char*)Scr_ReturnValue.String.c_str();
+
+			_asm mov ecx, CapturedContext.ecx // gentity_t* ent
+			G_SayHook.OriginalFn(target, mode, replaced); // replace message
+
+			return;
+		}
+
+		_asm mov ecx, CapturedContext.ecx // gentity_t* ent
+		G_SayHook.OriginalFn(target, mode, chatText);
 	}
 
 	_declspec(naked) void PlayerInactivity_n() noexcept
@@ -297,25 +286,6 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	void __cdecl OnInitialize()
-	{
-		uo_game_mp_x86_Cleanup();
-
-		if (CodeCallback.OnInitialize)
-		{
-			Scr_RunScript(CodeCallback.OnInitialize, 0);
-		}
-	}
-
-	void __cdecl OnPlayerShoot(gentity_t* player)
-	{
-		if (player && player->client)
-		{
-			Scr_AddEntityNum(player->number);
-			Scr_RunScript(CodeCallback.OnPlayerShoot, 1);
-		}
-	}
-
 	void __cdecl OnPlayerMelee(gentity_t* player, int16_t target_num)
 	{
 		if (player)
@@ -332,51 +302,6 @@ namespace Hook::Detour
 			Scr_AddEntityNum(player->number);
 			Scr_RunScript(CodeCallback.OnPlayerMelee, 2);
 		}
-	}
-
-	bool __cdecl OnPlayerSay(gentity_t* player, char** text_ptr, int mode)
-	{
-		static char StringBuffer[256];
-
-		if (text_ptr && *text_ptr && player && player->client)
-		{
-			strcpy(StringBuffer, *text_ptr); // string under the text_ptr
-			char* text = StringBuffer;
-
-			if (text[0] == 0x14 && text[strlen(text) - 1] == 0x15)
-			{
-				text[strlen(text) - 1] = '\0'; // vchat end character, broken in gsc
-
-				mode = 2; // set mode to vchat
-				text += 1; // skip first character
-				Scr_AddBool(0);
-			}
-			else if (text[0] == 0x15)
-			{
-				text += 1; // skip first character
-				Scr_AddBool(0);
-			}
-			else
-			{
-				Scr_AddBool(1);
-			}
-
-			Scr_AddInt(mode);
-			Scr_AddString(text);
-			Scr_AddEntityNum(player->number);
-			Scr_RunScript(CodeCallback.OnPlayerSay, 4);
-
-			if (Scr_ReturnValue.Type == VarType::String)
-			{
-				if (Scr_ReturnValue.String.empty())
-					return true; // message won't be displayed if callback returns empty string
-
-				strcpy(StringBuffer, Scr_ReturnValue.String.c_str());
-				*text_ptr = StringBuffer;
-			}
-		}
-
-		return false;
 	}
 
 	bool __cdecl OnPlayerInactivity(gclient_t* player)

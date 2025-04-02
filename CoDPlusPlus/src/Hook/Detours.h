@@ -2,6 +2,8 @@
 #include "Hook.h"
 #include <wtypes.h>
 
+#include <Structs/Engine/gentity.h>
+
 namespace Hook::Patch
 {
 	inline Hook::MemoryPatch ReadOnlyPatch;
@@ -20,8 +22,9 @@ namespace Hook::Detour /* Core.cpp */
 
 namespace Hook::Detour /* Loaders.cpp */
 {
-	inline Hook::DetourHook LoadGameTypeScriptHook;
-	void LoadGameTypeScript_n() noexcept;
+	typedef void(__cdecl* GScr_LoadGameTypeScript_t)();
+	inline Hook::TrampolineHook<GScr_LoadGameTypeScript_t> GScr_LoadGameTypeScriptHook;
+	void __cdecl hkGScr_LoadGameTypeScript();
 
 	inline Hook::DetourHook LookupFunctionHook;
 	void LookupFunction_n() noexcept;
@@ -38,17 +41,20 @@ namespace Hook::Detour /* Loaders.cpp */
 
 namespace Hook::Detour /* CodeCallbacks.cpp */
 {
-	inline Hook::DetourHook InitializeHook;
-	void Initialize_n() noexcept;
+	typedef void(__cdecl* G_InitGame_t)(int, int, int);
+	inline Hook::TrampolineHook<G_InitGame_t> G_InitGameHook;
+	void __cdecl hkG_InitGame(int, int, int);
 
-	inline Hook::DetourHook PlayerShootHook;
-	void PlayerShoot_n() noexcept;
+	typedef void(__cdecl* FireWeaponAntilag_t)(gentity_t*);
+	inline Hook::TrampolineHook<FireWeaponAntilag_t> FireWeaponAntilagHook;
+	void __cdecl hkFireWeaponAntilag(gentity_t*);
 
 	inline Hook::DetourHook PlayerMeleeHook;
 	void PlayerMelee_n() noexcept;
 
-	inline Hook::DetourHook PlayerSayHook;
-	void PlayerSay_n() noexcept;
+	typedef void(__cdecl* G_Say_t)(gentity_t*, int, char*);
+	inline Hook::TrampolineHook<G_Say_t> G_SayHook;
+	void __cdecl hkG_Say(gentity_t*, int, char*);
 
 	inline Hook::DetourHook PlayerInactivityHook;
 	void PlayerInactivity_n() noexcept;

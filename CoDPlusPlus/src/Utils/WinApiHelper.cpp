@@ -21,6 +21,12 @@ using namespace Hook::Detour;
 
 namespace WinApiHelper
 {
+	void InjectDetours()
+	{
+		LoadLibraryAHook.Inject("kernelbase.dll", "LoadLibraryA", hkLoadLibraryA, 5);
+		LdrUnloadDllHook.Inject("ntdll.dll", "LdrUnloadDll", hkLdrUnloadDll, 5);
+	}
+
 	IMAGEHLP_MODULE GetModuleInfo(PVOID address)
 	{
 		HANDLE proc = GetCurrentProcess();
@@ -149,12 +155,6 @@ namespace WinApiHelper
 		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
 		SetConsoleTitleA(title);
-	}
-
-	void InjectDetours()
-	{
-		LoadLibraryAHook.Inject("kernelbase.dll", "LoadLibraryA", (BYTE*)hkLoadLibraryA, 5);
-		LdrUnloadDllHook.Inject("ntdll.dll", "LdrUnloadDll", (BYTE*)hkLdrUnloadDll, 5);
 	}
 }
 

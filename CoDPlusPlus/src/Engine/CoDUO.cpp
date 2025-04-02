@@ -47,20 +47,20 @@ namespace CoDUO
 		using namespace Hook::Detour;
 		{
 			// Loaders
-			LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, LoadGameTypeScript_n, 8);
+			GScr_LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, hkGScr_LoadGameTypeScript, 8);
 
-			LookupFunctionHook.Inject(uo_game_mp_x86 + 0x0003D230, LookupFunction_n, 6);
-			LookupMethodHook.Inject(uo_game_mp_x86 + 0x0003D330, LookupMethod_n, 8);
+			LookupFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, LookupFunction_n, 6);
+			LookupMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, LookupMethod_n, 8);
 
 			LookupCommandHook.Inject(uo_game_mp_x86 + 0x0004f1d2, LookupCommand_n, 5);
 			LookupClientCommandHook.Inject(uo_game_mp_x86 + 0x0002556a, LookupClientCommand_n, 5);
 
 			// Gsc Callbacks
-			InitializeHook.Inject(uo_game_mp_x86 + 0x0002c46f, Initialize_n, 5);
+			G_InitGameHook.Inject(uo_game_mp_x86 + 0x0002bfc0, hkG_InitGame, 6);
 
-			PlayerShootHook.Inject(uo_game_mp_x86 + 0x0005689d, PlayerShoot_n, 6);
+			FireWeaponAntilagHook.Inject(uo_game_mp_x86 + 0x00056850, hkFireWeaponAntilag, 8);
 			PlayerMeleeHook.Inject(uo_game_mp_x86 + 0x00055727, PlayerMelee_n, 5);
-			PlayerSayHook.Inject(uo_game_mp_x86 + 0x00022b5d, PlayerSay_n, 7);
+			G_SayHook.Inject(uo_game_mp_x86 + 0x00022b50, hkG_Say, 6);
 			PlayerInactivityHook.Inject(uo_game_mp_x86 + 0x0001aaa0, PlayerInactivity_n, 6);
 
 			PlayerVoteHook.Inject(uo_game_mp_x86 + 0x0002444c, PlayerVote_n, 9);
@@ -94,27 +94,27 @@ namespace CoDUO
 		gameCvarTable = nullptr;
 		bg_iNumWeapons = nullptr;
 
-		// Dll is unloaded anyways - no need to detach hooks, only mark them as unhooked
+		// Dll is unloaded anyways - no need to detach hooks, only dispose them
 		using namespace Hook::Detour;
 		{
-			LoadGameTypeScriptHook.SetHooked(false);
-			LookupFunctionHook.SetHooked(false);
-			LookupMethodHook.SetHooked(false);
-			LookupCommandHook.SetHooked(false);
-			LookupClientCommandHook.SetHooked(false);
-			InitializeHook.SetHooked(false);
-			PlayerShootHook.SetHooked(false);
-			PlayerMeleeHook.SetHooked(false);
-			PlayerSayHook.SetHooked(false);
-			PlayerInactivityHook.SetHooked(false);
-			PlayerVoteHook.SetHooked(false);
-			VoteCalledHook.SetHooked(false);
-			ProjectileBounceHook.SetHooked(false);
-			ProjectileExplodeHook.SetHooked(false);
-			SmokeExplodeHook.SetHooked(false);
-			VehicleCrashFixHook.SetHooked(false);
-			VEH_UnlinkPlayerFixHook.SetHooked(false);
-			// ServerTickHook.SetHooked(false);
+			GScr_LoadGameTypeScriptHook.Dispose();
+			LookupFunctionHook.Dispose();
+			LookupMethodHook.Dispose();
+			LookupCommandHook.Dispose();
+			LookupClientCommandHook.Dispose();
+			G_InitGameHook.Dispose();
+			FireWeaponAntilagHook.Dispose();
+			PlayerMeleeHook.Dispose();
+			G_SayHook.Dispose();
+			PlayerInactivityHook.Dispose();
+			PlayerVoteHook.Dispose();
+			VoteCalledHook.Dispose();
+			ProjectileBounceHook.Dispose();
+			ProjectileExplodeHook.Dispose();
+			SmokeExplodeHook.Dispose();
+			VehicleCrashFixHook.Dispose();
+			VEH_UnlinkPlayerFixHook.Dispose();
+			// ServerTickHook.Dispose();
 		}
 
 		std::println("[CoDPlusPlus] - Server Disposed");
