@@ -68,7 +68,7 @@ namespace CoDUO
 			PlayerVoteHook.Inject(uo_game_mp_x86 + 0x0002444c, PlayerVote_n, 9);
 			VoteCalledHook.Inject(uo_game_mp_x86 + 0x00023698, VoteCalled_n, 5);
 		
-			ProjectileBounceHook.Inject(uo_game_mp_x86 + 0x0002ff58, ProjectileBounce_n, 5);
+			G_BounceMissileHook.Inject(uo_game_mp_x86 + 0x0002ff40, hkG_BounceMissile, 9);
 			ProjectileExplodeHook.Inject(uo_game_mp_x86 + 0x00030448, ProjectileExplode_n, 6);
 			SmokeExplodeHook.Inject(uo_game_mp_x86 + 0x00030ac5, SmokeExplode_n, 5);
 
@@ -111,7 +111,7 @@ namespace CoDUO
 			PlayerInactivityHook.Dispose();
 			PlayerVoteHook.Dispose();
 			VoteCalledHook.Dispose();
-			ProjectileBounceHook.Dispose();
+			G_BounceMissileHook.Dispose();
 			ProjectileExplodeHook.Dispose();
 			SmokeExplodeHook.Dispose();
 			VehicleCrashFixHook.Dispose();

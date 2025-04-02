@@ -12,7 +12,6 @@ namespace Hook::Detour
 	bool OnPlayerInactivity(gclient_t* player);
 	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
-	void OnProjectileBounce(gentity_t* projectile);
 	void OnProjectileExplode(gentity_t* projectile);
 }
 
@@ -75,46 +74,49 @@ namespace Hook::Detour
 	void __cdecl hkG_Say(gentity_t* target, int mode, char* chatText)
 	{
 		gentity_t* ent = (gentity_t*)CapturedContext.ecx;
-		std::string gsc_text = chatText;
-		int gsc_mode = mode;
-		bool gsc_console;
-
-		int length = gsc_text.length();
-		if (gsc_text[0] == 0x14 && gsc_text[length - 1] == 0x15)
+		if (CodeCallback.OnPlayerSay && ent && ent->client && chatText && *chatText)
 		{
-			gsc_text[length - 1] = 0; // remove end character
+			std::string gsc_text = chatText;
+			int gsc_mode = mode;
+			bool gsc_console;
 
-			gsc_mode = 2; // vchat
-			gsc_text.erase(0, 1); // skip first character
-			gsc_console = false;
-		}
-		else if (gsc_text[0] == 0x15)
-		{
-			gsc_text.erase(0, 1);
-			gsc_console = false;
-		}
-		else
-		{
-			gsc_console = true;
-		}
+			int length = gsc_text.length();
+			if (gsc_text[0] == 0x14 && gsc_text[length - 1] == 0x15)
+			{
+				gsc_text[length - 1] = 0; // remove end character
 
-		Scr_AddBool(gsc_console);
-		Scr_AddInt(gsc_mode);
-		Scr_AddString(gsc_text.c_str());
-		Scr_AddEntityNum(ent->number);
-		Scr_RunScript(CodeCallback.OnPlayerSay, 4);
+				gsc_mode = 2; // vchat
+				gsc_text.erase(0, 1); // skip first character
+				gsc_console = false;
+			}
+			else if (gsc_text[0] == 0x15)
+			{
+				gsc_text.erase(0, 1);
+				gsc_console = false;
+			}
+			else
+			{
+				gsc_console = true;
+			}
 
-		if (Scr_ReturnValue.Type == VarType::String)
-		{
-			if (Scr_ReturnValue.String.empty())
-				return; // don't display message
+			Scr_AddBool(gsc_console);
+			Scr_AddInt(gsc_mode);
+			Scr_AddString(gsc_text.c_str());
+			Scr_AddEntityNum(ent->number);
+			Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 
-			char* replaced = (char*)Scr_ReturnValue.String.c_str();
+			if (Scr_ReturnValue.Type == VarType::String)
+			{
+				if (Scr_ReturnValue.String.empty())
+					return; // don't display message
 
-			_asm mov ecx, CapturedContext.ecx // gentity_t* ent
-			G_SayHook.OriginalFn(target, mode, replaced); // replace message
+				char* replaced = (char*)Scr_ReturnValue.String.c_str();
 
-			return;
+				_asm mov ecx, CapturedContext.ecx // gentity_t* ent
+				G_SayHook.OriginalFn(target, mode, replaced); // replace message
+
+				return;
+			}
 		}
 
 		_asm mov ecx, CapturedContext.ecx // gentity_t* ent
@@ -211,28 +213,15 @@ namespace Hook::Detour
 		_asm jmp[VoteCalledHook.Return] // jump back
 	}
 
-	_declspec(naked) void ProjectileBounce_n() noexcept
+	void __cdecl hkG_BounceMissile(gentity_t* ent, trace_t* trace)
 	{
-		_asm pushad
-		if (CodeCallback.OnProjectileBounce)
+		G_BounceMissileHook.OriginalFn(ent, trace);
+
+		if (CodeCallback.OnProjectileBounce && ent)
 		{
-			_asm
-			{
-				push ebp // projectile
-				call OnProjectileBounce
-
-				add esp, 0x4 // 1 arg, 4 bytes
-			}
+			Scr_AddEntityNum(ent->number);
+			Scr_RunScript(CodeCallback.OnProjectileBounce, 1);
 		}
-		_asm popad
-
-		_asm // restore
-		{
-			mov eax, dword ptr ss : [esp + 0x44]
-			push edi
-		}
-
-		_asm jmp[ProjectileBounceHook.Return] // jump back
 	}
 
 	_declspec(naked) void ProjectileExplode_n() noexcept
@@ -357,15 +346,6 @@ namespace Hook::Detour
 		}
 
 		return false;
-	}
-
-	void __cdecl OnProjectileBounce(gentity_t* projectile)
-	{
-		if (projectile)
-		{
-			Scr_AddEntityNum(projectile->number);
-			Scr_RunScript(CodeCallback.OnProjectileBounce, 1);
-		}
 	}
 
 	void __cdecl OnProjectileExplode(gentity_t* projectile)

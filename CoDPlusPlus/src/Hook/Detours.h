@@ -3,6 +3,7 @@
 #include <wtypes.h>
 
 #include <Structs/Engine/gentity.h>
+#include <Structs/Engine/trace.h>
 
 namespace Hook::Patch
 {
@@ -65,8 +66,9 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline Hook::DetourHook VoteCalledHook;
 	void VoteCalled_n() noexcept;
 
-	inline Hook::DetourHook ProjectileBounceHook;
-	void ProjectileBounce_n() noexcept;
+	typedef void(__cdecl* G_BounceMissile_t)(gentity_t*, trace_t*);
+	inline Hook::TrampolineHook<G_BounceMissile_t> G_BounceMissileHook;
+	void __cdecl hkG_BounceMissile(gentity_t*, trace_t*);
 
 	inline Hook::DetourHook ProjectileExplodeHook;
 	void ProjectileExplode_n() noexcept;
