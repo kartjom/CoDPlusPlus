@@ -274,7 +274,7 @@ namespace Hook
 			void* original = (void*)GetProcAddress( GetModuleHandleA(dll), func );
 			if (!original)
 			{
-				std::string message = std::format("Dll lookup failed for {}::{}", dll, func);
+				std::string message = std::format("Dll lookup failed for {} {}", dll, func);
 				MessageBoxA(NULL, message.c_str(), "Error", MB_OK | MB_ICONERROR);
 				exit(-1);
 			}
