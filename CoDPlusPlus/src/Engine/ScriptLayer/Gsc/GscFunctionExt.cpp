@@ -195,7 +195,7 @@ namespace CoDUO::Gsc
 						}
 						default:
 						{
-							fmt::println("Scr_Format: Unhandled pointer type {}", ptrType);
+							std::println("Scr_Format: Unhandled pointer type {}", ptrType);
 							store.push_back(fmt::format("<ptr_type {}>", ptrType));
 						}
 					}
@@ -210,7 +210,7 @@ namespace CoDUO::Gsc
 				}
 				default:
 				{
-					fmt::println("Scr_Format: Unhandled type {}", type);
+					std::println("Scr_Format: Unhandled type {}", type);
 					store.push_back(fmt::format("<var_type {}>", type));
 				}
 			}

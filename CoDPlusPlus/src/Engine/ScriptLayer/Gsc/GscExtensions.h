@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <unordered_map>
 #include <Structs/Engine/gsc.h>
@@ -74,20 +74,20 @@ namespace CoDUO::Gsc
 
 namespace CoDUO::Gsc
 {
-	void Scr_ForceRename(int param);
-	void Scr_GetIP(int param);
+	void Scr_ForceRename(int);
+	void Scr_GetIP(int);
 
-	void Scr_GetViewOrigin(int param);
-	void Scr_GetViewAngles(int param);
-	void Scr_GetViewDirection(int param);
-	void Scr_GetEyeTrace(int param);
+	void Scr_GetViewOrigin(int);
+	void Scr_GetViewAngles(int);
+	void Scr_GetViewDirection(int);
+	void Scr_GetEyeTrace(int);
 
-	void Scr_GetParent(int param);
-	void Scr_GetOwner(int param);
+	void Scr_GetParent(int);
+	void Scr_GetOwner(int);
 
-	void Scr_GetWeaponDefIndex(int param);
-	void Scr_GetWeaponSlotInfo(int param);
-	void Scr_SetWeaponAmmo(int param);
+	void Scr_GetWeaponDefIndex(int);
+	void Scr_GetWeaponSlotInfo(int);
+	void Scr_SetWeaponAmmo(int);
 
 	inline std::unordered_map<std::string, gsc_function_t> gsc_methods
 	{

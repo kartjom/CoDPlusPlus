@@ -1,32 +1,32 @@
-#include "GscExtensions.h"
+﻿#include "GscExtensions.h"
 #include <Engine/CoDUO.h>
 #include <limits>
 
 using namespace CoDUO;
 namespace CoDUO::Gsc
 {
-	void Scr_ForceRename(int param)
+	void Scr_ForceRename(int entNum)
 	{
 		const char* str = Scr_GetString(0);
 
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (str && ent && ent->client)
 		{
 			char buf[MAX_STRING_CHARS];
-			trap_GetUserinfo(param, buf, sizeof(buf));
+			trap_GetUserinfo(entNum, buf, sizeof(buf));
 
 			Info_SetValueForKey(buf, "name", str);
-			trap_SetUserinfo(param, buf);
+			trap_SetUserinfo(entNum, buf);
 
 			memcpy(ent->client->name, str, 32);
 			ent->client->name[31] = '\0';
 		}
 	}
 
-	void Scr_GetIP(int param)
+	void Scr_GetIP(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
-		client_t* client = &svs->clients[param];
+		gentity_t* ent = g_entities + entNum;
+		client_t* client = svs->clients + entNum;
 		if (ent && ent->client && client)
 		{
 			std::string ip = NET_AdrToString(client->netchan.remoteAddress);
@@ -38,9 +38,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetViewOrigin(int param)
+	void Scr_GetViewOrigin(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
 			vec3_t vieworigin;
@@ -54,9 +54,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetViewAngles(int param)
+	void Scr_GetViewAngles(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
 			Scr_AddVector(ent->client->viewangles);
@@ -67,12 +67,12 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetViewDirection(int param)
+	void Scr_GetViewDirection(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
-			vec3_t viewangles = { ent->client->viewangles2.x , ent->client->viewangles2.y , ent->client->viewangles.z };
+			vec3_t viewangles(ent->client->viewangles2.x , ent->client->viewangles2.y , ent->client->viewangles.z);
 			vec3_t viewdir;
 			AngleVectors(viewangles, viewdir, NULL, NULL);
 
@@ -84,9 +84,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetEyeTrace(int param)
+	void Scr_GetEyeTrace(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
 			int numParams = Scr_GetNumParam();
@@ -125,7 +125,7 @@ namespace CoDUO::Gsc
 			}
 			else
 			{
-				vec3_t normal{};
+				vec3_t normal;
 				Scr_AddVector(normal);
 				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
@@ -139,9 +139,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetParent(int param)
+	void Scr_GetParent(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->parent)
 		{
 			Scr_AddEntityNum(ent->parent->number);
@@ -152,12 +152,12 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetOwner(int param)
+	void Scr_GetOwner(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->ownerNum < 1023)
 		{
-			gentity_t* owner = &g_entities[ent->ownerNum];
+			gentity_t* owner = g_entities + ent->ownerNum;
 			Scr_AddEntityNum(owner->number);
 		}
 		else
@@ -166,9 +166,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetWeaponDefIndex(int param)
+	void Scr_GetWeaponDefIndex(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
 			Scr_AddInt(ent->client->weapon);
@@ -179,9 +179,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_GetWeaponSlotInfo(int param)
+	void Scr_GetWeaponSlotInfo(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 		int index = Scr_GetInt(0);
 
 		if (ent && ent->client)
@@ -215,9 +215,9 @@ namespace CoDUO::Gsc
 		}
 	}
 
-	void Scr_SetWeaponAmmo(int param)
+	void Scr_SetWeaponAmmo(int entNum)
 	{
-		gentity_t* ent = &g_entities[param];
+		gentity_t* ent = g_entities + entNum;
 
 		int weaponIndex = Scr_GetInt(0);
 		int clip = Scr_GetInt(1);
