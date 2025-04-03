@@ -77,7 +77,7 @@ namespace CoDUO
 			VEH_UnlinkPlayerFixHook.Inject(uo_game_mp_x86 + 0x0004804a, VEH_UnlinkPlayerFix_n, 5);
 
 			// Utility
-			// ServerTickHook.Inject(uo_game_mp_x86 + 0x0001b1e6, ServerTick_n, 6);
+			// G_RunFrameHook.Inject(uo_game_mp_x86 + 0x0002cf40, hkG_RunFrame, 6);
 		}
 
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
@@ -116,7 +116,7 @@ namespace CoDUO
 			G_ExplodeSmokeHook.Dispose();
 			VehicleCrashFixHook.Dispose();
 			VEH_UnlinkPlayerFixHook.Dispose();
-			// ServerTickHook.Dispose();
+			// G_RunFrameHook.Dispose();
 		}
 
 		std::println("[CoDPlusPlus] - Server Disposed");

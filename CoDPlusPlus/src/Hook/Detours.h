@@ -94,8 +94,9 @@ namespace Hook::Detour /* Fixes.cpp */
 
 namespace Hook::Detour /* Utility */
 {
-	inline Hook::DetourHook ServerTickHook;
-	void ServerTick_n() noexcept;
+	typedef void(__cdecl* G_RunFrame_t)(int);
+	inline Hook::TrampolineHook<G_RunFrame_t> G_RunFrameHook;
+	void __cdecl hkG_RunFrame(int);
 }
 
 namespace Hook::Detour /* WinAPI.cpp */
