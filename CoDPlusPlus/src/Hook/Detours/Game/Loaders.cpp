@@ -14,8 +14,8 @@ namespace Hook::Detour
 	void* GetFunctionCallback(const char* value);
 	void* GetMethodCallback(const char* value);
 
-	bool RunCustomConsoleCommand(const char* name);
-	bool RunCustomClientCommand(gentity_t* player, const char* name);
+	bool RunScriptConsoleCommand(const char* name);
+	bool RunScriptClientCommand(gentity_t* player, const char* name);
 }
 
 namespace Hook::Detour
@@ -117,74 +117,34 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void LookupCommand_n() noexcept
+	int __cdecl hkConsoleCommand()
 	{
-		_asm pushad
-		_asm
+		// We first lookup our cmd - this allows overriding vanilla behavior
+		char* cmd = Cmd_Argv[0];
+		int cmdFound = RunScriptConsoleCommand(cmd);
+
+		if (cmdFound == 0)
 		{
-			lea eax, [esp + 0x20]
-			push eax // cmd_name
-
-			call RunCustomConsoleCommand
-
-			add esp, 0x4 // 1 arg, 4 bytes
-
-			cmp al, 1
-			je cmd_found
-		}
-		_asm popad
-
-		_asm // restore
-		{
-			mov eax, uo_game_mp_x86
-			add eax, 0x001ee4ac
-			mov eax, [eax]
+			cmdFound = ConsoleCommandHook.OriginalFn();
 		}
 
-		_asm jmp[LookupCommandHook.Return] // jump back
-	
-		_asm
-		{
-			cmd_found:
-			popad
-			add esp, 0x404
-			mov eax, 0x1
-			ret
-		}
+		return cmdFound;
 	}
 
-	_declspec(naked) void LookupClientCommand_n() noexcept
+	/* int clientNum - ECX */
+	void __cdecl hkClientCommand()
 	{
-		_asm pushad
-		_asm
+		// We first lookup our cmd - this allows overriding vanilla behavior
+		int clientNum = CapturedContext.ecx;
+
+		gentity_t* player = g_entities + clientNum;
+		char* cmd = Cmd_Argv[0];
+		int cmdFound = RunScriptClientCommand(player, cmd);
+
+		if (cmdFound == 0)
 		{
-			lea eax, [esp + 0x28]
-			push eax // cmd_name
-			push edi // player
-
-			call RunCustomClientCommand
-
-			add esp, 0x8 // 2 args, 8 bytes
-
-			cmp al, 1
-			je cmd_found
-		}
-		_asm popad
-
-		_asm // restore
-		{
-			mov eax, 0x1869f
-		}
-
-		_asm jmp[LookupClientCommandHook.Return] // jump back
-
-		_asm
-		{
-			cmd_found:
-			popad
-			add esp, 0x40c
-			mov eax, 0x1
-			ret
+			_asm mov ecx, CapturedContext.ecx // int clientNum
+			ClientCommandHook.OriginalFn();
 		}
 	}
 }
@@ -211,7 +171,7 @@ namespace Hook::Detour
 		return 0;
 	}
 
-	bool __cdecl RunCustomConsoleCommand(const char* cmd_name)
+	bool __cdecl RunScriptConsoleCommand(const char* cmd_name)
 	{
 		std::string name_lowercase(cmd_name);
 		for (int i = 0; name_lowercase[i]; i++)
@@ -219,11 +179,9 @@ namespace Hook::Detour
 			name_lowercase[i] = tolower(name_lowercase[i]);
 		}
 
-		if (gsc_commands.find(name_lowercase) != gsc_commands.end())
+		if (auto it = gsc_commands.find(name_lowercase); it != gsc_commands.end())
 		{
-			int32_t handle = gsc_commands[name_lowercase];
-
-			if (handle)
+			if (int32_t handle = it->second)
 			{
 				int argc = *Cmd_Argc;
 
@@ -243,7 +201,7 @@ namespace Hook::Detour
 		return false;
 	}
 
-	bool __cdecl RunCustomClientCommand(gentity_t* player, const char* cmd_name)
+	bool __cdecl RunScriptClientCommand(gentity_t* player, const char* cmd_name)
 	{
 		std::string name_lowercase(cmd_name);
 		for (int i = 0; name_lowercase[i]; i++)
@@ -251,11 +209,9 @@ namespace Hook::Detour
 			name_lowercase[i] = tolower(name_lowercase[i]);
 		}
 
-		if (player && player->client && gsc_clientcommands.find(name_lowercase) != gsc_clientcommands.end())
+		if (auto it = gsc_clientcommands.find(name_lowercase); player && player->client && it != gsc_clientcommands.end())
 		{
-			int32_t handle = gsc_clientcommands[name_lowercase];
-
-			if (handle)
+			if (int32_t handle = it->second)
 			{
 				int argc = *Cmd_Argc;
 

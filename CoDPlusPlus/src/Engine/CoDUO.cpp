@@ -54,8 +54,8 @@ namespace CoDUO
 			LookupFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, LookupFunction_n, 6);
 			LookupMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, LookupMethod_n, 8);
 
-			LookupCommandHook.Inject(uo_game_mp_x86 + 0x0004f1d2, LookupCommand_n, 5);
-			LookupClientCommandHook.Inject(uo_game_mp_x86 + 0x0002556a, LookupClientCommand_n, 5);
+			ConsoleCommandHook.Inject(uo_game_mp_x86 + 0x0004f0d0, hkConsoleCommand, 6);
+			ClientCommandHook.Inject(uo_game_mp_x86 + 0x00024f70, hkClientCommand, 6);
 
 			// Gsc Callbacks
 			G_InitGameHook.Inject(uo_game_mp_x86 + 0x0002bfc0, hkG_InitGame, 6);
@@ -102,8 +102,8 @@ namespace CoDUO
 			GScr_LoadGameTypeScriptHook.Dispose();
 			LookupFunctionHook.Dispose();
 			LookupMethodHook.Dispose();
-			LookupCommandHook.Dispose();
-			LookupClientCommandHook.Dispose();
+			ConsoleCommandHook.Dispose();
+			ClientCommandHook.Dispose();
 			G_InitGameHook.Dispose();
 			FireWeaponAntilagHook.Dispose();
 			PlayerMeleeHook.Dispose();

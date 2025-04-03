@@ -33,11 +33,13 @@ namespace Hook::Detour /* Loaders.cpp */
 	inline Hook::DetourHook LookupMethodHook;
 	void LookupMethod_n() noexcept;
 
-	inline Hook::DetourHook LookupCommandHook;
-	void LookupCommand_n() noexcept;
+	typedef int(__cdecl* ConsoleCommand_t)();
+	inline Hook::TrampolineHook<ConsoleCommand_t> ConsoleCommandHook;
+	int __cdecl hkConsoleCommand();
 
-	inline Hook::DetourHook LookupClientCommandHook;
-	void LookupClientCommand_n() noexcept;
+	typedef void(__cdecl* ClientCommand_t)();
+	inline Hook::TrampolineHook<ClientCommand_t> ClientCommandHook;
+	void __cdecl hkClientCommand();
 }
 
 namespace Hook::Detour /* CodeCallbacks.cpp */
