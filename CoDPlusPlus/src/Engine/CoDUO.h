@@ -49,6 +49,7 @@ namespace CoDUO /* GscMapping.cpp */
 
 	int32_t Scr_GetNumParam();
 	int32_t Scr_GetType(int param);
+	int32_t Scr_GetPointerType(int index);
 	int32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
 	void Scr_GetVector(int param, void* destination);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cstdint>
 #include <string>
 #include <Structs/vec3_t.h>
@@ -31,8 +31,11 @@ enum class VarType
 	Vector = 3,
 	Float = 4,
 	Integer = 5,
-	Entity = 7,
+	Object = 7,
 	Function = 9,
+	Entity = 13,
+	Struct = 14,
+	Array = 15,
 };
 
 struct ScrVar

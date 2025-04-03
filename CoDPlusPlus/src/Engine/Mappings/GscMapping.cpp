@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
@@ -61,6 +61,18 @@ namespace CoDUO
 		{
 			push param
 			mov eax, 0x00490530
+			call eax
+
+			add esp, 0x4
+		}
+	}
+
+	int32_t Scr_GetPointerType(int index)
+	{
+		_asm
+		{
+			push index
+			mov eax, 0x004905a0
 			call eax
 
 			add esp, 0x4

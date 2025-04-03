@@ -171,11 +171,35 @@ namespace CoDUO::Gsc
 					store.push_back(integer);
 					continue;
 				}
-				case VarType::Entity:
+				case VarType::Object:
 				{
-					gentity_t* ent = Scr_GetEntity(i);
-					const char* name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
-					store.push_back(name);
+					int ptrType = Scr_GetPointerType(i);
+					switch ((VarType)ptrType)
+					{
+						case VarType::Entity:
+						{
+							gentity_t* ent = Scr_GetEntity(i);
+							const char* name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
+							store.push_back(name);
+							continue;
+						}
+						case VarType::Struct:
+						{
+							store.push_back("<struct>");
+							continue;
+						}
+						case VarType::Array:
+						{
+							store.push_back("<array>");
+							continue;
+						}
+						default:
+						{
+							fmt::println("Scr_Format: Unhandled pointer type {}", ptrType);
+							store.push_back(fmt::format("<ptr_type {}>", ptrType));
+						}
+					}
+
 					continue;
 				}
 				case VarType::Function:

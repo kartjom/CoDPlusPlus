@@ -256,14 +256,14 @@ namespace ImGuiManager
 					case VarType::Integer:
 						ImGui::Text("int %d", Scr_ReturnValue.Integer);
 						break;
-					case VarType::Entity:
-						ImGui::Text("entity %d", Scr_ReturnValue.Integer);
+					case VarType::Object:
+						ImGui::Text("object %d", Scr_ReturnValue.Integer);
 						break;
 					case VarType::Function:
 						ImGui::Text("function %d", Scr_ReturnValue.Integer);
 						break;
 					default:
-						ImGui::Text("default %d", Scr_ReturnValue.Integer);
+						ImGui::Text("unknown %d", Scr_ReturnValue.Integer);
 					}
 
 					ImGui::Spacing();

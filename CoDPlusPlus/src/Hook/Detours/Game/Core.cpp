@@ -77,7 +77,7 @@ namespace Hook::Detour
 			case VarType::Integer:
 				Scr_ReturnValue.Integer = var->Integer;
 				break;
-			case VarType::Entity:
+			case VarType::Object:
 				Scr_ReturnValue.Integer = var->Integer;
 				break;
 			case VarType::Function:
