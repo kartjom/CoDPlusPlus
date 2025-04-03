@@ -27,11 +27,13 @@ namespace Hook::Detour /* Loaders.cpp */
 	inline Hook::TrampolineHook<GScr_LoadGameTypeScript_t> GScr_LoadGameTypeScriptHook;
 	void __cdecl hkGScr_LoadGameTypeScript();
 
-	inline Hook::DetourHook LookupFunctionHook;
-	void LookupFunction_n() noexcept;
+	typedef void*(__cdecl* Scr_GetFunction_t)(const char**, int*);
+	inline Hook::TrampolineHook<Scr_GetFunction_t> Scr_GetFunctionHook;
+	void* __cdecl hkScr_GetFunction(const char**, int*);
 
-	inline Hook::DetourHook LookupMethodHook;
-	void LookupMethod_n() noexcept;
+	typedef void* (__cdecl* Scr_GetMethod_t)(const char**, int*);
+	inline Hook::TrampolineHook<Scr_GetMethod_t> Scr_GetMethodHook;
+	void* __cdecl hkScr_GetMethod(const char**, int*);
 
 	typedef int(__cdecl* ConsoleCommand_t)();
 	inline Hook::TrampolineHook<ConsoleCommand_t> ConsoleCommandHook;

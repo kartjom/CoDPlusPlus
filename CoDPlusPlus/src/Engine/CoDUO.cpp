@@ -51,8 +51,8 @@ namespace CoDUO
 			// Loaders
 			GScr_LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, hkGScr_LoadGameTypeScript, 8);
 
-			LookupFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, LookupFunction_n, 6);
-			LookupMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, LookupMethod_n, 8);
+			Scr_GetFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, hkScr_GetFunction, 6);
+			Scr_GetMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, hkScr_GetMethod, 8);
 
 			ConsoleCommandHook.Inject(uo_game_mp_x86 + 0x0004f0d0, hkConsoleCommand, 6);
 			ClientCommandHook.Inject(uo_game_mp_x86 + 0x00024f70, hkClientCommand, 6);
@@ -100,8 +100,8 @@ namespace CoDUO
 		using namespace Hook::Detour;
 		{
 			GScr_LoadGameTypeScriptHook.Dispose();
-			LookupFunctionHook.Dispose();
-			LookupMethodHook.Dispose();
+			Scr_GetFunctionHook.Dispose();
+			Scr_GetMethodHook.Dispose();
 			ConsoleCommandHook.Dispose();
 			ClientCommandHook.Dispose();
 			G_InitGameHook.Dispose();

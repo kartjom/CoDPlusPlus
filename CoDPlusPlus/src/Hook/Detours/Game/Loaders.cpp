@@ -11,9 +11,6 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	void* GetFunctionCallback(const char* value);
-	void* GetMethodCallback(const char* value);
-
 	bool RunScriptConsoleCommand(const char* name);
 	bool RunScriptClientCommand(gentity_t* player, const char* name);
 }
@@ -39,82 +36,32 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void LookupFunction_n() noexcept
+	void* __cdecl hkScr_GetFunction(const char** pName, int* pType)
 	{
-		_asm sub esp, 0x4
-
-		_asm pushad
-		_asm
+		if (auto it = gsc_functions.find(*pName); it != gsc_functions.end())
 		{
-			mov eax, [esp + 0x28]
-			mov eax, [eax]
-			push eax // value
-			call GetFunctionCallback
-			add esp, 0x4 // 1 arg, 4 bytes
+			gsc_function_t& scr_fn = it->second;
 
-			mov[esp + 0x20], eax
-		}
-		_asm popad
-
-		_asm
-		{
-			pop eax
-			cmp eax, 0
-			jne function_found
+			*pName = scr_fn.name;
+			*pType = scr_fn.developer;
+			return it->second.callback;
 		}
 
-		_asm // restore
-		{
-			mov eax, dword ptr ss : [esp + 0x4]
-			mov edx, dword ptr ds : [eax]
-		}
-
-		_asm jmp[LookupFunctionHook.Return] // jump back
-
-		_asm
-		{
-			function_found:
-			ret
-		}
+		return Scr_GetFunctionHook.OriginalFn(pName, pType);
 	}
 
-	_declspec(naked) void LookupMethod_n() noexcept
+	void* __cdecl hkScr_GetMethod(const char** pName, int* pType)
 	{
-		_asm sub esp, 0x4
-
-		_asm pushad
-		_asm
+		if (auto it = gsc_methods.find(*pName); it != gsc_methods.end())
 		{
-			mov eax, [esp + 0x28]
-			mov eax, [eax]
-			push eax // value
-			call GetMethodCallback
-			add esp, 0x4 // 1 arg, 4 bytes
+			gsc_function_t& scr_fn = it->second;
 
-			mov[esp + 0x20], eax
-		}
-		_asm popad
-
-		_asm
-		{
-			pop eax
-			cmp eax, 0
-			jne method_found
+			*pName = scr_fn.name;
+			*pType = scr_fn.developer;
+			return it->second.callback;
 		}
 
-		_asm // restore
-		{
-			mov eax, dword ptr ss : [esp + 0x8]
-			mov edx, dword ptr ss : [esp + 0x4]
-		}
-
-		_asm jmp[LookupMethodHook.Return] // jump back
-
-		_asm
-		{
-			method_found:
-			ret
-		}
+		return Scr_GetMethodHook.OriginalFn(pName, pType);
 	}
 
 	int __cdecl hkConsoleCommand()
@@ -151,26 +98,6 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	void* __cdecl GetFunctionCallback(const char* value)
-	{
-		if (gsc_functions.find(value) != gsc_functions.end())
-		{
-			return gsc_functions[value].callback;
-		}
-
-		return 0;
-	}
-
-	void* __cdecl GetMethodCallback(const char* value)
-	{
-		if (gsc_methods.find(value) != gsc_methods.end())
-		{
-			return gsc_methods[value].callback;
-		}
-
-		return 0;
-	}
-
 	bool __cdecl RunScriptConsoleCommand(const char* cmd_name)
 	{
 		std::string name_lowercase(cmd_name);
