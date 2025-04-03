@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdint.h"
 #include <Structs/vec3_t.h>
 
@@ -55,17 +55,25 @@ struct gentity_t
 {
 	int32_t number; //0x0000
 	entityType_t eType; //0x0004
-	char pad_0008[4]; //0x0008
+	int32_t eFlags; //0x0008
 	trajectory_t pos; //0x000C
-	char pad_0030[12]; //0x0030
-	vec3_t viewangles; //0x003C
-	char pad_0048[132]; //0x0048
+	trajectory_t apos; //0x0030
+	int32_t time; //0x0054
+	int32_t time2; //0x0058
+	vec3_t origin2; //0x005C
+	vec3_t angles2; //0x0068
+	char pad_0074[88]; //0x0074
 	int32_t weapon; //0x00CC
 	char pad_00D0[40]; //0x00D0
 	int32_t svFlags; //0x00F8
-	char pad_00FC[64]; //0x00FC
+	char pad_00FC[12]; //0x00FC
+	vec3_t mins; //0x0108
+	vec3_t maxs; //0x0114
+	int32_t contents; //0x0120
+	vec3_t absmin; //0x0124
+	vec3_t absmax; //0x0130
 	vec3_t currentOrigin; //0x013C
-	char pad_0148[12]; //0x0148
+	vec3_t currentAngles; //0x0148
 	int32_t ownerNum; //0x0154
 	int32_t r_eventTime; //0x0158
 	char pad_015C[4]; //0x015C
