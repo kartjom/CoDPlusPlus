@@ -76,8 +76,7 @@ namespace MapBindings
 	{
         MapBindingEntry& Instance = GetBindings();
 
-        for (int i = 0; mapName[i]; i++)
-            mapName[i] = tolower(mapName[i]);
+		String::TransformToLower(mapName);
 
         if (auto it = Instance.Bindings.find(mapName); it != Instance.Bindings.end())
         {

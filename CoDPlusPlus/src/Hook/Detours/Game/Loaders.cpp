@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <filesystem>
+#include <Utils/String/String.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
 
@@ -100,11 +101,7 @@ namespace Hook::Detour
 {
 	bool __cdecl RunScriptConsoleCommand(const char* cmd_name)
 	{
-		std::string name_lowercase(cmd_name);
-		for (int i = 0; name_lowercase[i]; i++)
-		{
-			name_lowercase[i] = tolower(name_lowercase[i]);
-		}
+		std::string name_lowercase = String::ToLower(cmd_name);
 
 		if (auto it = gsc_commands.find(name_lowercase); it != gsc_commands.end())
 		{
@@ -130,11 +127,7 @@ namespace Hook::Detour
 
 	bool __cdecl RunScriptClientCommand(gentity_t* player, const char* cmd_name)
 	{
-		std::string name_lowercase(cmd_name);
-		for (int i = 0; name_lowercase[i]; i++)
-		{
-			name_lowercase[i] = tolower(name_lowercase[i]);
-		}
+		std::string name_lowercase = String::ToLower(cmd_name);
 
 		if (auto it = gsc_clientcommands.find(name_lowercase); player && player->client && it != gsc_clientcommands.end())
 		{

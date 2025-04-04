@@ -1,6 +1,7 @@
 ﻿#include <Engine/Async/HttpResult/HttpResult.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/Network/HttpClient.h>
+#include <Utils/String/String.h>
 #include <Engine/CoDUO.h>
 #include "GscExtensions.h"
 
@@ -33,11 +34,7 @@ namespace CoDUO::Gsc
 
 		if (!name || !fn) return;
 
-		std::string name_lowercase(name);
-		for (int i = 0; name_lowercase[i]; i++)
-		{
-			name_lowercase[i] = tolower(name_lowercase[i]);
-		}
+		std::string name_lowercase = String::ToLower(name);
 
 		if (Cmd_HasCommand(name_lowercase.c_str())) return;
 
@@ -51,11 +48,7 @@ namespace CoDUO::Gsc
 
 		if (!name || !fn) return;
 
-		std::string name_lowercase(name);
-		for (int i = 0; name_lowercase[i]; i++)
-		{
-			name_lowercase[i] = tolower(name_lowercase[i]);
-		}
+		std::string name_lowercase = String::ToLower(name);
 
 		if (Cmd_HasCommand(name_lowercase.c_str())) return;
 
@@ -227,12 +220,7 @@ namespace CoDUO::Gsc
 
 		if (c_str)
 		{
-			std::string str(c_str);
-
-			for (int i = 0; str[i]; i++)
-			{
-				str[i] = toupper(str[i]);
-			}
+			std::string str = String::ToUpper(c_str);
 			Scr_AddString(str.c_str());
 		}
 		else
@@ -247,12 +235,7 @@ namespace CoDUO::Gsc
 
 		if (c_str)
 		{
-			std::string str(c_str);
-
-			for (int i = 0; str[i]; i++)
-			{
-				str[i] = tolower(str[i]);
-			}
+			std::string str = String::ToLower(c_str);
 			Scr_AddString(str.c_str());
 		}
 		else
