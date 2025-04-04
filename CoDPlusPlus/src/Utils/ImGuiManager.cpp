@@ -16,11 +16,13 @@
 #include <Utils/OpenGLHelper.h>
 #include <Engine/CoDUO.h>
 #include <Engine/Async/Task/Task.h>
+#include <Engine/MapBindings/MapBindings.h>
 
 #define FMT_HEADER_ONLY
 #include <fmt/core.h>
 
 using namespace OpenGLHelper;
+using namespace MapBindings;
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
 using namespace CoDUO::Gsc::Async;
@@ -318,6 +320,32 @@ namespace ImGuiManager
 						ImGui::SameLine();
 						ImGui::SetCursorPosX(250);
 						ImGui::Text("%d", value);
+					}
+
+					ImGui::TreePop();
+				}
+
+				ImGui::Spacing();
+
+				if (ImGui::TreeNode("Active Map Bindings"))
+				{
+					ImGui::Spacing();
+
+					MapBindingEntry& mapBinding = MapBindings::GetBindings();
+					for (auto& [key, value] : mapBinding.Bindings)
+					{
+						ImGui::Text(key.c_str());
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(250);
+						ImGui::Text(value.c_str());
+					}
+
+					if (!mapBinding.Default.empty())
+					{
+						ImGui::Text("default");
+						ImGui::SameLine();
+						ImGui::SetCursorPosX(250);
+						ImGui::Text(mapBinding.Default.c_str());
 					}
 
 					ImGui::TreePop();

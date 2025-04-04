@@ -1,8 +1,7 @@
 ﻿#include <Hook/Detours.h>
 #include <Engine/CoDUO.h>
+#include <Engine/MapBindings/MapBindings.h>
 #include <print>
-#include <fstream>
-#include <filesystem>
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
@@ -95,43 +94,14 @@ namespace Hook::Detour
 
 	void __cdecl EvaluateMapBindings()
 	{
-		constexpr const char* map_bindings = "codplusplus/map_bindings.txt";
-
 		char* mapname = Cmd_Argv[1];
-		if (mapname == nullptr || *mapname == '\0' || !std::filesystem::exists(map_bindings)) return;
+		if (mapname == nullptr || *mapname == '\0') return;
 
-		std::ifstream file(map_bindings, std::ifstream::in);
-		if (!file.is_open()) return;
+		std::string binding = MapBindings::GetBindingForMap(mapname);
 
-		std::string _default;
-
-		std::string line;
-		while (std::getline(file, line))
+		if (!binding.empty())
 		{
-			std::istringstream iss(line);
-			std::string key, value;
-			if (std::getline(iss, key, '=') && std::getline(iss, value))
-			{
-				if (_default.empty() && _stricmp(key.c_str(), "default") == 0)
-				{
-					_default = value;
-					continue;
-				}
-
-				if (_stricmp(key.c_str(), mapname) == 0)
-				{
-					Cvar_Set("fs_game", value.c_str(), 1);
-
-					file.close();
-					return;
-				}
-			}
-		}
-		file.close();
-
-		if (!_default.empty())
-		{
-			Cvar_Set("fs_game", _default.c_str(), 1);
+			Cvar_Set("fs_game", binding.c_str(), 1);
 		}
 	}
 }

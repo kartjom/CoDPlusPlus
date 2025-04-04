@@ -2,6 +2,7 @@
 #include <Hook/Hook.h>
 #include <Hook/Detours.h>
 #include <Engine/Async/Task/Task.h>
+#include <Engine/MapBindings/MapBindings.h>
 #include <Utils/ImGuiManager.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <print>
@@ -28,6 +29,9 @@ namespace CoDUO
 			MapBindingsHook.Inject(0x00457702, MapBindings_n, 8);
 		}
 
+		MapBindings::ReloadMapBindings();
+
+		Cmd_AddCommand("reload_map_bindings", MapBindings::ReloadMapBindings);
 		#ifdef CLIENT
 			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
 		#endif
