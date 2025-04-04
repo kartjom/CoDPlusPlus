@@ -16,7 +16,7 @@ namespace Hook::Detour
 		if ((DWORD)handle != 0 && dllName.find("uo_game_mp_x86") != std::string::npos)
 		{
 			uo_game_mp_x86 = (DWORD)handle;
-			uo_game_mp_x86_OnAttach();
+			OnServerInitialize();
 		}
 
 		return handle;
@@ -27,7 +27,7 @@ namespace Hook::Detour
 		if ((DWORD)BaseAddress == uo_game_mp_x86)
 		{
 			uo_game_mp_x86 = 0;
-			uo_game_mp_x86_OnDetach();
+			OnServerShutdown();
 		}
 
 		return LdrUnloadDllHook.OriginalFn(BaseAddress);

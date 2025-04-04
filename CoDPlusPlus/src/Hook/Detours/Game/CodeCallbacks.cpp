@@ -22,7 +22,7 @@ namespace Hook::Detour
 		_asm mov ecx, CapturedContext.ecx // int levelTime
 		G_InitGameHook.OriginalFn(randomSeed, restart, savePersist);
 
-		uo_game_mp_x86_Cleanup();
+		ServerCleanup();
 
 		if (CodeCallback.OnInitialize)
 		{

@@ -1,6 +1,7 @@
 ﻿#include <Windows.h>
 #include <Engine/CoDUO.h>
 #include <Engine/Async/Task/Task.h>
+#include <Engine/MapBindings/MapBindings.h>
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <Utils/WinApiHelper.h>
 #include <Utils/OpenGLHelper.h>
@@ -31,7 +32,8 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 		TaskManager::InitializeGarbageCollector();
 		ThreadPool.Initialize();
 
-		CoDUO::BaseAttach();
+		MapBindings::ReloadMapBindings();
+		CoDUO::BaseInitialize();
 
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);
 		DisableThreadLibraryCalls(hModule);

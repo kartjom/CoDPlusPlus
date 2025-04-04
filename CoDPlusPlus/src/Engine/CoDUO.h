@@ -144,9 +144,10 @@ namespace CoDUO /* UtilsMapping.cpp */
 
 namespace CoDUO
 {
-	void BaseAttach();
+	void BaseInitialize();
+	void AddConsoleCommands();
 
-	void uo_game_mp_x86_OnAttach();
-	void uo_game_mp_x86_OnDetach();
-	void uo_game_mp_x86_Cleanup();
+	void OnServerInitialize();
+	void OnServerShutdown();
+	void ServerCleanup();
 }

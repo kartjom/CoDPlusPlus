@@ -13,7 +13,7 @@ using namespace CoDUO::Gsc::Async;
 
 namespace CoDUO
 {
-	void BaseAttach()
+	void BaseInitialize()
 	{
 		using namespace Hook::Patch;
 		{
@@ -29,19 +29,14 @@ namespace CoDUO
 			MapBindingsHook.Inject(0x00457702, MapBindings_n, 8);
 		}
 
-		MapBindings::ReloadMapBindings();
-
-		Cmd_AddCommand("reload_map_bindings", MapBindings::ReloadMapBindings);
-		#ifdef CLIENT
-			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
-		#endif
+		AddConsoleCommands();
 
 		std::println("[CoDPlusPlus] - Core Initialized");
 	}
 
-	void uo_game_mp_x86_OnAttach()
+	void OnServerInitialize()
 	{
-		uo_game_mp_x86_Cleanup();
+		ServerCleanup();
 
 		CodeCallback = {};
 		svs = (serverStatic_t*)(0x4907BC0);
@@ -89,9 +84,9 @@ namespace CoDUO
 		std::println("[CoDPlusPlus] - Server Initialized");
 	}
 
-	void uo_game_mp_x86_OnDetach()
+	void OnServerShutdown()
 	{
-		uo_game_mp_x86_Cleanup();
+		ServerCleanup();
 
 		CodeCallback = {};
 		svs = nullptr;
@@ -126,7 +121,7 @@ namespace CoDUO
 		std::println("[CoDPlusPlus] - Server Disposed");
 	}
 
-	void uo_game_mp_x86_Cleanup()
+	void ServerCleanup()
 	{
 		ThreadPool.Clear();
 		{
@@ -136,5 +131,14 @@ namespace CoDUO
 
 		gsc_commands.clear();
 		gsc_clientcommands.clear();
+	}
+
+	void AddConsoleCommands()
+	{
+		Cmd_AddCommand("reload_map_bindings", MapBindings::ReloadMapBindings);
+
+		#ifdef CLIENT
+			Cmd_AddCommand("devgui", ImGuiManager::Toggle);
+		#endif
 	}
 }
