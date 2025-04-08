@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
@@ -48,13 +48,13 @@ namespace CoDUO
 		return "ET_UNKNOWN";
 	}
 
-	unsigned int SL_GetString(const char* str, unsigned char user)
+	unsigned int SL_GetString(const char* value, int user)
 	{
 		_asm
 		{
 			push user
-			push str
-			mov eax, 0x00482BE0
+			push value
+			mov eax, 0x004828e0
 			call eax
 
 			add esp, 0x8

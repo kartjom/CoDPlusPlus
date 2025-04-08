@@ -26,8 +26,8 @@ namespace CoDUO /* CoDUOMP */
 	inline WinMouseVars_t* s_wmv = (WinMouseVars_t*)(0x009cdbbc);
 	inline cvar_t* cvar_indexes = (cvar_t*)(0x009987a0);
 	inline cmd_function_t** cmd_functions = (cmd_function_t**)(0x00964db8);
-	inline char** Cmd_Argv = (char**)(0x00964dc0);
-	inline int* Cmd_Argc = (int*)(0x009677c0);
+	inline const char** p_Cmd_Argv = (const char**)(0x00964dc0);
+	inline int* p_Cmd_Argc = (int*)(0x009677c0);
 };
 
 namespace CoDUO /* uo_game_mp_x86 */
@@ -83,6 +83,9 @@ namespace CoDUO /* EntityMapping.cpp */
 
 namespace CoDUO /* CvarMapping.cpp */
 {
+	int Cmd_Argc();
+	const char* Cmd_Argv(int arg);
+
 	void Cbuf_AddText(const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
 	void Cmd_RemoveCommand(const char* cmd_name);
@@ -106,7 +109,7 @@ namespace CoDUO /* StringUtilsMapping.cpp */
 	char* CopyString(const char* input);
 	int32_t G_NewString(const char* string);
 	const char* G_EntityTypeString(int32_t eType);
-	unsigned int SL_GetString(const char* str, unsigned char user);
+	unsigned int SL_GetString(const char* value, int user);
 	const char* SL_ConvertToString(uint32_t index);
 	void SL_RemoveRefToString(uint16_t index);
 
@@ -127,6 +130,8 @@ namespace CoDUO /* PlayerMapping.cpp */
 	void trap_SetUserinfo(int num, const char* buffer);
 
 	std::string NET_AdrToString(netadr_t adr);
+
+	void SV_GameSendServerCommand(int clientNum, int cmd_type, const char* text);
 }
 
 namespace CoDUO /* UtilsMapping.cpp */

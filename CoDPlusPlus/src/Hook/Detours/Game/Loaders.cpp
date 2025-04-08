@@ -68,7 +68,7 @@ namespace Hook::Detour
 	int __cdecl hkConsoleCommand()
 	{
 		// We first lookup our cmd - this allows overriding vanilla behavior
-		char* cmd = Cmd_Argv[0];
+		const char* cmd = Cmd_Argv(0);
 		int cmdFound = RunScriptConsoleCommand(cmd);
 
 		if (cmdFound == 0)
@@ -84,9 +84,12 @@ namespace Hook::Detour
 	{
 		// We first lookup our cmd - this allows overriding vanilla behavior
 		int clientNum = CapturedContext.ecx;
-
 		gentity_t* player = g_entities + clientNum;
-		char* cmd = Cmd_Argv[0];
+
+		if (!player->client)
+			return;
+
+		const char* cmd = Cmd_Argv(0);
 		int cmdFound = RunScriptClientCommand(player, cmd);
 
 		if (cmdFound == 0)
@@ -107,12 +110,10 @@ namespace Hook::Detour
 		{
 			if (int32_t handle = it->second)
 			{
-				int argc = *Cmd_Argc;
-
 				Scr_MakeArray();
-				for (int i = 1; i < argc; i++)
+				for (int i = 1; i < Cmd_Argc(); i++)
 				{
-					Scr_AddString(Cmd_Argv[i]);
+					Scr_AddString(Cmd_Argv(i));
 					Scr_AddArray();
 				}
 
@@ -133,12 +134,10 @@ namespace Hook::Detour
 		{
 			if (int32_t handle = it->second)
 			{
-				int argc = *Cmd_Argc;
-
 				Scr_MakeArray();
-				for (int i = 1; i < argc; i++)
+				for (int i = 1; i < Cmd_Argc(); i++)
 				{
-					Scr_AddString(Cmd_Argv[i]);
+					Scr_AddString(Cmd_Argv(i));
 					Scr_AddArray();
 				}
 

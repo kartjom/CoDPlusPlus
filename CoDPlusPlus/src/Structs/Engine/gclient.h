@@ -1,6 +1,15 @@
-#pragma once
+﻿#pragma once
 #include "stdint.h"
 #include <Structs/vec3_t.h>
+
+enum team_t
+{
+	TEAM_NONE = 0,
+	TEAM_AXIS = 1,
+	TEAM_ALLIES = 2,
+	TEAM_SPECTATOR = 3,
+	TEAM_NUM_TEAMS = 4,
+};
 
 struct gclient_t
 {
@@ -35,7 +44,11 @@ struct gclient_t
 	int32_t viewheight_standing; //0x057C
 	char pad_0580[48]; //0x0580
 	float stamina; //0x05B0
-	char pad_05B4[16448]; //0x05B4
+	char pad_05B4[16352]; //0x05B4
+	int32_t voteCount; //0x4594
+	char pad_4598[36]; //0x4598
+	int32_t sessionTeam; //0x45BC
+	char pad_45C0[52]; //0x45C0
 	char name[32]; //0x45F4
 	char pad_4614[8]; //0x4614
 	int32_t noclip; //0x461C

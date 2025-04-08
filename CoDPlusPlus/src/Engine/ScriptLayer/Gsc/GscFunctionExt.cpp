@@ -154,13 +154,13 @@ namespace CoDUO::Gsc
 				}
 				case VarType::Float:
 				{
-					float fl = Scr_GetFloat(i);
-					store.push_back(fl);
+					float single = Scr_GetFloat(i);
+					store.push_back(single);
 					continue;
 				}
 				case VarType::Integer:
 				{
-					int integer = Scr_GetFloat(i);
+					int integer = Scr_GetInt(i);
 					store.push_back(integer);
 					continue;
 				}

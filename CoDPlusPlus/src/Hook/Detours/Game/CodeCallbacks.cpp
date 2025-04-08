@@ -206,7 +206,7 @@ namespace Hook::Detour
 		{
 			mov eax, uo_game_mp_x86
 			add eax, 0x003105e0
-			mov eax,[eax]
+			mov eax, [eax]
 		}
 
 		_asm jmp[VoteCalledHook.Return] // jump back
@@ -289,9 +289,9 @@ namespace Hook::Detour
 
 	void __cdecl OnPlayerVote(gclient_t* player)
 	{
-		if (*Cmd_Argc >= 2 && player)
+		if (Cmd_Argc() >= 2 && player)
 		{
-			Scr_AddString(Cmd_Argv[1]);
+			Scr_AddString( Cmd_Argv(1) );
 			Scr_AddEntityNum(player->clientNum);
 			Scr_RunScript(CodeCallback.OnPlayerVote, 2);
 		}
@@ -299,16 +299,16 @@ namespace Hook::Detour
 
 	bool __cdecl OnVoteCalled(gentity_t* player)
 	{
-		if (*Cmd_Argc >= 2 && player && player->client)
+		if (Cmd_Argc() >= 2 && player && player->client)
 		{
 			Scr_MakeArray();
-			for (int i = 2; i < *Cmd_Argc; i++)
+			for (int i = 2; i < Cmd_Argc(); i++)
 			{
-				Scr_AddString(Cmd_Argv[i]);
+				Scr_AddString( Cmd_Argv(i) );
 				Scr_AddArray();
 			}
 
-			Scr_AddString(Cmd_Argv[1]); // Vote Type
+			Scr_AddString( Cmd_Argv(1) ); // Vote Type
 			Scr_AddEntityNum(player->number);
 			Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 

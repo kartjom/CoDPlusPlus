@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 #include <format>
 
 namespace CoDUO
@@ -100,6 +100,19 @@ namespace CoDUO
 		default:
 			return std::format("{:02x}{:02x}{:02x}{:02x}.{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
 				adr.ipx[0], adr.ipx[1], adr.ipx[2], adr.ipx[3], adr.ipx[4], adr.ipx[5], adr.ipx[6], adr.ipx[7], adr.ipx[8], adr.ipx[9]);
+		}
+	}
+
+	void SV_GameSendServerCommand(int clientNum, int cmd_type, const char* text)
+	{
+		_asm
+		{
+			mov eax, text
+			mov edx, cmd_type
+			mov ecx, clientNum
+
+			mov ebx, 0x0045c7e0
+			call ebx
 		}
 	}
 }

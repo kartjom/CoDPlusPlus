@@ -3,6 +3,25 @@
 #include <stdexcept>
 #include <vector>
 #include <format>
+#include <Zydis/Zydis.h>
+
+inline uint32_t CalculateInstructionLength(uintptr_t hookAddress, uint32_t minLength = 5)
+{
+	ZydisDecoder decoder;
+	ZydisDecoderInit(&decoder, ZYDIS_MACHINE_MODE_LEGACY_32, ZYDIS_STACK_WIDTH_32);
+
+	ZyanU32 totalLength = 0;
+	ZydisDecodedInstruction instruction;
+	while (totalLength < minLength)
+	{
+		if (ZYAN_SUCCESS( ZydisDecoderDecodeInstruction(&decoder, nullptr, (void*)(hookAddress + totalLength), 16, &instruction) ))
+		{
+			totalLength += instruction.length;
+		}
+	}
+
+	return totalLength;
+}
 
 namespace Hook
 {

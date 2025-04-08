@@ -2,6 +2,21 @@
 
 namespace CoDUO
 {
+	int Cmd_Argc()
+	{
+		return *p_Cmd_Argc;
+	}
+
+	const char* Cmd_Argv(int arg)
+	{
+		if (arg >= *p_Cmd_Argc)
+		{
+			return "";
+		}
+
+		return p_Cmd_Argv[arg];
+	}
+
 	void Cbuf_AddText(const char* text)
 	{
 		_asm

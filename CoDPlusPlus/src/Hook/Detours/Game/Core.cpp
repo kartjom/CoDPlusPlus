@@ -94,7 +94,7 @@ namespace Hook::Detour
 
 	void __cdecl EvaluateMapBindings()
 	{
-		char* mapname = Cmd_Argv[1];
+		const char* mapname = Cmd_Argv(1);
 		if (mapname == nullptr || *mapname == '\0') return;
 
 		std::string binding = MapBindings::GetBindingForMap(mapname);

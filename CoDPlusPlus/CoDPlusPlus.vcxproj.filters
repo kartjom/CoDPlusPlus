@@ -42,6 +42,7 @@
     <ClCompile Include="src\Render\Buffers\VAO_utils.cpp" />
     <ClCompile Include="src\Render\Materials\Shader.cpp" />
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
+    <ClCompile Include="vendor\zydis\Zydis.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -88,5 +89,6 @@
     <ClInclude Include="src\Render\Buffers\VAO_utils.h" />
     <ClInclude Include="src\Render\Materials\Shader.h" />
     <ClInclude Include="src\Render\Materials\Texture.h" />
+    <ClInclude Include="vendor\zydis\include\Zydis\Zydis.h" />
   </ItemGroup>
 </Project>
