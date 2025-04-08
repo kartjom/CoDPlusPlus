@@ -1,6 +1,8 @@
 ﻿#include <Hook/Detours.h>
 #include <Engine/CoDUO.h>
+#include <Utils/String/String.h>
 #include <Engine/MapBindings/MapBindings.h>
+#include <format>
 #include <print>
 
 using namespace CoDUO;
@@ -9,7 +11,6 @@ using namespace CoDUO::Gsc;
 namespace Hook::Detour
 {
 	void Scr_ExecThread_GscReturnValue();
-	void EvaluateMapBindings();
 }
 
 namespace Hook::Detour
@@ -29,19 +30,27 @@ namespace Hook::Detour
 		_asm jmp[ScrThread_ReturnValueHook.Return] // jump back
 	}
 
-	_declspec(naked) void MapBindings_n() noexcept
+	void __cdecl hkSV_Map()
 	{
-		_asm pushad
-		EvaluateMapBindings();
-		_asm popad
+		const char* mapName = Cmd_Argv(1);
 
-		_asm // restore
+		if (mapName)
 		{
-			mov esi, dword ptr ds : [0x9677C0]
-			test esi, esi
+			std::string expanded = std::format("maps/mp/{}.bsp", mapName);
+			String::TransformToLower(expanded);
+
+			if (FS_ReadFile(expanded.c_str(), NULL) > 0)
+			{
+				std::string binding = MapBindings::GetBindingForMap(mapName);
+
+				if (!binding.empty())
+				{
+					Cvar_Set("fs_game", binding.c_str(), 1);
+				}
+			}
 		}
 
-		_asm jmp[MapBindingsHook.Return] // jump back
+		SV_MapHook.OriginalFn();
 	}
 }
 
@@ -89,19 +98,6 @@ namespace Hook::Detour
 		catch (std::exception& e)
 		{
 			std::println("Scr_ExecThread_GscReturnValue exception: {}", e.what());
-		}
-	}
-
-	void __cdecl EvaluateMapBindings()
-	{
-		const char* mapname = Cmd_Argv(1);
-		if (mapname == nullptr || *mapname == '\0') return;
-
-		std::string binding = MapBindings::GetBindingForMap(mapname);
-
-		if (!binding.empty())
-		{
-			Cvar_Set("fs_game", binding.c_str(), 1);
 		}
 	}
 }

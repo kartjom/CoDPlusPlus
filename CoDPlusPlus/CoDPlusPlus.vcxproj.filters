@@ -43,6 +43,7 @@
     <ClCompile Include="src\Render\Materials\Shader.cpp" />
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="vendor\zydis\Zydis.c" />
+    <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />

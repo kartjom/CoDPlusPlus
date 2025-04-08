@@ -17,8 +17,8 @@ namespace Hook::Detour /* Core.cpp */
 	inline DetourHook ScrThread_ReturnValueHook;
 	void ScrThread_ReturnValue_n() noexcept;
 
-	inline DetourHook MapBindingsHook;
-	void MapBindings_n() noexcept;
+	inline TrampolineHook<void(__cdecl*)()> SV_MapHook;
+	void __cdecl hkSV_Map();
 }
 
 namespace Hook::Detour /* Loaders.cpp */

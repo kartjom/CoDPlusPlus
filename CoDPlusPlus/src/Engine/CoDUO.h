@@ -147,6 +147,11 @@ namespace CoDUO /* UtilsMapping.cpp */
 	trace_t G_GetEyeTrace(gentity_t* player, float range, float spread);
 }
 
+namespace CoDUO /* FileSystemMapping.cpp */
+{
+	int FS_ReadFile(const char* qpath, void** buffer);
+}
+
 namespace CoDUO
 {
 	void BaseInitialize();

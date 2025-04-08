@@ -26,7 +26,7 @@ namespace CoDUO
 		{
 			// Core functionality
 			ScrThread_ReturnValueHook.Inject(0x0048f40e, ScrThread_ReturnValue_n, 5);
-			MapBindingsHook.Inject(0x00457702, MapBindings_n, 8);
+			SV_MapHook.Inject(0x00457650, hkSV_Map, 6);
 		}
 
 		AddConsoleCommands();
