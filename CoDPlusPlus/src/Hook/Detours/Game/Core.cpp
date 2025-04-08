@@ -46,6 +46,7 @@ namespace Hook::Detour
 				if (!binding.empty())
 				{
 					Cvar_Set("fs_game", binding.c_str(), 1);
+					std::println("[CoDPlusPlus] - Changed fs_game: {}", binding);
 				}
 			}
 		}
