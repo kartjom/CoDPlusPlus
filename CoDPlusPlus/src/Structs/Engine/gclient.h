@@ -2,6 +2,13 @@
 #include "stdint.h"
 #include <Structs/vec3_t.h>
 
+enum clientConnected_t
+{
+	CON_DISCONNECTED,
+	CON_CONNECTING,
+	CON_CONNECTED
+};
+
 enum team_t
 {
 	TEAM_NONE = 0,
@@ -49,7 +56,11 @@ struct gclient_t
 	int32_t viewheight_standing; //0x057C
 	char pad_0580[48]; //0x0580
 	float stamina; //0x05B0
-	char pad_05B4[16352]; //0x05B4
+	char pad_05B4[16236]; //0x05B4
+	clientConnected_t connected; //0x4520
+	char pad_4524[48]; //0x4524
+	int32_t localClient; //0x4554
+	char pad_4558[60]; //0x4558
 	int32_t voteCount; //0x4594
 	int32_t teamVoteCount; //0x4598
 	int32_t complaints; //0x459C
@@ -73,3 +84,5 @@ struct gclient_t
 	int32_t inactivityWarning; //0x4680
 	char pad_4684[176]; //0x4684
 }; //Size: 0x4734
+
+#define EF_VOTED		0x00010000
