@@ -56,8 +56,8 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline DetourHook PlayerInactivityHook;
 	void PlayerInactivity_n() noexcept;
 
-	inline DetourHook PlayerVoteHook;
-	void PlayerVote_n() noexcept;
+	inline TrampolineHook<void(__cdecl*)()> Cmd_VoteHook;
+	void __cdecl hkCmd_Vote();
 
 	inline DetourHook VoteCalledHook;
 	void VoteCalled_n() noexcept;

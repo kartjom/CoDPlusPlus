@@ -10,7 +10,6 @@ namespace Hook::Detour
 {
 	void OnPlayerMelee(gentity_t* player, int16_t target_num);
 	bool OnPlayerInactivity(gclient_t* player);
-	void OnPlayerVote(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 }
 
@@ -155,28 +154,32 @@ namespace Hook::Detour
 		_asm jmp[PlayerInactivityHook.Return] // jump back
 	}
 
-	_declspec(naked) void PlayerVote_n() noexcept
+	/* gentity_t* ent - ECX */
+	void __cdecl hkCmd_Vote()
 	{
-		_asm // restore
+		gentity_t* ent = (gentity_t*)CapturedContext.ecx;
+		bool isValid = ent && ent->client;
+
+		// Original Cmd_VoteHook_f can overwrite some stuff
+		int clientNum = isValid ? ent->client->clientNum : 0;
+		bool canVote = isValid && level->voteTime && !(ent->client->eFlags & EF_VOTED) && ent->client->sessionTeam != TEAM_SPECTATOR;
+
+		// Call original now - script can have side effects (client kick)
+		_asm mov ecx, CapturedContext.ecx // gentity_t* ent
+		Cmd_VoteHook.OriginalFn();
+
+		client_t* cl = svs->clients + clientNum;
+		if (CodeCallback.OnPlayerVote && canVote && cl && cl->state != CS_ZOMBIE)
 		{
-			call syscall
-			add esp, 0x14
+			std::string msg = Cmd_Argv(1);
+			if (msg.length() < 2) msg.resize(2);
+
+			bool vote = msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1';
+
+			Scr_AddBool(vote);
+			Scr_AddEntityNum(ent->number);
+			Scr_RunScript(CodeCallback.OnPlayerVote, 2);
 		}
-
-		_asm pushad
-		if (CodeCallback.OnPlayerVote)
-		{
-			_asm
-			{
-				push esi // player as gclient
-				call OnPlayerVote
-
-				add esp, 0x4 // 1 arg, 4 bytes
-			}
-		}
-		_asm popad
-
-		_asm jmp[PlayerVoteHook.Return] // jump back
 	}
 
 	_declspec(naked) void VoteCalled_n() noexcept
@@ -285,16 +288,6 @@ namespace Hook::Detour
 		}
 
 		return false;
-	}
-
-	void __cdecl OnPlayerVote(gclient_t* player)
-	{
-		if (Cmd_Argc() >= 2 && player)
-		{
-			Scr_AddString( Cmd_Argv(1) );
-			Scr_AddEntityNum(player->clientNum);
-			Scr_RunScript(CodeCallback.OnPlayerVote, 2);
-		}
 	}
 
 	bool __cdecl OnVoteCalled(gentity_t* player)
