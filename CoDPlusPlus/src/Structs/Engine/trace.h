@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Structs/vec3_t.h>
 
 #define MASK_SHOT 0x2802031
@@ -13,6 +13,5 @@ struct trace_t
 	int contents;
 	char* textureName;
 	short entityNum;
-	char pad_1[2];
 	int surfaceFlags;
 };
