@@ -7,7 +7,9 @@ struct level_locals_t
 	struct gentity_t* gentities; //0x0004
 	int32_t gentitySize; //0x0008
 	int32_t num_entities; //0x000C
-	char pad_0010[468]; //0x0010
+	char pad_0010[16]; //0x0010
+	int32_t initializing; //0x0020
+	char pad_0024[448]; //0x0024
 	int32_t maxclients; //0x01E4
 	int32_t framenum; //0x01E8
 	int32_t time; //0x01EC

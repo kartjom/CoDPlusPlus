@@ -85,7 +85,11 @@ struct gentity_t
 	struct gclient_t* client; //0x0160
 	char pad_0164[8]; //0x0164
 	int32_t inuse; //0x016C
-	char pad_0170[20]; //0x0170
+	char pad_0170[12]; //0x0170
+	int8_t pad_017C; //0x017C
+	int8_t takedamage; //0x017D
+	int8_t active; //0x017E
+	char pad_017F[5]; //0x017F
 	int32_t classname; //0x0184
 	int32_t spawnflags; //0x0188
 	int32_t flags; //0x018C
@@ -99,13 +103,13 @@ struct gentity_t
 	int16_t targetname; //0x01E6
 	char pad_01E8[36]; //0x01E8
 	int32_t nextthink; //0x020C
-	void (*think)(gentity_t* self);
-	void (*reached)(gentity_t* self);
-	void (*blocked)(gentity_t* self, gentity_t* other);
-	void (*touch)(gentity_t* self, gentity_t* other, struct trace_t* trace);
-	void (*use)(gentity_t* self, gentity_t* other, gentity_t* activator);
-	void (*pain)(gentity_t* self, gentity_t* attacker, int damage, vec3_t point);
-	void (*die)(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int mod);
+	void (*think)(gentity_t* self); //0x0210
+	void (*reached)(gentity_t* self); //0x0214
+	void (*blocked)(gentity_t* self, gentity_t* other); //0x0218
+	void (*touch)(gentity_t* self, gentity_t* other, struct trace_t* trace); //0x021C
+	void (*use)(gentity_t* self, gentity_t* other, gentity_t* activator); //0x0220
+	void (*pain)(gentity_t* self, gentity_t* attacker, int damage, vec3_t point); //0x0224
+	void (*die)(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, int damage, int mod); //0x0228
 	char pad_022C[20]; //0x022C
 	int32_t health; //0x0240
 	char pad_0244[4]; //0x0244
