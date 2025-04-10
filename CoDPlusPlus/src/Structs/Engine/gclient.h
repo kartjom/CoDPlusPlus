@@ -22,7 +22,12 @@ struct gclient_t
 	int32_t grenadeTimeLeft; //0x0034
 	char pad_0038[12]; //0x0038
 	float leanf; //0x0044
-	char pad_0048[140]; //0x0048
+	char pad_0048[16]; //0x0048
+	int32_t groundEntityNum; //0x0058
+	char pad_005C[36]; //0x005C
+	int32_t movementDir; //0x0080
+	int32_t eFlags; //0x0084
+	char pad_0088[76]; //0x0088
 	int32_t clientNum; //0x00D4
 	int32_t weapon; //0x00D8
 	char pad_00DC[4]; //0x00DC
@@ -35,7 +40,7 @@ struct gclient_t
 	int32_t viewheight_i_2; //0x0100
 	int32_t stance_change_dir; //0x0104
 	char pad_0108[28]; //0x0108
-	int32_t maxhealth; //0x0124
+	int32_t maxHealth; //0x0124
 	char pad_0128[1076]; //0x0128
 	vec3_t mins; //0x055C
 	vec3_t maxs; //0x0568
@@ -46,8 +51,12 @@ struct gclient_t
 	float stamina; //0x05B0
 	char pad_05B4[16352]; //0x05B4
 	int32_t voteCount; //0x4594
-	char pad_4598[36]; //0x4598
-	int32_t sessionTeam; //0x45BC
+	int32_t teamVoteCount; //0x4598
+	int32_t complaints; //0x459C
+	int32_t complaintClient; //0x45A0
+	int32_t complaintEndTime; //0x45A4
+	char pad_45A8[20]; //0x45A8
+	team_t sessionTeam; //0x45BC
 	char pad_45C0[52]; //0x45C0
 	char name[32]; //0x45F4
 	char pad_4614[8]; //0x4614
@@ -62,5 +71,5 @@ struct gclient_t
 	int32_t inactivityTime; //0x4678
 	char pad_467C[4]; //0x467C
 	int32_t inactivityWarning; //0x4680
-	char pad_4684[496]; //0x4684
-};
+	char pad_4684[176]; //0x4684
+}; //Size: 0x4734
