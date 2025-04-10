@@ -62,7 +62,12 @@ struct gentity_t
 	int32_t time2; //0x0058
 	vec3_t origin2; //0x005C
 	vec3_t angles2; //0x0068
-	char pad_0074[88]; //0x0074
+	int32_t otherEntityNum; //0x0074
+	int32_t attackerEntityNum; //0x0078
+	int32_t groundEntityNum; //0x007C
+	char pad_0080[36]; //0x0080
+	int32_t eventParm; //0x00A4
+	char pad_00A8[36]; //0x00A8
 	int32_t weapon; //0x00CC
 	char pad_00D0[40]; //0x00D0
 	int32_t svFlags; //0x00F8
