@@ -23,8 +23,8 @@ namespace WinApiHelper
 {
 	void InjectDetours()
 	{
-		LoadLibraryAHook.Inject("kernelbase.dll", "LoadLibraryA", hkLoadLibraryA, 5);
-		LdrUnloadDllHook.Inject("ntdll.dll", "LdrUnloadDll", hkLdrUnloadDll, 5);
+		LoadLibraryAHook.Inject("kernelbase.dll", "LoadLibraryA", hkLoadLibraryA);
+		LdrUnloadDllHook.Inject("ntdll.dll", "LdrUnloadDll", hkLdrUnloadDll);
 	}
 
 	IMAGEHLP_MODULE GetModuleInfo(PVOID address)

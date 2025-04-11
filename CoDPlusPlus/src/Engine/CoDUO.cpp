@@ -25,8 +25,8 @@ namespace CoDUO
 		using namespace Hook::Detour;
 		{
 			// Core functionality
-			ScrThread_ReturnValueHook.Inject(0x0048f40e, ScrThread_ReturnValue_n, 5);
-			SV_MapHook.Inject(0x00457650, hkSV_Map, 6);
+			ScrThread_ReturnValueHook.Inject(0x0048f40e, ScrThread_ReturnValue_n);
+			SV_MapHook.Inject(0x00457650, hkSV_Map);
 		}
 
 		AddConsoleCommands();
@@ -48,35 +48,35 @@ namespace CoDUO
 		using namespace Hook::Detour;
 		{
 			// Loaders
-			GScr_LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, hkGScr_LoadGameTypeScript, 8);
+			GScr_LoadGameTypeScriptHook.Inject(uo_game_mp_x86 + 0x000361c0, hkGScr_LoadGameTypeScript);
 
-			Scr_GetFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, hkScr_GetFunction, 6);
-			Scr_GetMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, hkScr_GetMethod, 8);
+			Scr_GetFunctionHook.Inject(uo_game_mp_x86 + 0x0003d230, hkScr_GetFunction);
+			Scr_GetMethodHook.Inject(uo_game_mp_x86 + 0x0003d330, hkScr_GetMethod);
 
-			ConsoleCommandHook.Inject(uo_game_mp_x86 + 0x0004f0d0, hkConsoleCommand, 6);
-			ClientCommandHook.Inject(uo_game_mp_x86 + 0x00024f70, hkClientCommand, 6);
+			ConsoleCommandHook.Inject(uo_game_mp_x86 + 0x0004f0d0, hkConsoleCommand);
+			ClientCommandHook.Inject(uo_game_mp_x86 + 0x00024f70, hkClientCommand);
 
 			// Gsc Callbacks
-			G_InitGameHook.Inject(uo_game_mp_x86 + 0x0002bfc0, hkG_InitGame, 6);
+			G_InitGameHook.Inject(uo_game_mp_x86 + 0x0002bfc0, hkG_InitGame);
 
-			FireWeaponAntilagHook.Inject(uo_game_mp_x86 + 0x00056850, hkFireWeaponAntilag, 8);
-			Weapon_MeleeHook.Inject(uo_game_mp_x86 + 0x000556a0, hkWeapon_Melee, 6);
-			G_SayHook.Inject(uo_game_mp_x86 + 0x00022b50, hkG_Say, 6);
-			PlayerInactivityHook.Inject(uo_game_mp_x86 + 0x0001aaa0, PlayerInactivity_n, 6);
+			FireWeaponAntilagHook.Inject(uo_game_mp_x86 + 0x00056850, hkFireWeaponAntilag);
+			Weapon_MeleeHook.Inject(uo_game_mp_x86 + 0x000556a0, hkWeapon_Melee);
+			G_SayHook.Inject(uo_game_mp_x86 + 0x00022b50, hkG_Say);
+			PlayerInactivityHook.Inject(uo_game_mp_x86 + 0x0001aaa0, PlayerInactivity_n);
 
-			Cmd_VoteHook.Inject(uo_game_mp_x86 + 0x00024150, hkCmd_Vote, 8);
-			VoteCalledHook.Inject(uo_game_mp_x86 + 0x00023698, VoteCalled_n, 5);
+			Cmd_VoteHook.Inject(uo_game_mp_x86 + 0x00024150, hkCmd_Vote);
+			VoteCalledHook.Inject(uo_game_mp_x86 + 0x00023698, VoteCalled_n);
 		
-			G_BounceMissileHook.Inject(uo_game_mp_x86 + 0x0002ff40, hkG_BounceMissile, 9);
-			G_ExplodeMissileHook.Inject(uo_game_mp_x86 + 0x00030420, hkG_ExplodeMissile, 5);
-			G_ExplodeSmokeHook.Inject(uo_game_mp_x86 + 0x00030aa0, hkG_ExplodeSmoke, 8);
+			G_BounceMissileHook.Inject(uo_game_mp_x86 + 0x0002ff40, hkG_BounceMissile);
+			G_ExplodeMissileHook.Inject(uo_game_mp_x86 + 0x00030420, hkG_ExplodeMissile);
+			G_ExplodeSmokeHook.Inject(uo_game_mp_x86 + 0x00030aa0, hkG_ExplodeSmoke);
 
 			// Fixes
-			VehicleCrashFixHook.Inject(uo_game_mp_x86 + 0x0001b482, VehicleCrashFix_n, 6);
-			VEH_UnlinkPlayerFixHook.Inject(uo_game_mp_x86 + 0x0004804a, VEH_UnlinkPlayerFix_n, 5);
+			VehicleCrashFixHook.Inject(uo_game_mp_x86 + 0x0001b482, VehicleCrashFix_n);
+			VEH_UnlinkPlayerFixHook.Inject(uo_game_mp_x86 + 0x0004804a, VEH_UnlinkPlayerFix_n);
 
 			// Utility
-			// G_RunFrameHook.Inject(uo_game_mp_x86 + 0x0002cf40, hkG_RunFrame, 6);
+			// G_RunFrameHook.Inject(uo_game_mp_x86 + 0x0002cf40, hkG_RunFrame);
 		}
 
 		FlushInstructionCache(GetCurrentProcess(), NULL, NULL);

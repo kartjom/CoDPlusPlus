@@ -18,7 +18,7 @@ namespace OpenGLHelper
 {
 	void InjectDetours()
 	{
-        GLimp_EndFrameHook.Inject(0x004f66c0, hkGLimp_EndFrame, 5);
+        GLimp_EndFrameHook.Inject(0x004f66c0, hkGLimp_EndFrame);
 	}
 
     float DotProduct(vec3_t v1, vec3_t v2)
