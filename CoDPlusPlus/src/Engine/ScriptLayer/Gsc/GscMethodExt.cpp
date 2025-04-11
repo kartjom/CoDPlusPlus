@@ -144,7 +144,7 @@ namespace CoDUO::Gsc
 		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->parent)
 		{
-			Scr_AddEntityNum(ent->parent->number);
+			Scr_AddEntity(ent->parent);
 		}
 		else
 		{
@@ -158,7 +158,7 @@ namespace CoDUO::Gsc
 		if (ent && ent->ownerNum < 1023)
 		{
 			gentity_t* owner = g_entities + ent->ownerNum;
-			Scr_AddEntityNum(owner->number);
+			Scr_AddEntity(owner);
 		}
 		else
 		{

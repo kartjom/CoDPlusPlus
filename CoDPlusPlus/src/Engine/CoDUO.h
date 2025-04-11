@@ -67,6 +67,7 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_AddString(const char* string);
 	void Scr_AddConstString(int32_t index);
 	void Scr_AddEntityNum(int index);
+	void Scr_AddEntity(gentity_t* entity);
 	void Scr_MakeArray();
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);

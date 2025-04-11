@@ -265,6 +265,11 @@ namespace CoDUO
 		}
 	}
 
+	void Scr_AddEntity(gentity_t* entity)
+	{
+		Scr_AddEntityNum(entity->number);
+	}
+
 	void Scr_MakeArray()
 	{
 		_asm

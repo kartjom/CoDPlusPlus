@@ -33,7 +33,7 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnPlayerShoot && player && player->client)
 		{
-			Scr_AddEntityNum(player->number);
+			Scr_AddEntity(player);
 			Scr_RunScript(CodeCallback.OnPlayerShoot, 1);
 		}
 	}
@@ -63,7 +63,7 @@ namespace Hook::Detour
 				Scr_AddUndefined();
 			}
 
-			Scr_AddEntityNum(player->number);
+			Scr_AddEntity(player);
 			Scr_RunScript(CodeCallback.OnPlayerMelee, 2);
 		}
 	}
@@ -100,7 +100,7 @@ namespace Hook::Detour
 			Scr_AddBool(gsc_console);
 			Scr_AddInt(gsc_mode);
 			Scr_AddString(gsc_text.c_str());
-			Scr_AddEntityNum(ent->number);
+			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 
 			if (Scr_ReturnValue.Type == VarType::String)
@@ -197,7 +197,7 @@ namespace Hook::Detour
 			qboolean vote = msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1';
 
 			Scr_AddBool(vote);
-			Scr_AddEntityNum(ent->number);
+			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnPlayerVote, 2);
 		}
 	}
@@ -241,7 +241,7 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnProjectileBounce && ent)
 		{
-			Scr_AddEntityNum(ent->number);
+			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnProjectileBounce, 1);
 		}
 	}
@@ -252,7 +252,7 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnProjectileExplode && ent)
 		{
-			Scr_AddEntityNum(ent->number);
+			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 		}
 	}
@@ -263,7 +263,7 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnProjectileExplode && ent)
 		{
-			Scr_AddEntityNum(ent->number);
+			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 		}
 	}
@@ -283,7 +283,7 @@ namespace Hook::Detour
 			}
 
 			Scr_AddString( Cmd_Argv(1) ); // Vote Type
-			Scr_AddEntityNum(player->number);
+			Scr_AddEntity(player);
 			Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
 			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)

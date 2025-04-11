@@ -141,7 +141,7 @@ namespace Hook::Detour
 					Scr_AddArray();
 				}
 
-				Scr_AddEntityNum(player->number);
+				Scr_AddEntity(player);
 				Scr_RunScript(handle, 2);
 
 				return true;
