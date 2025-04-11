@@ -1,4 +1,4 @@
 ﻿#pragma once
 
 typedef unsigned char byte;
-typedef enum { qfalse, qtrue }    qboolean;
+typedef enum { qfalse, qtrue } qboolean;

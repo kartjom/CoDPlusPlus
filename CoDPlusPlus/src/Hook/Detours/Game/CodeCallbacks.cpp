@@ -76,7 +76,7 @@ namespace Hook::Detour
 		{
 			std::string gsc_text = chatText;
 			int gsc_mode = mode;
-			bool gsc_console;
+			qboolean gsc_console;
 
 			int length = gsc_text.length();
 			if (gsc_text[0] == 0x14 && gsc_text[length - 1] == 0x15)
@@ -85,16 +85,16 @@ namespace Hook::Detour
 
 				gsc_mode = 2; // vchat
 				gsc_text.erase(0, 1); // skip first character
-				gsc_console = false;
+				gsc_console = qfalse;
 			}
 			else if (gsc_text[0] == 0x15)
 			{
 				gsc_text.erase(0, 1);
-				gsc_console = false;
+				gsc_console = qfalse;
 			}
 			else
 			{
-				gsc_console = true;
+				gsc_console = qtrue;
 			}
 
 			Scr_AddBool(gsc_console);
@@ -194,7 +194,7 @@ namespace Hook::Detour
 			std::string msg = Cmd_Argv(1);
 			if (msg.length() < 2) msg.resize(2);
 
-			bool vote = msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1';
+			qboolean vote = (msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1') ? qtrue : qfalse;
 
 			Scr_AddBool(vote);
 			Scr_AddEntityNum(ent->number);
