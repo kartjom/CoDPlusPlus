@@ -290,7 +290,6 @@ namespace Hook
 
 		inline void Inject(void* original, void* hooked, int len = 0)
 		{
-			OriginalFn = (FnType)original;
 			OriginalFn = (FnType)TrampHook32((BYTE*)original, (BYTE*)hooked, len);
 		}
 
