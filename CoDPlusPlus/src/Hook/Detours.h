@@ -2,6 +2,7 @@
 #include "Hook.h"
 #include <wtypes.h>
 
+#include <Structs/q_shared.h>
 #include <Structs/Engine/gentity.h>
 #include <Structs/Engine/trace.h>
 
@@ -53,8 +54,8 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline TrampolineHook<void(__cdecl*)(gentity_t*, int, char*)> G_SayHook;
 	void __cdecl hkG_Say(gentity_t*, int, char*);
 
-	inline TrampolineHook<int(__cdecl*)()> ClientInactivityTimerHook;
-	int __cdecl hkClientInactivityTimer();
+	inline TrampolineHook<qboolean(__cdecl*)()> ClientInactivityTimerHook;
+	qboolean __cdecl hkClientInactivityTimer();
 
 	inline TrampolineHook<void(__cdecl*)()> Cmd_VoteHook;
 	void __cdecl hkCmd_Vote();

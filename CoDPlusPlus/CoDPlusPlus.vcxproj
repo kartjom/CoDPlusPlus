@@ -66,6 +66,7 @@
     <ClInclude Include="src\Structs\Engine\cmd.h" />
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
+    <ClInclude Include="src\Structs\q_shared.h" />
     <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />

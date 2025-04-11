@@ -49,13 +49,9 @@ namespace Hook::Detour
 		if (CodeCallback.OnPlayerMelee && player && player->client)
 		{
 			weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
-
-			vec3_t end;
-			end.x = wp->muzzleTrace.x + (wp->forward.x * 64.f);
-			end.y = wp->muzzleTrace.y + (wp->forward.y * 64.f);
-			end.z = wp->muzzleTrace.z + (wp->forward.z * 64.f);
-
 			trace_t trace;
+
+			vec3_t end = wp->muzzleTrace + (wp->forward * 64.f);
 			trap_Trace(&trace, &wp->muzzleTrace, &end, player->number, 0x2802031);
 
 			if (trace.entityNum >= 0 && trace.entityNum <= WORLDSPAWN)
@@ -126,7 +122,7 @@ namespace Hook::Detour
 	}
 
 	/* gclient_t* client - EAX */
-	int __cdecl hkClientInactivityTimer()
+	qboolean __cdecl hkClientInactivityTimer()
 	{
 		gclient_t* client = (gclient_t*)CapturedContext.eax;
 		cvar_t* g_inactivity = Cvar_FindVar("g_inactivity");
@@ -136,12 +132,12 @@ namespace Hook::Detour
 			// give everyone some time, so if the operator sets g_inactivity during
 			// gameplay, everyone isn't kicked
 			client->inactivityTime = level->time + 60 * 1000;
-			client->inactivityWarning = 0;
+			client->inactivityWarning = qfalse;
 		}
 		else if ( client->cmd_forwardmove || client->cmd_rightmove || client->cmd_upmove || (client->cmd_buttons & 1) )
 		{
 			client->inactivityTime = level->time + g_inactivity->integer * 1000;
-			client->inactivityWarning = 0;
+			client->inactivityWarning = qfalse;
 		}
 		else if (!client->localClient)
 		{
@@ -158,24 +154,24 @@ namespace Hook::Detour
 					{
 						// Reset inactivity time
 						client->inactivityTime = client->inactivityTime = level->time + g_inactivity->integer * 1000;
-						client->inactivityWarning = 0;
+						client->inactivityWarning = qfalse;
 
-						return 1; // Don't drop the client
+						return qtrue; // Don't drop the client
 					}
 				}
 
 				SV_GameDropClient(client - level->clients, "GAME_DROPPEDFORINACTIVITY");
-				return 0;
+				return qfalse;
 			}
 
 			if (level->time > client->inactivityTime - 10000 && !client->inactivityWarning)
 			{
-				client->inactivityWarning = 1;
+				client->inactivityWarning = qtrue;
 				SV_GameSendServerCommand(client - level->clients, 0, "c \"GAME_INACTIVEDROPWARNING\"");
 			}
 		}
 
-		return 1;
+		return qtrue;
 	}
 
 	/* gentity_t* ent - ECX */

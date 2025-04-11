@@ -91,5 +91,6 @@
     <ClInclude Include="src\Render\Materials\Shader.h" />
     <ClInclude Include="src\Render\Materials\Texture.h" />
     <ClInclude Include="vendor\zydis\include\Zydis\Zydis.h" />
+    <ClInclude Include="src\Structs\q_shared.h" />
   </ItemGroup>
 </Project>

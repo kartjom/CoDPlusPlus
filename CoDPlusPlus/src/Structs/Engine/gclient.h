@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "stdint.h"
+#include <Structs/q_shared.h>
 #include <Structs/vec3_t.h>
 
 enum clientConnected_t
@@ -59,14 +60,14 @@ struct gclient_t
 	char pad_05B4[16236]; //0x05B4
 	clientConnected_t connected; //0x4520
 	int32_t cmd_serverTime; //0x4524
-	int8_t cmd_buttons; //0x4528
-	int8_t cmd_wbuttons; //0x4529
-	int8_t cmd_weapon; //0x452A
+	byte cmd_buttons; //0x4528
+	byte cmd_wbuttons; //0x4529
+	byte cmd_weapon; //0x452A
 	char pad_452B[1]; //0x452B
 	int32_t cmd_angles[3]; //0x452C
-	int8_t cmd_forwardmove; //0x4538
-	int8_t cmd_rightmove; //0x4539
-	int8_t cmd_upmove; //0x453A
+	byte cmd_forwardmove; //0x4538
+	byte cmd_rightmove; //0x4539
+	byte cmd_upmove; //0x453A
 	char pad_453B[25]; //0x453B
 	int32_t localClient; //0x4554
 	char pad_4558[60]; //0x4558
@@ -90,7 +91,7 @@ struct gclient_t
 	char pad_465C[28]; //0x465C
 	int32_t inactivityTime; //0x4678
 	char pad_467C[4]; //0x467C
-	int32_t inactivityWarning; //0x4680
+	qboolean inactivityWarning; //0x4680
 	char pad_4684[176]; //0x4684
 }; //Size: 0x4734
 

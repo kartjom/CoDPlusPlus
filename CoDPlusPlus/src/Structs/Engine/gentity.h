@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "stdint.h"
+#include <Structs/q_shared.h>
 #include <Structs/vec3_t.h>
 
 #define GENTITY_SIZE 0x34C // 844
@@ -87,8 +88,8 @@ struct gentity_t
 	int32_t inuse; //0x016C
 	char pad_0170[12]; //0x0170
 	char pad_017C; //0x017C
-	int8_t takedamage; //0x017D
-	int8_t active; //0x017E
+	byte takedamage; //0x017D
+	byte active; //0x017E
 	char pad_017F[5]; //0x017F
 	int32_t classname; //0x0184
 	int32_t spawnflags; //0x0188
