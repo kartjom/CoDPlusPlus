@@ -47,7 +47,7 @@ namespace Hook::Detour
 		Weapon_MeleeHook.OriginalFn(player);
 		_asm pop ebx
 
-		if (CodeCallback.OnPlayerMelee && player)
+		if (CodeCallback.OnPlayerMelee && player && player->client)
 		{
 			weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
 
