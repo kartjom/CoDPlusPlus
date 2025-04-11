@@ -8,22 +8,8 @@ namespace CoDUO
 {
 	void trap_Trace(trace_t* trace, vec3_t* start, vec3_t* end, int passEntityNum, int contentMask)
 	{
-		_asm
-		{
-			mov eax, uo_game_mp_x86
-			add eax, 0x0008699c // bulletPriorityMap_0008699c
-			push eax
-
-			push contentMask
-			push passEntityNum
-			push end
-			push start
-			push trace
-			push 0x2e
-			call syscall
-
-			add esp, 0x1C
-		}
+		int bulletPriorityMap = uo_game_mp_x86 + 0x0008699c;
+		syscall(0x2e, trace, start, end, passEntityNum, contentMask, bulletPriorityMap);
 	}
 }
 
