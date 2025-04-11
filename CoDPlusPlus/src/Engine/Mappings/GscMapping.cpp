@@ -180,7 +180,7 @@ namespace CoDUO
 		}
 	}
 
-	void Scr_AddBool(int value)
+	void Scr_AddBool(qboolean value)
 	{
 		_asm
 		{

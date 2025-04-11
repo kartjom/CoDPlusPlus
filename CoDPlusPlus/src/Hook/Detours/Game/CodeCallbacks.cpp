@@ -194,7 +194,7 @@ namespace Hook::Detour
 			std::string msg = Cmd_Argv(1);
 			if (msg.length() < 2) msg.resize(2);
 
-			qboolean vote = (msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1') ? qtrue : qfalse;
+			qboolean vote = msg[0] == 'y' || msg[1] == 'Y' || msg[1] == '1';
 
 			Scr_AddBool(vote);
 			Scr_AddEntityNum(ent->number);

@@ -60,7 +60,7 @@ namespace CoDUO /* GscMapping.cpp */
 	int32_t Scr_GetFunction(int param);
 
 	void Scr_AddUndefined();
-	void Scr_AddBool(int value);
+	void Scr_AddBool(qboolean value);
 	void Scr_AddInt(int value);
 	void Scr_AddFloat(float value);
 	void Scr_AddVector(float* value);
