@@ -53,8 +53,8 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline TrampolineHook<void(__cdecl*)(gentity_t*, int, char*)> G_SayHook;
 	void __cdecl hkG_Say(gentity_t*, int, char*);
 
-	inline DetourHook PlayerInactivityHook;
-	void PlayerInactivity_n() noexcept;
+	inline TrampolineHook<int(__cdecl*)()> ClientInactivityTimerHook;
+	int __cdecl hkClientInactivityTimer();
 
 	inline TrampolineHook<void(__cdecl*)()> Cmd_VoteHook;
 	void __cdecl hkCmd_Vote();

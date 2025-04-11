@@ -115,4 +115,9 @@ namespace CoDUO
 			call ebx
 		}
 	}
+
+	void SV_GameDropClient(int clientNum, const char* reason)
+	{
+		syscall(0x1a, clientNum, reason);
+	}
 }

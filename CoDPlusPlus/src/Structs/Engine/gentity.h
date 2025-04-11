@@ -86,7 +86,7 @@ struct gentity_t
 	char pad_0164[8]; //0x0164
 	int32_t inuse; //0x016C
 	char pad_0170[12]; //0x0170
-	int8_t pad_017C; //0x017C
+	char pad_017C; //0x017C
 	int8_t takedamage; //0x017D
 	int8_t active; //0x017E
 	char pad_017F[5]; //0x017F

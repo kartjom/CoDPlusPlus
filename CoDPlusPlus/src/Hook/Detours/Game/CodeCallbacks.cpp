@@ -8,7 +8,6 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	bool OnPlayerInactivity(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 }
 
@@ -126,37 +125,57 @@ namespace Hook::Detour
 		G_SayHook.OriginalFn(target, mode, chatText);
 	}
 
-	_declspec(naked) void PlayerInactivity_n() noexcept
+	/* gclient_t* client - EAX */
+	int __cdecl hkClientInactivityTimer()
 	{
-		_asm pushad
-		if (CodeCallback.OnPlayerInactivity)
+		gclient_t* client = (gclient_t*)CapturedContext.eax;
+		cvar_t* g_inactivity = Cvar_FindVar("g_inactivity");
+
+		if (!g_inactivity->integer)
 		{
-			_asm
+			// give everyone some time, so if the operator sets g_inactivity during
+			// gameplay, everyone isn't kicked
+			client->inactivityTime = level->time + 60 * 1000;
+			client->inactivityWarning = 0;
+		}
+		else if ( client->cmd_forwardmove || client->cmd_rightmove || client->cmd_upmove || (client->cmd_buttons & 1) )
+		{
+			client->inactivityTime = level->time + g_inactivity->integer * 1000;
+			client->inactivityWarning = 0;
+		}
+		else if (!client->localClient)
+		{
+			if (level->time > client->inactivityTime)
 			{
-				push eax // player
-				call OnPlayerInactivity
+				// Allow script to override inactivity penalty
+				if (CodeCallback.OnPlayerInactivity && client)
+				{
+					Scr_AddEntityNum(client->clientNum);
+					Scr_RunScript(CodeCallback.OnPlayerInactivity, 1);
 
-				add esp, 0x4 // 1 arg, 4 bytes
+					// We check if script returned 'true'
+					if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 1)
+					{
+						// Reset inactivity time
+						client->inactivityTime = client->inactivityTime = level->time + g_inactivity->integer * 1000;
+						client->inactivityWarning = 0;
 
-				cmp al, 1 // Skip inactivity kick
-				jne inactivity_continue
+						return 1; // Don't drop the client
+					}
+				}
 
-				popad
-				mov eax, 1 // return value
-				ret
+				SV_GameDropClient(client - level->clients, "GAME_DROPPEDFORINACTIVITY");
+				return 0;
+			}
+
+			if (level->time > client->inactivityTime - 10000 && !client->inactivityWarning)
+			{
+				client->inactivityWarning = 1;
+				SV_GameSendServerCommand(client - level->clients, 0, "c \"GAME_INACTIVEDROPWARNING\"");
 			}
 		}
-	inactivity_continue: // Kick the player
-		_asm popad
 
-		_asm // restore
-		{
-			mov ecx, uo_game_mp_x86
-			add ecx, 0x0030fac0
-			sub eax, [ecx]
-		}
-
-		_asm jmp[PlayerInactivityHook.Return] // jump back
+		return 1;
 	}
 
 	/* gentity_t* ent - ECX */
@@ -256,27 +275,6 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	bool __cdecl OnPlayerInactivity(gclient_t* player)
-	{
-		if (player)
-		{
-			Scr_AddEntityNum(player->clientNum);
-			Scr_RunScript(CodeCallback.OnPlayerInactivity, 1);
-
-			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
-			{
-				cvar_t* g_inactivity = Cvar_FindVar("g_inactivity");
-
-				player->inactivityTime = (g_inactivity != nullptr ? g_inactivity->integer : 180) * 1000 + level->time;
-				player->inactivityWarning = 0;
-
-				return true; // Skip inactivity penalty if script returned false
-			}
-		}
-
-		return false;
-	}
-
 	bool __cdecl OnVoteCalled(gentity_t* player)
 	{
 		if (Cmd_Argc() >= 2 && player && player->client)

@@ -62,7 +62,7 @@ namespace CoDUO
 			FireWeaponAntilagHook.Inject(uo_game_mp_x86 + 0x00056850, hkFireWeaponAntilag);
 			Weapon_MeleeHook.Inject(uo_game_mp_x86 + 0x000556a0, hkWeapon_Melee);
 			G_SayHook.Inject(uo_game_mp_x86 + 0x00022b50, hkG_Say);
-			PlayerInactivityHook.Inject(uo_game_mp_x86 + 0x0001aaa0, PlayerInactivity_n);
+			ClientInactivityTimerHook.Inject(uo_game_mp_x86 + 0x0001aa30, hkClientInactivityTimer);
 
 			Cmd_VoteHook.Inject(uo_game_mp_x86 + 0x00024150, hkCmd_Vote);
 			VoteCalledHook.Inject(uo_game_mp_x86 + 0x00023698, VoteCalled_n);
@@ -107,7 +107,7 @@ namespace CoDUO
 			FireWeaponAntilagHook.Dispose();
 			Weapon_MeleeHook.Dispose();
 			G_SayHook.Dispose();
-			PlayerInactivityHook.Dispose();
+			ClientInactivityTimerHook.Dispose();
 			Cmd_VoteHook.Dispose();
 			VoteCalledHook.Dispose();
 			G_BounceMissileHook.Dispose();

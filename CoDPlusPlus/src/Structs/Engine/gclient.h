@@ -58,7 +58,16 @@ struct gclient_t
 	float stamina; //0x05B0
 	char pad_05B4[16236]; //0x05B4
 	clientConnected_t connected; //0x4520
-	char pad_4524[48]; //0x4524
+	int32_t cmd_serverTime; //0x4524
+	int8_t cmd_buttons; //0x4528
+	int8_t cmd_wbuttons; //0x4529
+	int8_t cmd_weapon; //0x452A
+	char pad_452B[1]; //0x452B
+	int32_t cmd_angles[3]; //0x452C
+	int8_t cmd_forwardmove; //0x4538
+	int8_t cmd_rightmove; //0x4539
+	int8_t cmd_upmove; //0x453A
+	char pad_453B[25]; //0x453B
 	int32_t localClient; //0x4554
 	char pad_4558[60]; //0x4558
 	int32_t voteCount; //0x4594

@@ -132,6 +132,7 @@ namespace CoDUO /* PlayerMapping.cpp */
 	std::string NET_AdrToString(netadr_t adr);
 
 	void SV_GameSendServerCommand(int clientNum, int cmd_type, const char* text);
+	void SV_GameDropClient(int clientNum, const char* reason);
 }
 
 namespace CoDUO /* UtilsMapping.cpp */
