@@ -8,7 +8,6 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	void OnPlayerMelee(gentity_t* player, int16_t target_num);
 	bool OnPlayerInactivity(gclient_t* player);
 	bool OnVoteCalled(gentity_t* player);
 }
@@ -40,32 +39,38 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void PlayerMelee_n() noexcept
+	/* weaponParams_t* wp - EBX */
+	void __cdecl hkWeapon_Melee(gentity_t* player)
 	{
-		_asm pushad
-		if (CodeCallback.OnPlayerMelee)
+		_asm push ebx
+		_asm mov ebx, CapturedContext.ebx // weaponParams_t* wp
+		Weapon_MeleeHook.OriginalFn(player);
+		_asm pop ebx
+
+		if (CodeCallback.OnPlayerMelee && player)
 		{
-			_asm
+			weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
+
+			vec3_t end;
+			end.x = wp->muzzleTrace.x + (wp->forward.x * 64.f);
+			end.y = wp->muzzleTrace.y + (wp->forward.y * 64.f);
+			end.z = wp->muzzleTrace.z + (wp->forward.z * 64.f);
+
+			trace_t trace;
+			trap_Trace(&trace, &wp->muzzleTrace, &end, player->number, 0x2802031);
+
+			if (trace.entityNum >= 0 && trace.entityNum <= WORLDSPAWN)
 			{
-				mov eax, [esp + 0x8C]
-				push ax // target_num
-
-				push ebp // player
-
-				call OnPlayerMelee
-
-				add esp, 0x6 // 2 args, 6 bytes
+				Scr_AddEntityNum(trace.entityNum);
 			}
-		}
-		_asm popad
+			else
+			{
+				Scr_AddUndefined();
+			}
 
-		_asm // restore
-		{
-			add esp, 0x2C
-			test al, 0x10
+			Scr_AddEntityNum(player->number);
+			Scr_RunScript(CodeCallback.OnPlayerMelee, 2);
 		}
-
-		_asm jmp[PlayerMeleeHook.Return] // jump back
 	}
 
 	/* gentity_t* ent - ECX */
@@ -251,24 +256,6 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	void __cdecl OnPlayerMelee(gentity_t* player, int16_t target_num)
-	{
-		if (player)
-		{
-			if (target_num >= 0 && target_num < WORLDSPAWN)
-			{
-				Scr_AddEntityNum(g_entities[target_num].number);
-			}
-			else
-			{
-				Scr_AddUndefined();
-			}
-
-			Scr_AddEntityNum(player->number);
-			Scr_RunScript(CodeCallback.OnPlayerMelee, 2);
-		}
-	}
-
 	bool __cdecl OnPlayerInactivity(gclient_t* player)
 	{
 		if (player)

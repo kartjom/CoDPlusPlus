@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "stdint.h"
 
 struct weapondef_t
@@ -77,6 +77,16 @@ struct weapondef_t
 	int32_t explosionOuterDamage; //0x0380
 	char pad_0384[8]; //0x0384
 	char* projectileModel; //0x038C
+};
+
+struct weaponParams_t
+{
+	vec3_t forward;
+	vec3_t right;
+	vec3_t up;
+	vec3_t muzzleTrace;
+	vec3_t gunForward;
+	weapondef_t* weaponDef;
 };
 
 struct weaponslot_t

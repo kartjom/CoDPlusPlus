@@ -47,8 +47,8 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline TrampolineHook<void(__cdecl*)(gentity_t*)> FireWeaponAntilagHook;
 	void __cdecl hkFireWeaponAntilag(gentity_t*);
 
-	inline DetourHook PlayerMeleeHook;
-	void PlayerMelee_n() noexcept;
+	inline TrampolineHook<void(__cdecl*)(gentity_t*)> Weapon_MeleeHook;
+	void __cdecl hkWeapon_Melee(gentity_t*);
 
 	inline TrampolineHook<void(__cdecl*)(gentity_t*, int, char*)> G_SayHook;
 	void __cdecl hkG_Say(gentity_t*, int, char*);

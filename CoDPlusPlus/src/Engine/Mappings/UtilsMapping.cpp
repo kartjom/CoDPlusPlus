@@ -1,4 +1,4 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -11,9 +11,9 @@ namespace CoDUO
 		_asm
 		{
 			mov eax, uo_game_mp_x86
-			add eax, 0x0008699c
-			mov eax, [eax]
+			add eax, 0x0008699c // bulletPriorityMap_0008699c
 			push eax
+
 			push contentMask
 			push passEntityNum
 			push end
