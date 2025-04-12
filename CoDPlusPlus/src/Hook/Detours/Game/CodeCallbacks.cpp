@@ -16,6 +16,8 @@ namespace Hook::Detour
 	/* int levelTime - ECX */
 	void __cdecl hkG_InitGame(int randomSeed, int restart, int savePersist)
 	{
+		int levelTime = (int)CapturedContext.ecx;
+
 		_asm mov ecx, CapturedContext.ecx // int levelTime
 		G_InitGameHook.OriginalFn(randomSeed, restart, savePersist);
 
@@ -23,7 +25,9 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnInitialize)
 		{
-			Scr_RunScript(CodeCallback.OnInitialize, 0);
+			Scr_AddBool(restart);
+			Scr_AddInt(levelTime);
+			Scr_RunScript(CodeCallback.OnInitialize, 2);
 		}
 	}
 
@@ -41,6 +45,8 @@ namespace Hook::Detour
 	/* weaponParams_t* wp - EBX */
 	void __cdecl hkWeapon_Melee(gentity_t* player)
 	{
+		weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
+
 		_asm push ebx
 		_asm mov ebx, CapturedContext.ebx // weaponParams_t* wp
 		Weapon_MeleeHook.OriginalFn(player);
@@ -48,10 +54,9 @@ namespace Hook::Detour
 
 		if (CodeCallback.OnPlayerMelee && player && player->client)
 		{
-			weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
 			trace_t trace;
-
 			vec3_t end = wp->muzzleTrace + (wp->forward * 64.f);
+
 			trap_Trace(&trace, &wp->muzzleTrace, &end, player->number, 0x2802031);
 
 			if (trace.entityNum >= 0 && trace.entityNum <= WORLDSPAWN)
