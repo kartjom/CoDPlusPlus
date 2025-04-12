@@ -6,7 +6,7 @@
 namespace CoDUO::Gsc
 {
 	inline struct Callbacks {
-		uint32_t OnInitialize;
+		uint32_t OnInitialize;			//	 iLevelTime, bRestart
 
 		uint32_t OnPlayerShoot;			//	 ePlayer
 		uint32_t OnPlayerMelee;			//	 ePlayer, eTarget (optional)
