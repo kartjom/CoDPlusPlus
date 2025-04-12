@@ -16,8 +16,6 @@ namespace Hook::Detour
 	/* int levelTime - ECX */
 	void __cdecl hkG_InitGame(int randomSeed, int restart, int savePersist)
 	{
-		int levelTime = (int)CapturedContext.ecx;
-
 		_asm mov ecx, CapturedContext.ecx // int levelTime
 		G_InitGameHook.OriginalFn(randomSeed, restart, savePersist);
 
@@ -26,8 +24,7 @@ namespace Hook::Detour
 		if (CodeCallback.OnInitialize)
 		{
 			Scr_AddBool(restart);
-			Scr_AddInt(levelTime);
-			Scr_RunScript(CodeCallback.OnInitialize, 2);
+			Scr_RunScript(CodeCallback.OnInitialize, 1);
 		}
 	}
 
