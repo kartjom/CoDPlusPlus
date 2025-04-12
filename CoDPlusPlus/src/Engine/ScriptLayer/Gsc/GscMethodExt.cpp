@@ -104,13 +104,13 @@ namespace CoDUO::Gsc
 			Scr_AddVector(tr.endpos);
 			Scr_AddArrayStringIndexed(SL_GetString("position", 1));
 
-			if (tr.entityNum == WORLDSPAWN || tr.entityNum == NO_GENTITY)
+			if (tr.entityNum >= 0 && tr.entityNum <= WORLDSPAWN)
 			{
-				Scr_AddUndefined();
+				Scr_AddEntityNum(tr.entityNum);
 			}
 			else
 			{
-				Scr_AddEntityNum(tr.entityNum);
+				Scr_AddUndefined();
 			}
 			Scr_AddArrayStringIndexed(SL_GetString("entity", 1));
 
