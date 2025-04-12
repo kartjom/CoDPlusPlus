@@ -33,8 +33,8 @@ namespace Hook::Detour /* Loaders.cpp */
 	inline TrampolineHook<void*(__cdecl*)(const char**, int*)> Scr_GetMethodHook;
 	void* __cdecl hkScr_GetMethod(const char**, int*);
 
-	inline TrampolineHook<int(__cdecl*)()> ConsoleCommandHook;
-	int __cdecl hkConsoleCommand();
+	inline TrampolineHook<qboolean(__cdecl*)()> ConsoleCommandHook;
+	qboolean __cdecl hkConsoleCommand();
 
 	inline TrampolineHook<void(__cdecl*)()> ClientCommandHook;
 	void __cdecl hkClientCommand();

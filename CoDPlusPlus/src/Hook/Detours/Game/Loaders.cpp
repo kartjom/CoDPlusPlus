@@ -65,11 +65,11 @@ namespace Hook::Detour
 		return Scr_GetMethodHook.OriginalFn(pName, pType);
 	}
 
-	int __cdecl hkConsoleCommand()
+	qboolean __cdecl hkConsoleCommand()
 	{
 		// We first lookup our cmd - this allows overriding vanilla behavior
 		const char* cmd = Cmd_Argv(0);
-		int cmdFound = RunScriptConsoleCommand(cmd);
+		qboolean cmdFound = RunScriptConsoleCommand(cmd);
 
 		if (cmdFound == 0)
 		{
