@@ -230,7 +230,8 @@ namespace Hook::Detour
 
 		std::string arg1 = Cmd_Argv(1);
 		std::string arg2 = Cmd_Argv(2);
-		if (strchr(arg1.c_str(), ';') || strchr(arg2.c_str(), ';')) {
+		if (strchr(arg1.c_str(), ';') || strchr(arg2.c_str(), ';'))
+		{
 			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_INVALIDVOTESTRING\"");
 			return;
 		}
