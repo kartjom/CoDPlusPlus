@@ -41,10 +41,8 @@ namespace Hook::Detour
 	{
 		weaponParams_t* wp = (weaponParams_t*)Weapon_MeleeHook.CapturedContext.ebx;
 
-		_asm push ebx
 		Weapon_MeleeHook.SetEBX(wp);
 		Weapon_MeleeHook.Invoke(player);
-		_asm pop ebx
 
 		if (CodeCallback.OnPlayerMelee && player && player->client)
 		{
