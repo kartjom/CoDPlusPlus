@@ -60,8 +60,8 @@ namespace Hook::Detour /* CodeCallbacks.cpp */
 	inline TrampolineHook<void(__cdecl*)()> Cmd_VoteHook;
 	void __cdecl hkCmd_Vote();
 
-	inline DetourHook VoteCalledHook;
-	void VoteCalled_n() noexcept;
+	inline TrampolineHook<void(__cdecl*)(gentity_t*)> Cmd_CallVoteHook;
+	void __cdecl hkCmd_CallVote(gentity_t*);
 
 	inline TrampolineHook<void(__cdecl*)(gentity_t*, trace_t*)> G_BounceMissileHook;
 	void __cdecl hkG_BounceMissile(gentity_t*, trace_t*);

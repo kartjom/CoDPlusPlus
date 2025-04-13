@@ -8,11 +8,6 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	bool OnVoteCalled(gentity_t* player);
-}
-
-namespace Hook::Detour
-{
 	/* int levelTime - ECX */
 	void __cdecl hkG_InitGame(int randomSeed, int restart, int savePersist)
 	{
@@ -206,37 +201,63 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void VoteCalled_n() noexcept
+	void __cdecl hkCmd_CallVote(gentity_t* ent)
 	{
-		_asm pushad
-		if (CodeCallback.OnVoteCalled)
+		cvar_t* g_allowvote = Cvar_FindVar("g_allowvote");
+		if (!g_allowvote->integer)
 		{
-			_asm
+			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_VOTINGNOTENABLED\"");
+			return;
+		}
+
+		if (level->voteTime)
+		{
+			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_VOTEALREADYINPROGRESS\"");
+			return;
+		}
+
+		if (ent->client->voteCount >= 3)
+		{
+			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_MAXVOTESCALLED\"");
+			return;
+		}
+
+		if (ent->client->sessionTeam == TEAM_SPECTATOR)
+		{
+			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_NOSPECTATORCALLVOTE\"");
+			return;
+		}
+
+		std::string arg1 = Cmd_Argv(1);
+		std::string arg2 = Cmd_Argv(2);
+		if (strchr(arg1.c_str(), ';') || strchr(arg2.c_str(), ';')) {
+			SV_GameSendServerCommand(ent->client->clientNum, 0, "e \"GAME_INVALIDVOTESTRING\"");
+			return;
+		}
+
+		// TODO: add remaining checks or completely replace the function
+		// For now this is better than previous crashing detour
+
+		if (CodeCallback.OnVoteCalled && Cmd_Argc() >= 2 && ent && ent->client)
+		{
+			Scr_MakeArray();
+			for (int i = 2; i < Cmd_Argc(); i++)
 			{
-				push edi // player
-				call OnVoteCalled
+				Scr_AddString(Cmd_Argv(i));
+				Scr_AddArray();
+			}
 
-				add esp, 0x4 // 1 arg, 4 bytes
+			Scr_AddString(Cmd_Argv(1)); // Vote Type
+			Scr_AddEntity(ent);
+			Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
-				cmp al, 1 // Skip vote
-				jne vote_continue
-
-				add esp, 0x55C
-				popad
-				ret
+			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
+			{
+				return; // Skip the vote if script returned false
 			}
 		}
-	vote_continue: // Vote goes on
-		_asm popad
 
-		_asm // restore
-		{
-			mov eax, uo_game_mp_x86
-			add eax, 0x003105e0
-			mov eax, [eax]
-		}
-
-		_asm jmp[VoteCalledHook.Return] // jump back
+		Cmd_CallVoteHook.Invoke(ent);
 	}
 
 	void __cdecl hkG_BounceMissile(gentity_t* ent, trace_t* trace)
@@ -270,32 +291,5 @@ namespace Hook::Detour
 			Scr_AddEntity(ent);
 			Scr_RunScript(CodeCallback.OnProjectileExplode, 1);
 		}
-	}
-}
-
-namespace Hook::Detour
-{
-	bool __cdecl OnVoteCalled(gentity_t* player)
-	{
-		if (Cmd_Argc() >= 2 && player && player->client)
-		{
-			Scr_MakeArray();
-			for (int i = 2; i < Cmd_Argc(); i++)
-			{
-				Scr_AddString( Cmd_Argv(i) );
-				Scr_AddArray();
-			}
-
-			Scr_AddString( Cmd_Argv(1) ); // Vote Type
-			Scr_AddEntity(player);
-			Scr_RunScript(CodeCallback.OnVoteCalled, 3);
-
-			if (Scr_ReturnValue.Type == VarType::Integer && Scr_ReturnValue.Integer == 0)
-			{
-				return true; // Skip the vote if script returned false
-			}
-		}
-
-		return false;
 	}
 }

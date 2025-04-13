@@ -376,6 +376,9 @@ namespace Hook
 
 			OriginalBytes.clear();
 
+			CapturedContext = {};
+			CallContext = {};
+
 			this->SetHooked(false);
 		}
 
