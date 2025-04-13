@@ -8,6 +8,6 @@ namespace Hook::Detour
 {
 	void __cdecl hkG_RunFrame(int levelTime)
 	{
-		G_RunFrameHook.OriginalFn(levelTime);
+		G_RunFrameHook.Invoke(levelTime);
 	}
 }

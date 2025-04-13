@@ -25,7 +25,7 @@ namespace Hook::Detour
 			std::println("[wglSwapBuffers] - Exception");
 		}
 
-		GLimp_EndFrameHook.OriginalFn();
+		GLimp_EndFrameHook.Invoke();
 	}
 }
 #endif

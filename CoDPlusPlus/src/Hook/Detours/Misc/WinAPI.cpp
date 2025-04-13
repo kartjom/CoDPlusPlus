@@ -11,7 +11,7 @@ namespace Hook::Detour
 	HMODULE __stdcall hkLoadLibraryA(LPCSTR lpLibFileName)
 	{
 		std::string dllName(lpLibFileName);
-		HMODULE handle = LoadLibraryAHook.OriginalFn(lpLibFileName);
+		HMODULE handle = LoadLibraryAHook.Invoke(lpLibFileName);
 
 		if ((DWORD)handle != 0 && dllName.find("uo_game_mp_x86") != std::string::npos)
 		{
@@ -30,6 +30,6 @@ namespace Hook::Detour
 			OnServerShutdown();
 		}
 
-		return LdrUnloadDllHook.OriginalFn(BaseAddress);
+		return LdrUnloadDllHook.Invoke(BaseAddress);
 	}
 }

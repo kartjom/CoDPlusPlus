@@ -51,7 +51,7 @@ namespace Hook::Detour
 			}
 		}
 
-		SV_MapHook.OriginalFn();
+		SV_MapHook.Invoke();
 	}
 }
 

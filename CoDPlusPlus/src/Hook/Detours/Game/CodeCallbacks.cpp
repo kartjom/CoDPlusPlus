@@ -16,8 +16,10 @@ namespace Hook::Detour
 	/* int levelTime - ECX */
 	void __cdecl hkG_InitGame(int randomSeed, int restart, int savePersist)
 	{
-		_asm mov ecx, CapturedContext.ecx // int levelTime
-		G_InitGameHook.OriginalFn(randomSeed, restart, savePersist);
+		int levelTime = G_InitGameHook.CapturedContext.ecx;
+
+		G_InitGameHook.SetECX(levelTime);
+		G_InitGameHook.Invoke(randomSeed, restart, savePersist);
 
 		ServerCleanup();
 
@@ -30,7 +32,7 @@ namespace Hook::Detour
 
 	void __cdecl hkFireWeaponAntilag(gentity_t* player)
 	{
-		FireWeaponAntilagHook.OriginalFn(player);
+		FireWeaponAntilagHook.Invoke(player);
 
 		if (CodeCallback.OnPlayerShoot && player && player->client)
 		{
@@ -42,11 +44,11 @@ namespace Hook::Detour
 	/* weaponParams_t* wp - EBX */
 	void __cdecl hkWeapon_Melee(gentity_t* player)
 	{
-		weaponParams_t* wp = (weaponParams_t*)CapturedContext.ebx;
+		weaponParams_t* wp = (weaponParams_t*)Weapon_MeleeHook.CapturedContext.ebx;
 
 		_asm push ebx
-		_asm mov ebx, CapturedContext.ebx // weaponParams_t* wp
-		Weapon_MeleeHook.OriginalFn(player);
+		Weapon_MeleeHook.SetEBX(wp);
+		Weapon_MeleeHook.Invoke(player);
 		_asm pop ebx
 
 		if (CodeCallback.OnPlayerMelee && player && player->client)
@@ -73,7 +75,7 @@ namespace Hook::Detour
 	/* gentity_t* ent - ECX */
 	void __cdecl hkG_Say(gentity_t* target, int mode, char* chatText)
 	{
-		gentity_t* ent = (gentity_t*)CapturedContext.ecx;
+		gentity_t* ent = (gentity_t*)G_SayHook.CapturedContext.ecx;
 		if (CodeCallback.OnPlayerSay && ent && ent->client && chatText && *chatText)
 		{
 			std::string gsc_text = chatText;
@@ -112,21 +114,21 @@ namespace Hook::Detour
 
 				char* replaced = (char*)Scr_ReturnValue.String.c_str();
 
-				_asm mov ecx, CapturedContext.ecx // gentity_t* ent
-				G_SayHook.OriginalFn(target, mode, replaced); // replace message
+				G_SayHook.SetECX(ent);
+				G_SayHook.Invoke(target, mode, replaced); // replace message
 
 				return;
 			}
 		}
 
-		_asm mov ecx, CapturedContext.ecx // gentity_t* ent
-		G_SayHook.OriginalFn(target, mode, chatText);
+		G_SayHook.SetECX(ent);
+		G_SayHook.Invoke(target, mode, chatText);
 	}
 
 	/* gclient_t* client - EAX */
 	qboolean __cdecl hkClientInactivityTimer()
 	{
-		gclient_t* client = (gclient_t*)CapturedContext.eax;
+		gclient_t* client = (gclient_t*)ClientInactivityTimerHook.CapturedContext.eax;
 		cvar_t* g_inactivity = Cvar_FindVar("g_inactivity");
 
 		if (!g_inactivity->integer)
@@ -179,7 +181,7 @@ namespace Hook::Detour
 	/* gentity_t* ent - ECX */
 	void __cdecl hkCmd_Vote()
 	{
-		gentity_t* ent = (gentity_t*)CapturedContext.ecx;
+		gentity_t* ent = (gentity_t*)Cmd_VoteHook.CapturedContext.ecx;
 		bool isValid = ent && ent->client;
 
 		// Original Cmd_VoteHook_f can overwrite some stuff
@@ -187,8 +189,8 @@ namespace Hook::Detour
 		bool canVote = isValid && level->voteTime && !(ent->client->eFlags & EF_VOTED) && ent->client->sessionTeam != TEAM_SPECTATOR;
 
 		// Call original now - script can have side effects (client kick)
-		_asm mov ecx, CapturedContext.ecx // gentity_t* ent
-		Cmd_VoteHook.OriginalFn();
+		Cmd_VoteHook.SetECX(ent);
+		Cmd_VoteHook.Invoke();
 
 		client_t* cl = svs->clients + clientNum;
 		if (CodeCallback.OnPlayerVote && canVote && cl && cl->state != CS_ZOMBIE)
@@ -239,7 +241,7 @@ namespace Hook::Detour
 
 	void __cdecl hkG_BounceMissile(gentity_t* ent, trace_t* trace)
 	{
-		G_BounceMissileHook.OriginalFn(ent, trace);
+		G_BounceMissileHook.Invoke(ent, trace);
 
 		if (CodeCallback.OnProjectileBounce && ent)
 		{
@@ -250,7 +252,7 @@ namespace Hook::Detour
 
 	void __cdecl hkG_ExplodeMissile(gentity_t* ent)
 	{
-		G_ExplodeMissileHook.OriginalFn(ent);
+		G_ExplodeMissileHook.Invoke(ent);
 
 		if (CodeCallback.OnProjectileExplode && ent)
 		{
@@ -261,7 +263,7 @@ namespace Hook::Detour
 
 	void __cdecl hkG_ExplodeSmoke(gentity_t* ent)
 	{
-		G_ExplodeSmokeHook.OriginalFn(ent);
+		G_ExplodeSmokeHook.Invoke(ent);
 
 		if (CodeCallback.OnProjectileExplode && ent)
 		{

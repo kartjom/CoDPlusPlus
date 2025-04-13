@@ -20,7 +20,7 @@ namespace Hook::Detour
 {
 	void __cdecl hkGScr_LoadGameTypeScript()
 	{
-		GScr_LoadGameTypeScriptHook.OriginalFn();
+		GScr_LoadGameTypeScriptHook.Invoke();
 
 		constexpr const char* _codplusplus = "maps/mp/gametypes/_codplusplus";
 		if (Scr_LoadScript(_codplusplus))
@@ -48,7 +48,7 @@ namespace Hook::Detour
 			return it->second.callback;
 		}
 
-		return Scr_GetFunctionHook.OriginalFn(pName, pType);
+		return Scr_GetFunctionHook.Invoke(pName, pType);
 	}
 
 	void* __cdecl hkScr_GetMethod(const char** pName, int* pType)
@@ -62,7 +62,7 @@ namespace Hook::Detour
 			return it->second.callback;
 		}
 
-		return Scr_GetMethodHook.OriginalFn(pName, pType);
+		return Scr_GetMethodHook.Invoke(pName, pType);
 	}
 
 	qboolean __cdecl hkConsoleCommand()
@@ -73,7 +73,7 @@ namespace Hook::Detour
 
 		if (cmdFound == 0)
 		{
-			cmdFound = ConsoleCommandHook.OriginalFn();
+			cmdFound = ConsoleCommandHook.Invoke();
 		}
 
 		return cmdFound;
@@ -83,7 +83,7 @@ namespace Hook::Detour
 	void __cdecl hkClientCommand()
 	{
 		// We first lookup our cmd - this allows overriding vanilla behavior
-		int clientNum = CapturedContext.ecx;
+		int clientNum = ClientCommandHook.CapturedContext.ecx;
 		gentity_t* player = g_entities + clientNum;
 
 		if (!player->client)
@@ -94,8 +94,8 @@ namespace Hook::Detour
 
 		if (cmdFound == 0)
 		{
-			_asm mov ecx, CapturedContext.ecx // int clientNum
-			ClientCommandHook.OriginalFn();
+			ClientCommandHook.SetECX(clientNum);
+			ClientCommandHook.Invoke();
 		}
 	}
 }
