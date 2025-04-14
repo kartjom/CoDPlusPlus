@@ -18,15 +18,15 @@ namespace Hook::Detour
 {
 	uint16_t __cdecl hkScr_ExecThread(int32_t scriptHandle, uint32_t argc)
 	{
+		typedef uint16_t(__cdecl* VM_Execute_t)(uint16_t, uint32_t, uint32_t);
+		VM_Execute_t VM_Execute = (VM_Execute_t)(0x0048f0b0);
+
 		int32_t& scrVmPub_function_count = *(int32_t*)(0x00b6acc8);
 		int32_t& scrVmGlob_starttime = *(int32_t*)(0x00b6acc4);
 		int16_t& scrVarPub_levelId = *(int16_t*)(0x00b6ac8c);
 		int32_t& scrVarPub_programBuffer = *(int32_t*)(0x0389fe18);
 		VariableValue*& scrVmPub_top = *(VariableValue**)(0x00b6ac90);
 		uint32_t& scrVmPub_inparamcount = *(uint32_t*)(0x00b6acd4);
-
-		typedef uint16_t(__cdecl* VM_Execute_t)(uint16_t, uint32_t, uint32_t);
-		VM_Execute_t VM_Execute = (VM_Execute_t)(0x0048f0b0);
 
 		if (scrVmPub_function_count == 0)
 		{
