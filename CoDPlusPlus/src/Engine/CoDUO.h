@@ -45,7 +45,7 @@ namespace CoDUO /* GscMapping.cpp */
 {
 	int32_t Scr_LoadScript(const char* file);
 	int32_t Scr_GetFunctionHandle(const char* file, const char* method);
-	int32_t Scr_RunScript(int32_t scriptHandle, uint32_t argc);
+	ScrVar Scr_RunScript(int32_t scriptHandle, uint32_t argc);
 
 	int32_t Scr_GetNumParam();
 	int32_t Scr_GetType(int param);

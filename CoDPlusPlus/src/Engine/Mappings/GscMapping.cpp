@@ -26,21 +26,19 @@ namespace CoDUO
 		}
 	}
 
-	int32_t Scr_RunScript(int32_t scriptHandle, uint32_t argc)
+	ScrVar Scr_RunScript(int32_t scriptHandle, uint32_t argc)
 	{
-		_asm
-		{
-			push argc
-			push scriptHandle
-			mov eax, 0x0048f3e0
-			call eax // Scr_ExecThread
+		typedef uint16_t(__cdecl* Scr_ExecThread_t)(int32_t, uint32_t);
+		typedef void(__cdecl* Scr_FreeThread_t)(int16_t);
 
-			push eax
-			mov eax, 0x0048f640
-			call eax // Scr_FreeThread
+		Scr_ExecThread_t Scr_ExecThread = (Scr_ExecThread_t)(0x0048f3e0);
+		Scr_FreeThread_t Scr_FreeThread = (Scr_FreeThread_t)(0x0048f640);
 
-			add esp, 0xC
-		}
+		uint16_t handle = Scr_ExecThread(scriptHandle, argc);
+		ScrVar return_value = CoDUO::Gsc::Scr_ReturnValue;
+		Scr_FreeThread(handle);
+
+		return return_value;
 	}
 }
 
