@@ -120,6 +120,12 @@ namespace CoDUO /* StringUtilsMapping.cpp */
 	void Info_SetValueForKey(char* buffer, const char* key, const char* value);
 }
 
+namespace CoDUO /* MemoryMapping.cpp */
+{
+	void RemoveRefToVector(vec3_t* vectorValue);
+	void RemoveRefToObject(uint32_t id);
+}
+
 namespace CoDUO /* PlayerMapping.cpp */
 {
 	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);

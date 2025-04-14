@@ -2,6 +2,7 @@
 #include <Engine/CoDUO.h>
 #include <Utils/String/String.h>
 #include <Engine/MapBindings/MapBindings.h>
+#include <intrin.h>
 #include <format>
 #include <print>
 
@@ -10,24 +11,50 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	void Scr_ExecThread_GscReturnValue();
+	void CaptureScriptReturnValue(VariableValue* var);
 }
 
 namespace Hook::Detour
 {
-	_declspec(naked) void ScrThread_ReturnValue_n() noexcept
+	uint16_t __cdecl hkScr_ExecThread(int32_t scriptHandle, uint32_t argc)
 	{
-		_asm // restore
+		int32_t& scrVmPub_function_count = *(int32_t*)(0x00b6acc8);
+		int32_t& scrVmGlob_starttime = *(int32_t*)(0x00b6acc4);
+		int16_t& scrVarPub_levelId = *(int16_t*)(0x00b6ac8c);
+		int32_t& scrVarPub_programBuffer = *(int32_t*)(0x0389fe18);
+		VariableValue*& scrVmPub_top = *(VariableValue**)(0x00b6ac90);
+		uint32_t& scrVmPub_inparamcount = *(uint32_t*)(0x00b6acd4);
+
+		typedef uint16_t(__cdecl* VM_Execute_t)(uint16_t, uint32_t, uint32_t);
+		VM_Execute_t VM_Execute = (VM_Execute_t)(0x0048f0b0);
+
+		if (scrVmPub_function_count == 0)
 		{
-			mov eax, 0x0048f0b0
-			call eax
+			scrVmGlob_starttime = (int32_t)__rdtsc();
 		}
 
-		_asm pushad
-		Scr_ExecThread_GscReturnValue();
-		_asm popad
+		uint16_t callback = VM_Execute(scrVarPub_levelId, scrVarPub_programBuffer + scriptHandle, argc);
 
-		_asm jmp[ScrThread_ReturnValueHook.Return] // jump back
+		CaptureScriptReturnValue(scrVmPub_top);
+
+		switch (( VarType)scrVmPub_top->type )
+		{
+		case VarType::String:
+		case VarType::IString:
+			SL_RemoveRefToString(scrVmPub_top->StringIndex);
+			break;
+		case VarType::Vector:
+			RemoveRefToVector(scrVmPub_top->Vector);
+			break;
+		case VarType::Object:
+			RemoveRefToObject(scrVmPub_top->Integer);
+		}
+
+		scrVmPub_top->type = 0;
+		--scrVmPub_top;
+		--scrVmPub_inparamcount;
+
+		return callback;
 	}
 
 	void __cdecl hkSV_Map()
@@ -57,48 +84,41 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	void __cdecl Scr_ExecThread_GscReturnValue()
+	void CaptureScriptReturnValue(VariableValue* var)
 	{
-		try
-		{
-			uintptr_t addrToStackTop = *(uintptr_t*)(0x00b6ac90);
-			VariableValue* var = (VariableValue*)addrToStackTop;
+		Scr_ReturnValue = {
+			.Type = (VarType)var->type
+		};
 
-			Scr_ReturnValue = {};
-			Scr_ReturnValue.Type = (VarType)var->type;
-			switch (Scr_ReturnValue.Type)
-			{
-			case VarType::Undefined:
-				Scr_ReturnValue.Integer = 0;
-				break;
-			case VarType::String:
-			{
-				const char* str = SL_ConvertToString(var->StringIndex);
-				Scr_ReturnValue.String = (str ? str : "<null>");
-				break;
-			}
-			case VarType::Vector:
-				Scr_ReturnValue.Vector = *var->Vector;
-				break;
-			case VarType::Float:
-				Scr_ReturnValue.Float = var->Float;
-				break;
-			case VarType::Integer:
-				Scr_ReturnValue.Integer = var->Integer;
-				break;
-			case VarType::Object:
-				Scr_ReturnValue.Integer = var->Integer;
-				break;
-			case VarType::Function:
-				Scr_ReturnValue.Integer = var->Integer;
-				break;
-			default:
-				Scr_ReturnValue.Integer = var->Integer;
-			}
-		}
-		catch (std::exception& e)
+		switch (Scr_ReturnValue.Type)
 		{
-			std::println("Scr_ExecThread_GscReturnValue exception: {}", e.what());
+		case VarType::Undefined:
+			Scr_ReturnValue.Integer = 0;
+			break;
+		case VarType::String:
+		case VarType::IString:
+		{
+			const char* str = SL_ConvertToString(var->StringIndex);
+			Scr_ReturnValue.String = (str ? str : "<null>");
+			break;
+		}
+		case VarType::Vector:
+			Scr_ReturnValue.Vector = *var->Vector;
+			break;
+		case VarType::Float:
+			Scr_ReturnValue.Float = var->Float;
+			break;
+		case VarType::Integer:
+			Scr_ReturnValue.Integer = var->Integer;
+			break;
+		case VarType::Object:
+			Scr_ReturnValue.Integer = var->Integer;
+			break;
+		case VarType::Function:
+			Scr_ReturnValue.Integer = var->Integer;
+			break;
+		default:
+			Scr_ReturnValue.Integer = var->Integer;
 		}
 	}
 }

@@ -28,6 +28,7 @@ enum class VarType
 {
 	Undefined = 0,
 	String = 1,
+	IString = 2,
 	Vector = 3,
 	Float = 4,
 	Integer = 5,

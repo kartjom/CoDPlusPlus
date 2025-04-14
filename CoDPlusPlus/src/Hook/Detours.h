@@ -15,8 +15,8 @@ namespace Hook::Patch
 
 namespace Hook::Detour /* Core.cpp */
 {
-	inline DetourHook ScrThread_ReturnValueHook;
-	void ScrThread_ReturnValue_n() noexcept;
+	inline TrampolineHook<uint32_t(__cdecl*)(int32_t, uint32_t)> Scr_ExecThreadHook;
+	uint16_t __cdecl hkScr_ExecThread(int32_t, uint32_t);
 
 	inline TrampolineHook<void(__cdecl*)()> SV_MapHook;
 	void __cdecl hkSV_Map();

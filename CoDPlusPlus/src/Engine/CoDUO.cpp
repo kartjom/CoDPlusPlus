@@ -25,7 +25,7 @@ namespace CoDUO
 		using namespace Hook::Detour;
 		{
 			// Core functionality
-			ScrThread_ReturnValueHook.Inject(0x0048f40e, ScrThread_ReturnValue_n);
+			Scr_ExecThreadHook.Inject(0x0048f3e0, hkScr_ExecThread);
 			SV_MapHook.Inject(0x00457650, hkSV_Map);
 		}
 

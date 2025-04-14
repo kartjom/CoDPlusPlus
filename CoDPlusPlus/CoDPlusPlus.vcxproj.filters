@@ -44,6 +44,7 @@
     <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="vendor\zydis\Zydis.c" />
     <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\MemoryMapping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />

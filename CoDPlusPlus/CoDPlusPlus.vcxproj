@@ -15,6 +15,7 @@
     <ClCompile Include="src\Engine\Mappings\EntityMapping.cpp" />
     <ClCompile Include="src\Engine\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
+    <ClCompile Include="src\Engine\Mappings\MemoryMapping.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Core.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\CodeCallbacks.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Fixes.cpp" />
