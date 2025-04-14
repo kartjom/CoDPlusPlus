@@ -119,7 +119,7 @@ namespace CoDUO::Gsc
 				Scr_AddVector(tr.normal);
 				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
-				char* surfaceType = trace_GetSurfaceType(tr.type);
+				const char* surfaceType = trace_GetSurfaceType(tr.surfaceFlags);
 				Scr_AddString(surfaceType);
 				Scr_AddArrayStringIndexed(SL_GetString("surfacetype", 1));
 			}

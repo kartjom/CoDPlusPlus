@@ -95,15 +95,13 @@ namespace CoDUO
 
 	float BG_GetAimSpread(gentity_t* ent)
 	{
-		int level_time = *(int*)(uo_game_mp_x86 + 0x0030fcac);
-
 		char* weaponDef = (char*)BG_GetWeaponDef(ent->weapon);
 
 		if (weaponDef)
 		{
 			float unknown = *(float*)((char*)(ent->client) + 0x4698);
 
-			float stanceSpread = GetWeaponSpread_00011890(ent->client->aimProgress == 1.0, level_time, ent->weapon, ent->client);
+			float stanceSpread = GetWeaponSpread_00011890(ent->client->aimProgress == 1.0, level->time, ent->weapon, ent->client);
 			float spread = (*(float*)(weaponDef + 0x2a4) - stanceSpread) * unknown + stanceSpread;
 
 			return spread;
@@ -118,7 +116,8 @@ namespace CoDUO
 		float currentLength = std::sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
 
 		// If the current length is not zero, scale the direction vector to the new length
-		if (currentLength != 0) {
+		if (currentLength != 0)
+		{
 			float scale = newLength / currentLength;
 			direction.x *= scale;
 			direction.y *= scale;
@@ -129,5 +128,25 @@ namespace CoDUO
 			end.y = start.y + direction.y;
 			end.z = start.z + direction.z;
 		}
+	}
+
+	const char* trace_GetSurfaceType(int32_t surfaceFlags)
+	{
+		const char* surfType = syscall(0x44, surfaceFlags >> 0x14 & 0x1f);
+		return surfType != nullptr ? surfType : "";
+	}
+
+	const char* trace_GetHitPartName(uint16_t partName)
+	{
+		const char* hitPartStr = SL_ConvertToString(partName);
+		return hitPartStr != nullptr ? hitPartStr : "";
+	}
+
+	const char* trace_GetHitLocationString(uint16_t partGroup)
+	{
+		uint16_t* G_GetHitLocationString = (uint16_t*)(uo_game_mp_x86 + 0x000a9af0);
+
+		const char* hitLocStr = SL_ConvertToString(G_GetHitLocationString[partGroup]);
+		return hitLocStr != nullptr ? hitLocStr : "";
 	}
 }

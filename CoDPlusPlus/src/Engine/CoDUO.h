@@ -153,6 +153,10 @@ namespace CoDUO /* UtilsMapping.cpp */
 	void SetRayLength(vec3_t& start, vec3_t& end, float newLength);
 
 	trace_t G_GetEyeTrace(gentity_t* player, float range, float spread);
+
+	const char* trace_GetSurfaceType(int32_t surfaceFlags);
+	const char* trace_GetHitPartName(uint16_t partName);
+	const char* trace_GetHitLocationString(uint16_t partGroup);
 }
 
 namespace CoDUO /* FileSystemMapping.cpp */

@@ -14,7 +14,7 @@ enum entityType_t
 	ET_PLAYER = 1,
 	ET_PLAYER_CORPSE = 2,
 	ET_ITEM = 3,
-	ET_MISSLE = 4,
+	ET_MISSILE = 4,
 	ET_MOVER = 5,
 	ET_PORTAL = 6,
 	ET_INVISIBLE = 7,

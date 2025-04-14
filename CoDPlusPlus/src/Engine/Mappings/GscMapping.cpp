@@ -36,6 +36,7 @@ namespace CoDUO
 
 		uint16_t handle = Scr_ExecThread(scriptHandle, argc);
 		ScrVar return_value = CoDUO::Gsc::Scr_ReturnValue;
+
 		Scr_FreeThread(handle);
 
 		return return_value;

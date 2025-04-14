@@ -31,7 +31,7 @@ namespace CoDUO
 			case ET_PLAYER: return "ET_PLAYER";
 			case ET_PLAYER_CORPSE: return "ET_PLAYER_CORPSE";
 			case ET_ITEM: return "ET_ITEM";
-			case ET_MISSLE: return "ET_MISSLE";
+			case ET_MISSILE: return "ET_MISSILE";
 			case ET_MOVER: return "ET_MOVER";
 			case ET_PORTAL: return "ET_PORTAL";
 			case ET_INVISIBLE: return "ET_INVISIBLE";

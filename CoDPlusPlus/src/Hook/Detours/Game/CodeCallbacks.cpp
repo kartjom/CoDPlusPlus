@@ -49,7 +49,7 @@ namespace Hook::Detour
 			trace_t trace;
 			vec3_t end = wp->muzzleTrace + (wp->forward * 64.f);
 
-			trap_Trace(&trace, &wp->muzzleTrace, &end, player->number, 0x2802031);
+			trap_Trace(&trace, &wp->muzzleTrace, &end, player->number, MASK_SHOT);
 
 			if (trace.entityNum >= 0 && trace.entityNum <= WORLDSPAWN)
 			{
