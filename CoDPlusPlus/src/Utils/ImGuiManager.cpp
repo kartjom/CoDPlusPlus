@@ -247,7 +247,7 @@ namespace ImGuiManager
 						ImGui::Text("undefined");
 						break;
 					case VarType::String:
-					case VarType::IString:
+					case VarType::LocalizedString:
 						ImGui::Text("string '%s'", Scr_ReturnValue.String.c_str());
 						break;
 					case VarType::Vector:

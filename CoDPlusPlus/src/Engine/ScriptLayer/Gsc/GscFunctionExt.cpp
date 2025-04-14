@@ -141,7 +141,7 @@ namespace CoDUO::Gsc
 					continue;
 				}
 				case VarType::String:
-				case VarType::IString:
+				case VarType::LocalizedString:
 				{
 					const char* str = Scr_GetString(i);
 					store.push_back(str);

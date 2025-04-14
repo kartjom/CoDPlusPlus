@@ -40,7 +40,7 @@ namespace Hook::Detour
 		switch (( VarType)scrVmPub_top->type )
 		{
 		case VarType::String:
-		case VarType::IString:
+		case VarType::LocalizedString:
 			SL_RemoveRefToString(scrVmPub_top->StringIndex);
 			break;
 		case VarType::Vector:
@@ -96,7 +96,7 @@ namespace Hook::Detour
 			Scr_ReturnValue.Integer = 0;
 			break;
 		case VarType::String:
-		case VarType::IString:
+		case VarType::LocalizedString:
 		{
 			const char* str = SL_ConvertToString(var->StringIndex);
 			Scr_ReturnValue.String = (str ? str : "<null>");
