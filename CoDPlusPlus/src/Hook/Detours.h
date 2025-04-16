@@ -82,7 +82,7 @@ namespace Hook::Detour /* Fixes.cpp */
 	void VEH_UnlinkPlayerFix_n() noexcept;
 }
 
-namespace Hook::Detour /* Utility */
+namespace Hook::Detour /* Utility.cpp */
 {
 	inline TrampolineHook<void(__cdecl*)(int)> G_RunFrameHook;
 	void __cdecl hkG_RunFrame(int);
