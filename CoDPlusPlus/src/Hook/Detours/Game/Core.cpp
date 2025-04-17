@@ -22,15 +22,15 @@ namespace Hook::Detour
 		VM_Execute_t VM_Execute = (VM_Execute_t)(0x0048f0b0);
 
 		int32_t& scrVmPub_function_count = *(int32_t*)(0x00b6acc8);
-		int32_t& scrVmGlob_starttime = *(int32_t*)(0x00b6acc4);
-		int16_t& scrVarPub_levelId = *(int16_t*)(0x00b6ac8c);
+		uint32_t& scrVmGlob_starttime = *(uint32_t*)(0x00b6acc4);
+		uint16_t& scrVarPub_levelId = *(uint16_t*)(0x00b6ac8c);
 		int32_t& scrVarPub_programBuffer = *(int32_t*)(0x0389fe18);
 		VariableValue*& scrVmPub_top = *(VariableValue**)(0x00b6ac90);
 		uint32_t& scrVmPub_inparamcount = *(uint32_t*)(0x00b6acd4);
 
 		if (scrVmPub_function_count == 0)
 		{
-			scrVmGlob_starttime = (int32_t)__rdtsc();
+			scrVmGlob_starttime = (uint32_t)__rdtsc();
 		}
 
 		uint16_t callback = VM_Execute(scrVarPub_levelId, scrVarPub_programBuffer + scriptHandle, argc);
