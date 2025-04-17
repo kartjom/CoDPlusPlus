@@ -1,10 +1,13 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
 	int32_t BG_GetNumWeapons()
 	{
-		return bg_iNumWeapons != nullptr ? *bg_iNumWeapons : 0;
+		if (uo_game_mp_x86 == 0) return 0;
+
+		int32_t& bg_iNumWeapons = *(int32_t*)(uo_game_mp_x86 + 0x0010ed3c);
+		return bg_iNumWeapons;
 	}
 
 	bool BG_IsWeaponIndexValid(int32_t index)

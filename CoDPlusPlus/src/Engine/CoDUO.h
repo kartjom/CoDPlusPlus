@@ -36,7 +36,6 @@ namespace CoDUO /* uo_game_mp_x86 */
 	inline level_locals_t* level = nullptr;
 	inline gentity_t* g_entities = nullptr;
 	inline cvarTable_t* gameCvarTable = nullptr;
-	inline int32_t* bg_iNumWeapons = nullptr;
 }
 
 namespace CoDUO /* GscMapping.cpp */

@@ -43,7 +43,6 @@ namespace CoDUO
 		level = (level_locals_t*)(uo_game_mp_x86 + 0x0030fac0);
 		g_entities = (gentity_t*)(uo_game_mp_x86 + 0x00118d40);
 		gameCvarTable = (cvarTable_t*)(uo_game_mp_x86 + 0x00086a58);
-		bg_iNumWeapons = (int32_t*)(uo_game_mp_x86 + 0x0010ed3c);
 
 		using namespace Hook::Detour;
 		{
@@ -93,7 +92,6 @@ namespace CoDUO
 		level = nullptr;
 		g_entities = nullptr;
 		gameCvarTable = nullptr;
-		bg_iNumWeapons = nullptr;
 
 		// Dll is unloaded anyways - no need to detach hooks, only dispose them
 		using namespace Hook::Detour;
