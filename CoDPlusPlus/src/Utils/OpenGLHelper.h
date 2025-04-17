@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Structs/Engine/refdef.h>
 #include <Structs/vec3_t.h>
 
@@ -19,6 +19,6 @@ namespace OpenGLHelper
 
 	bool IsOnScreen(vec3_t vec, int width, int height);
 	bool WorldToScreen(vec3_t src, vec3_t dst, vec3_t& screen, float fovx, float fovy, float windowWidth, float windowHeight, vec3_t left, vec3_t up, vec3_t forward);
-	bool WorldToScreen(vec3_t dst, vec3_t& screen, refdef_t* refdef);
+	bool WorldToScreen(vec3_t dst, vec3_t& screen, refdef_t& refdef);
 	CameraMatrices GetMatrices();
 };

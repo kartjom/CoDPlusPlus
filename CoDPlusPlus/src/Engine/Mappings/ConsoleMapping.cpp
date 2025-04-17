@@ -4,17 +4,19 @@ namespace CoDUO
 {
 	int Cmd_Argc()
 	{
-		return *p_Cmd_Argc;
+		int& cmd_argc = *(int*)(0x009677c0);
+		return cmd_argc;
 	}
 
 	const char* Cmd_Argv(int arg)
 	{
-		if (arg >= *p_Cmd_Argc)
+		const char** cmd_argv = (const char**)(0x00964dc0);
+		if (arg >= Cmd_Argc())
 		{
 			return "";
 		}
 
-		return p_Cmd_Argv[arg];
+		return cmd_argv[arg];
 	}
 
 	void Cbuf_AddText(const char* text)

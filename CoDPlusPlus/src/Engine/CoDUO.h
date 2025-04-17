@@ -22,12 +22,10 @@ namespace CoDUO /* CoDUOMP */
 	inline Com_Printf_t Com_Printf = (Com_Printf_t)(0x00439cc0);
 	inline va_t va = (va_t)(0x0044fab0);
 
-	inline refdef_t* refdef = (refdef_t*)(0x0489a100);
-	inline WinMouseVars_t* s_wmv = (WinMouseVars_t*)(0x009cdbbc);
+	inline refdef_t& refdef = *(refdef_t*)(0x0489a100);
+	inline WinMouseVars_t& s_wmv = *(WinMouseVars_t*)(0x009cdbbc);
 	inline cvar_t* cvar_indexes = (cvar_t*)(0x009987a0);
 	inline cmd_function_t** cmd_functions = (cmd_function_t**)(0x00964db8);
-	inline const char** p_Cmd_Argv = (const char**)(0x00964dc0);
-	inline int* p_Cmd_Argc = (int*)(0x009677c0);
 };
 
 namespace CoDUO /* uo_game_mp_x86 */

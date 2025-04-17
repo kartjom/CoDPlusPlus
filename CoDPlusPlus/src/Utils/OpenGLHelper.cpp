@@ -59,20 +59,20 @@ namespace OpenGLHelper
         return true;
     }
 
-    bool WorldToScreen(vec3_t dst, vec3_t& screen, refdef_t* refdef)
+    bool WorldToScreen(vec3_t dst, vec3_t& screen, refdef_t& refdef)
     {
-        return WorldToScreen(refdef->vieworg, dst, screen, refdef->fov_x, refdef->fov_y, refdef->width, refdef->height, refdef->viewaxis[0], refdef->viewaxis[1], refdef->viewaxis[2]);
+        return WorldToScreen(refdef.vieworg, dst, screen, refdef.fov_x, refdef.fov_y, refdef.width, refdef.height, refdef.viewaxis[0], refdef.viewaxis[1], refdef.viewaxis[2]);
     }
 
     CameraMatrices GetMatrices()
     {
-        glm::mat4 projection = glm::perspective(glm::radians(refdef->fov_y), (float)refdef->width / (float)refdef->height, 0.1f, 10000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(refdef.fov_y), (float)refdef.width / (float)refdef.height, 0.1f, 10000.0f);
 
-        glm::vec3 forward(refdef->viewaxis[0]);
-        glm::vec3 right(refdef->viewaxis[1]);
-        glm::vec3 up(refdef->viewaxis[2]);
+        glm::vec3 forward(refdef.viewaxis[0]);
+        glm::vec3 right(refdef.viewaxis[1]);
+        glm::vec3 up(refdef.viewaxis[2]);
 
-        glm::vec3 cameraPos(refdef->vieworg);
+        glm::vec3 cameraPos(refdef.vieworg);
         glm::mat4 view = glm::lookAt(cameraPos, cameraPos + forward, up);
 
         return CameraMatrices{ .Model = glm::mat4(1.0f), .View = view, .Projection = projection };

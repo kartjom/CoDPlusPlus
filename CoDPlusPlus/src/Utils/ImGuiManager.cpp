@@ -134,7 +134,7 @@ namespace ImGuiManager
 	bool Show()
 	{
 		CursorToCenter();
-		s_wmv->mouseInitialized = false;
+		s_wmv.mouseInitialized = false;
 
 		return InteractiveMode = true;
 	}
@@ -142,7 +142,7 @@ namespace ImGuiManager
 	bool Hide()
 	{
 		CursorToCenter();
-		s_wmv->mouseInitialized = true;
+		s_wmv.mouseInitialized = true;
 
 		return InteractiveMode = false;
 	}
@@ -407,7 +407,7 @@ namespace ImGuiManager
 		if (!uo_game_mp_x86 || !DevGuiState.draw_gentity) return;
 
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
-		ImGui::SetNextWindowSize(ImVec2(refdef->width, refdef->height));
+		ImGui::SetNextWindowSize(ImVec2(refdef.width, refdef.height));
 		ImGui::Begin("DrawServerEntities", 0, ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
 
 		char ct_formatted[72];
@@ -425,7 +425,7 @@ namespace ImGuiManager
 			if (ent->targetname) targetname = SL_ConvertToString(ent->targetname);
 
 			vec3_t screen;
-			if (WorldToScreen(ent->currentOrigin, screen, refdef) && IsOnScreen(screen, refdef->width, refdef->height))
+			if (WorldToScreen(ent->currentOrigin, screen, refdef) && IsOnScreen(screen, refdef.width, refdef.height))
 			{			
 				*fmt::format_to(ct_formatted, "[{}] {} {}", i, classname, targetname ? targetname : "") = '\0';
 				*fmt::format_to(origin_formatted, "{:.2f} {:.2f} {:.2f}", ent->currentOrigin.x, ent->currentOrigin.y, ent->currentOrigin.z) = '\0';
