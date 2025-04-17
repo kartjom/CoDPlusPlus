@@ -34,7 +34,6 @@
     <ClCompile Include="src\Engine\Mappings\WeaponMapping.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscFunctionExt.cpp" />
     <ClCompile Include="src\Engine\ScriptLayer\Gsc\GscMethodExt.cpp" />
-    <ClCompile Include="src\Utils\Filesystem\File.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Loaders.cpp" />
     <ClCompile Include="src\Hook\Detours\Misc\OpenGL.cpp" />
     <ClCompile Include="src\Hook\Detours\Misc\WinAPI.cpp" />
@@ -68,12 +67,10 @@
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
     <ClInclude Include="src\Structs\q_shared.h" />
-    <ClInclude Include="src\Utils\Classes\AtomicQueue.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
-    <ClInclude Include="src\Utils\Filesystem\File.h" />
     <ClInclude Include="src\Hook\Detours.h" />
     <ClInclude Include="src\Hook\Hook.h" />
     <ClInclude Include="src\Structs\Engine\gsc.h" />
@@ -151,7 +148,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;ZYDIS_STATIC_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZYDIS_STATIC_BUILD;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;$(ProjectDir)vendor\cpp-httplib\include;$(ProjectDir)vendor\openssl-313\include;$(ProjectDir)vendor\fmt\include;$(ProjectDir)vendor\zydis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -174,7 +171,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;ZYDIS_STATIC_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZYDIS_STATIC_BUILD;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)vendor\ImGui;$(ProjectDir)vendor\glad\include;$(ProjectDir)vendor\glm\include;$(ProjectDir)vendor\stb\include;$(ProjectDir)vendor\cpp-httplib\include;$(ProjectDir)vendor\openssl-313\include;$(ProjectDir)vendor\fmt\include;$(ProjectDir)vendor\zydis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
