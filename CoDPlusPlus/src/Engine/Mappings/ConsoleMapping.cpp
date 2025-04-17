@@ -58,7 +58,7 @@ namespace CoDUO
 	{
 		cmd_function_t* cmd;
 
-		for (cmd = *cmd_functions; cmd; cmd = cmd->next)
+		for (cmd = cmd_functions; cmd; cmd = cmd->next)
 		{
 			if (!strcmp(cmd_name, cmd->name))
 			{

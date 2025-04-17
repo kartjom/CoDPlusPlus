@@ -24,8 +24,9 @@ namespace CoDUO /* CoDUOMP */
 
 	inline refdef_t& refdef = *(refdef_t*)(0x0489a100);
 	inline WinMouseVars_t& s_wmv = *(WinMouseVars_t*)(0x009cdbbc);
-	inline cvar_t* cvar_indexes = (cvar_t*)(0x009987a0);
-	inline cmd_function_t** cmd_functions = (cmd_function_t**)(0x00964db8);
+	inline cmd_function_t*& cmd_functions = *(cmd_function_t**)(0x00964db8);
+	inline cvar_t* cvar_indexes = (cvar_t*)(0x009827a0); // cvar_t cvar_indexes[MAX_CVARS];
+	inline int& cvar_numIndexes = *(int*)(0x04927ea0);
 };
 
 namespace CoDUO /* uo_game_mp_x86 */
