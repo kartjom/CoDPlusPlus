@@ -15,62 +15,62 @@ namespace Hook::Patch
 
 namespace Hook::Detour /* Core.cpp */
 {
-	inline TrampolineHook<uint32_t(__cdecl*)(int32_t, uint32_t)> Scr_ExecThreadHook;
 	uint16_t __cdecl hkScr_ExecThread(int32_t, uint32_t);
+	inline TrampolineHookFrom<hkScr_ExecThread> Scr_ExecThreadHook;
 
-	inline TrampolineHook<void(__cdecl*)()> SV_MapHook;
 	void __cdecl hkSV_Map();
+	inline TrampolineHookFrom<hkSV_Map> SV_MapHook;
 }
 
 namespace Hook::Detour /* Loaders.cpp */
 {
-	inline TrampolineHook<void(__cdecl*)()> GScr_LoadGameTypeScriptHook;
 	void __cdecl hkGScr_LoadGameTypeScript();
+	inline TrampolineHookFrom<hkGScr_LoadGameTypeScript> GScr_LoadGameTypeScriptHook;
 
-	inline TrampolineHook<void*(__cdecl*)(const char**, int*)> Scr_GetFunctionHook;
 	void* __cdecl hkScr_GetFunction(const char**, int*);
+	inline TrampolineHookFrom<hkScr_GetFunction> Scr_GetFunctionHook;
 
-	inline TrampolineHook<void*(__cdecl*)(const char**, int*)> Scr_GetMethodHook;
 	void* __cdecl hkScr_GetMethod(const char**, int*);
+	inline TrampolineHookFrom<hkScr_GetMethod> Scr_GetMethodHook;
 
-	inline TrampolineHook<qboolean(__cdecl*)()> ConsoleCommandHook;
 	qboolean __cdecl hkConsoleCommand();
+	inline TrampolineHookFrom<hkConsoleCommand> ConsoleCommandHook;
 
-	inline TrampolineHook<void(__cdecl*)()> ClientCommandHook;
 	void __cdecl hkClientCommand();
+	inline TrampolineHookFrom<hkClientCommand> ClientCommandHook;
 }
 
 namespace Hook::Detour /* CodeCallbacks.cpp */
 {
-	inline TrampolineHook<void(__cdecl*)(int, int, int)> G_InitGameHook;
 	void __cdecl hkG_InitGame(int, int, int);
+	inline TrampolineHookFrom<hkG_InitGame> G_InitGameHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*)> FireWeaponAntilagHook;
 	void __cdecl hkFireWeaponAntilag(gentity_t*);
+	inline TrampolineHookFrom<hkFireWeaponAntilag> FireWeaponAntilagHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*)> Weapon_MeleeHook;
 	void __cdecl hkWeapon_Melee(gentity_t*);
+	inline TrampolineHookFrom<hkWeapon_Melee> Weapon_MeleeHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*, int, char*)> G_SayHook;
 	void __cdecl hkG_Say(gentity_t*, int, char*);
+	inline TrampolineHookFrom<hkG_Say> G_SayHook;
 
-	inline TrampolineHook<qboolean(__cdecl*)()> ClientInactivityTimerHook;
 	qboolean __cdecl hkClientInactivityTimer();
+	inline TrampolineHookFrom<hkClientInactivityTimer> ClientInactivityTimerHook;
 
-	inline TrampolineHook<void(__cdecl*)()> Cmd_VoteHook;
 	void __cdecl hkCmd_Vote();
+	inline TrampolineHookFrom<hkCmd_Vote> Cmd_VoteHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*)> Cmd_CallVoteHook;
 	void __cdecl hkCmd_CallVote(gentity_t*);
+	inline TrampolineHookFrom<hkCmd_CallVote> Cmd_CallVoteHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*, trace_t*)> G_BounceMissileHook;
 	void __cdecl hkG_BounceMissile(gentity_t*, trace_t*);
+	inline TrampolineHookFrom<hkG_BounceMissile> G_BounceMissileHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*)> G_ExplodeMissileHook;
 	void __cdecl hkG_ExplodeMissile(gentity_t*);
+	inline TrampolineHookFrom<hkG_ExplodeMissile> G_ExplodeMissileHook;
 
-	inline TrampolineHook<void(__cdecl*)(gentity_t*)> G_ExplodeSmokeHook;
 	void __cdecl hkG_ExplodeSmoke(gentity_t*);
+	inline TrampolineHookFrom<hkG_ExplodeSmoke> G_ExplodeSmokeHook;
 }
 
 namespace Hook::Detour /* Fixes.cpp */
@@ -84,23 +84,23 @@ namespace Hook::Detour /* Fixes.cpp */
 
 namespace Hook::Detour /* Utility.cpp */
 {
-	inline TrampolineHook<void(__cdecl*)(int)> G_RunFrameHook;
 	void __cdecl hkG_RunFrame(int);
+	inline TrampolineHookFrom<hkG_RunFrame> G_RunFrameHook;
 }
 
 namespace Hook::Detour /* WinAPI.cpp */
 {
-	inline TrampolineHook<HMODULE(__stdcall*)(LPCSTR)> LoadLibraryAHook;
 	HMODULE __stdcall hkLoadLibraryA(LPCSTR);
+	inline TrampolineHookFrom<hkLoadLibraryA> LoadLibraryAHook;
 
-	inline TrampolineHook<NTSTATUS(__stdcall*)(PVOID)> LdrUnloadDllHook;
 	NTSTATUS __stdcall hkLdrUnloadDll(PVOID);
+	inline TrampolineHookFrom<hkLdrUnloadDll> LdrUnloadDllHook;
 }
 
 #ifdef CLIENT
 namespace Hook::Detour /* OpenGL.cpp */
 {
-	inline TrampolineHook<void(__cdecl*)()> GLimp_EndFrameHook;
 	void __cdecl hkGLimp_EndFrame();
+	inline TrampolineHookFrom<hkGLimp_EndFrame> GLimp_EndFrameHook;
 }
 #endif

@@ -526,6 +526,9 @@ namespace Hook
 		}
 	};
 
+	template<auto FnType>
+	using TrampolineHookFrom = TrampolineHook<decltype(FnType)>;
+
 	class MemoryPatch : public BaseHook
 	{
 	private:
