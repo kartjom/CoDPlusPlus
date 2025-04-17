@@ -20,10 +20,6 @@
     <ClCompile Include="src\Hook\Detours\Game\CodeCallbacks.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Fixes.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Utility.cpp" />
-    <ClCompile Include="src\Render\Buffers\VAO.cpp" />
-    <ClCompile Include="src\Render\Buffers\VAO_utils.cpp" />
-    <ClCompile Include="src\Render\Materials\Shader.cpp" />
-    <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="src\Utils\Network\HttpClient.cpp" />
     <ClCompile Include="src\Engine\CoDUO.cpp" />
     <ClCompile Include="src\Engine\Mappings\ConsoleMapping.cpp" />
@@ -59,10 +55,6 @@
     <ClInclude Include="src\Engine\MapBindings\MapBindings.h" />
     <ClInclude Include="src\Engine\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Engine\Async\Task\Task.h" />
-    <ClInclude Include="src\Render\Buffers\VAO.h" />
-    <ClInclude Include="src\Render\Buffers\VAO_utils.h" />
-    <ClInclude Include="src\Render\Materials\Shader.h" />
-    <ClInclude Include="src\Render\Materials\Texture.h" />
     <ClInclude Include="src\Structs\Engine\cmd.h" />
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />

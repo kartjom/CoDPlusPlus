@@ -37,10 +37,6 @@
     <ClCompile Include="src\Hook\Detours\Game\Utility.cpp" />
     <ClCompile Include="src\Engine\MapBindings\MapBindings.cpp" />
     <ClCompile Include="src\Utils\String\String.cpp" />
-    <ClCompile Include="src\Render\Buffers\VAO.cpp" />
-    <ClCompile Include="src\Render\Buffers\VAO_utils.cpp" />
-    <ClCompile Include="src\Render\Materials\Shader.cpp" />
-    <ClCompile Include="src\Render\Materials\Texture.cpp" />
     <ClCompile Include="vendor\zydis\Zydis.c" />
     <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\MemoryMapping.cpp" />
@@ -84,10 +80,6 @@
     <ClInclude Include="src\Engine\Async\Task\Task.h" />
     <ClInclude Include="src\Engine\MapBindings\MapBindings.h" />
     <ClInclude Include="src\Utils\String\String.h" />
-    <ClInclude Include="src\Render\Buffers\VAO.h" />
-    <ClInclude Include="src\Render\Buffers\VAO_utils.h" />
-    <ClInclude Include="src\Render\Materials\Shader.h" />
-    <ClInclude Include="src\Render\Materials\Texture.h" />
     <ClInclude Include="vendor\zydis\include\Zydis\Zydis.h" />
     <ClInclude Include="src\Structs\q_shared.h" />
   </ItemGroup>
