@@ -45,7 +45,7 @@ namespace Hook::Detour
 
 			*pName = scr_fn.name;
 			*pType = scr_fn.developer;
-			return it->second.callback;
+			return scr_fn.callback;
 		}
 
 		return Scr_GetFunctionHook.Invoke(pName, pType);
@@ -59,7 +59,7 @@ namespace Hook::Detour
 
 			*pName = scr_fn.name;
 			*pType = scr_fn.developer;
-			return it->second.callback;
+			return scr_fn.callback;
 		}
 
 		return Scr_GetMethodHook.Invoke(pName, pType);
