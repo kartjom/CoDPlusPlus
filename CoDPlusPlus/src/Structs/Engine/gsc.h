@@ -24,6 +24,7 @@ struct VariableValue
 	uint32_t type;
 };
 
+#define VAR_MASK 0x1F
 
 // 0x005ca6f8 - all var type strings
 enum class VarType

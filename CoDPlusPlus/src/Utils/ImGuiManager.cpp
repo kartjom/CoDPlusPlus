@@ -251,22 +251,13 @@ namespace ImGuiManager
 						ImGui::Text("string '%s'", Scr_ReturnValue.String.c_str());
 						break;
 					case VarType::Vector:
-						ImGui::Text("vector ({:.2f} {:.2f} {:.2f})", Scr_ReturnValue.Vector.x, Scr_ReturnValue.Vector.y, Scr_ReturnValue.Vector.z);
+						ImGui::Text("vector (%.2f %.2f %.2f)", Scr_ReturnValue.Vector.x, Scr_ReturnValue.Vector.y, Scr_ReturnValue.Vector.z);
 						break;
 					case VarType::Float:
-						ImGui::Text("float %f", Scr_ReturnValue.Float);
-						break;
-					case VarType::Integer:
-						ImGui::Text("int %d", Scr_ReturnValue.Integer);
-						break;
-					case VarType::Object:
-						ImGui::Text("object %d", Scr_ReturnValue.Integer);
-						break;
-					case VarType::Function:
-						ImGui::Text("function %d", Scr_ReturnValue.Integer);
+						ImGui::Text("float %.2f", Scr_ReturnValue.Float);
 						break;
 					default:
-						ImGui::Text("unknown %d", Scr_ReturnValue.Integer);
+						ImGui::Text("%s %d", Scr_GetTypeName((int)Scr_ReturnValue.Type), Scr_ReturnValue.Integer);
 					}
 
 					ImGui::Spacing();

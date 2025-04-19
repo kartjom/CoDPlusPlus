@@ -87,7 +87,7 @@ namespace Hook::Detour
 	void CaptureScriptReturnValue(VariableValue* var)
 	{
 		Scr_ReturnValue = {
-			.Type = (VarType)var->type
+			.Type = (VarType)Scr_GetVarType(var)
 		};
 
 		switch (Scr_ReturnValue.Type)
@@ -109,12 +109,6 @@ namespace Hook::Detour
 			Scr_ReturnValue.Float = var->Float;
 			break;
 		case VarType::Integer:
-			Scr_ReturnValue.Integer = var->Integer;
-			break;
-		case VarType::Object:
-			Scr_ReturnValue.Integer = var->Integer;
-			break;
-		case VarType::Function:
 			Scr_ReturnValue.Integer = var->Integer;
 			break;
 		default:

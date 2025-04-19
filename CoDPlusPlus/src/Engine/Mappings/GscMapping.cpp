@@ -78,6 +78,32 @@ namespace CoDUO
 		}
 	}
 
+	int32_t Scr_GetVarType(VariableValue* var)
+	{
+		if ((VarType)var->type == VarType::Object)
+		{
+			uint8_t* base = (uint8_t*)0x00aa6b6c;
+			uint32_t rawValue = *(uint32_t*)(base + var->Integer * 0xC);
+			uint32_t objectType = rawValue & VAR_MASK;
+
+			return objectType;
+		}
+		
+		return var->type;
+	}
+
+	const char* Scr_GetTypeName(int type)
+	{
+		const char** var_typename = (const char**)(0x005ca6f8);
+
+		if (type >= 0 && type < 19)
+		{
+			return var_typename[type];
+		}
+
+		return "";
+	}
+
 	int32_t Scr_GetInt(int param)
 	{
 		_asm
