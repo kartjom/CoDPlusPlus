@@ -100,15 +100,15 @@ namespace Hook::Detour
 			Scr_AddEntity(ent);
 			ScrVar ret_val = Scr_RunScript(CodeCallback.OnPlayerSay, 4);
 
-			if (ret_val.Type == VarType::String)
+			if ( ret_val.IsString() )
 			{
-				if (ret_val.String.empty())
+				auto str = ret_val.GetStringRef();
+
+				if (str.empty())
 					return; // don't display message
 
-				char* replaced = (char*)ret_val.String.c_str();
-
 				G_SayHook.SetECX(ent);
-				G_SayHook.Invoke(target, mode, replaced); // replace message
+				G_SayHook.Invoke(target, mode, (char*)str.c_str()); // replace message
 
 				return;
 			}
@@ -147,7 +147,7 @@ namespace Hook::Detour
 					ScrVar ret_val = Scr_RunScript(CodeCallback.OnPlayerInactivity, 1);
 
 					// We check if script returned 'true'
-					if (ret_val.Type == VarType::Integer && ret_val.Integer == 1)
+					if (ret_val.IsNumber() && ret_val.GetNumber<qboolean>() == qtrue)
 					{
 						// Reset inactivity time
 						client->inactivityTime = client->inactivityTime = level->time + g_inactivity->integer * 1000;
@@ -250,7 +250,7 @@ namespace Hook::Detour
 			Scr_AddEntity(ent);
 			ScrVar ret_val = Scr_RunScript(CodeCallback.OnVoteCalled, 3);
 
-			if (ret_val.Type == VarType::Integer && ret_val.Integer == 0)
+			if (ret_val.IsNumber() && ret_val.GetNumber<qboolean>() == qfalse)
 			{
 				return; // Skip the vote if script returned false
 			}

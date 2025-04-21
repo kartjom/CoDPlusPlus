@@ -2,7 +2,7 @@
 #include <Engine/CoDUO.h>
 #include <Utils/String/String.h>
 #include <Engine/MapBindings/MapBindings.h>
-#include <intrin.h>
+#include <Engine/ScriptLayer/Gsc/ScrVar/ScrVar.h>
 #include <format>
 #include <print>
 
@@ -11,7 +11,7 @@ using namespace CoDUO::Gsc;
 
 namespace Hook::Detour
 {
-	void CaptureScriptReturnValue(VariableValue* var);
+	ScrVar ConvertVariableValue(VariableValue* var);
 }
 
 namespace Hook::Detour
@@ -35,22 +35,23 @@ namespace Hook::Detour
 
 		uint16_t callback = VM_Execute(scrVarPub_levelId, scrVarPub_programBuffer + scriptHandle, argc);
 
-		CaptureScriptReturnValue(scrVmPub_top);
+		// Capture the return value before it's disposed
+		Scr_InternalReturnValue = ConvertVariableValue(scrVmPub_top);
 
-		switch (( VarType)scrVmPub_top->type )
+		switch (scrVmPub_top->type)
 		{
 		case VarType::String:
 		case VarType::LocalizedString:
-			SL_RemoveRefToString(scrVmPub_top->StringIndex);
+			SL_RemoveRefToString(scrVmPub_top->stringValue);
 			break;
 		case VarType::Vector:
-			RemoveRefToVector(scrVmPub_top->Vector);
+			RemoveRefToVector(scrVmPub_top->vectorValue);
 			break;
 		case VarType::Object:
-			RemoveRefToObject(scrVmPub_top->Integer);
+			RemoveRefToObject(scrVmPub_top->pointerValue);
 		}
 
-		scrVmPub_top->type = 0;
+		scrVmPub_top->type = VarType::Undefined;
 		--scrVmPub_top;
 		--scrVmPub_inparamcount;
 
@@ -84,35 +85,37 @@ namespace Hook::Detour
 
 namespace Hook::Detour
 {
-	void CaptureScriptReturnValue(VariableValue* var)
+	ScrVar ConvertVariableValue(VariableValue* var)
 	{
-		Scr_ReturnValue = {
-			.Type = (VarType)Scr_GetVarType(var)
-		};
+		ScrVar scrVar;
 
-		switch (Scr_ReturnValue.Type)
+		VarType type = Scr_GetVarType(var);
+		switch (type)
 		{
 		case VarType::Undefined:
-			Scr_ReturnValue.Integer = 0;
+			scrVar.SetUndefined();
 			break;
 		case VarType::String:
 		case VarType::LocalizedString:
 		{
-			const char* str = SL_ConvertToString(var->StringIndex);
-			Scr_ReturnValue.String = (str ? str : "<null>");
+			const char* str = SL_ConvertToString(var->stringValue);
+			bool localized = type == VarType::LocalizedString;
+			scrVar.SetString(str ? str : "", localized);
 			break;
 		}
 		case VarType::Vector:
-			Scr_ReturnValue.Vector = *var->Vector;
+			scrVar.SetVector(*var->vectorValue);
 			break;
 		case VarType::Float:
-			Scr_ReturnValue.Float = var->Float;
+			scrVar.SetFloat(var->floatValue);
 			break;
 		case VarType::Integer:
-			Scr_ReturnValue.Integer = var->Integer;
+			scrVar.SetInt(var->intValue);
 			break;
 		default:
-			Scr_ReturnValue.Integer = var->Integer;
+			scrVar.SetInternal(var->intValue, type);
 		}
+
+		return scrVar;
 	}
 }

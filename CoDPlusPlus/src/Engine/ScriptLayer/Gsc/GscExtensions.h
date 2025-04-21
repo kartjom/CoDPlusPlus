@@ -1,7 +1,6 @@
 ﻿#pragma once
-#include <string>
+#include <Engine/ScriptLayer/Gsc/ScrVar/ScrVar.h>
 #include <unordered_map>
-#include <Structs/Engine/gsc.h>
 
 namespace CoDUO::Gsc
 {
@@ -19,7 +18,7 @@ namespace CoDUO::Gsc
 		uint32_t OnProjectileExplode;	//	 eProjectile
 	} CodeCallback = {};
 
-	inline ScrVar Scr_ReturnValue = {};
+	inline ScrVar Scr_InternalReturnValue = {};
 }
 
 namespace CoDUO::Gsc

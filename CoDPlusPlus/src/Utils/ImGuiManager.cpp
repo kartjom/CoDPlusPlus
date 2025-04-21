@@ -241,23 +241,29 @@ namespace ImGuiManager
 					ImGui::SameLine();
 					ImGui::SetCursorPosX(250);
 
-					switch (Scr_ReturnValue.Type)
+					ScrVar& scr_var = Scr_InternalReturnValue;
+					const char* typeName = scr_var.GetTypeName();
+
+					switch (scr_var.GetType())
 					{
 					case VarType::Undefined:
-						ImGui::Text("undefined");
+						ImGui::Text(typeName);
 						break;
 					case VarType::String:
 					case VarType::LocalizedString:
-						ImGui::Text("string '%s'", Scr_ReturnValue.String.c_str());
+						ImGui::Text("%s '%s'", typeName, scr_var.GetStringRef().c_str());
 						break;
 					case VarType::Vector:
-						ImGui::Text("vector (%.2f %.2f %.2f)", Scr_ReturnValue.Vector.x, Scr_ReturnValue.Vector.y, Scr_ReturnValue.Vector.z);
+					{
+						auto& vec = scr_var.GetVectorRef();
+						ImGui::Text("%s (%.2f %.2f %.2f)", typeName, vec.x, vec.y, vec.z);
 						break;
+					}
 					case VarType::Float:
-						ImGui::Text("float %.2f", Scr_ReturnValue.Float);
+						ImGui::Text("%s %.2f", typeName, scr_var.GetNumber<float>());
 						break;
 					default:
-						ImGui::Text("%s %d", Scr_GetTypeName((int)Scr_ReturnValue.Type), Scr_ReturnValue.Integer);
+						ImGui::Text("%s %d", typeName, scr_var.GetNumber<int32_t>());
 					}
 
 					ImGui::Spacing();

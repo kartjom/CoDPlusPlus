@@ -35,11 +35,9 @@ namespace CoDUO
 		Scr_FreeThread_t Scr_FreeThread = (Scr_FreeThread_t)(0x0048f640);
 
 		uint16_t handle = Scr_ExecThread(scriptHandle, argc);
-		ScrVar return_value = CoDUO::Gsc::Scr_ReturnValue;
-
 		Scr_FreeThread(handle);
 
-		return return_value;
+		return CoDUO::Gsc::Scr_InternalReturnValue;
 	}
 }
 
@@ -78,27 +76,31 @@ namespace CoDUO
 		}
 	}
 
-	int32_t Scr_GetVarType(VariableValue* var)
+	VarType Scr_GetVarType(VariableValue* var)
 	{
-		if ((VarType)var->type == VarType::Object)
+		if (var->type == VarType::Object)
 		{
+			constexpr int VAR_MASK = 0x1F;
+
 			uint8_t* base = (uint8_t*)0x00aa6b6c;
-			uint32_t rawValue = *(uint32_t*)(base + var->Integer * 0xC);
+			uint16_t pointerValue = (uint16_t)var->pointerValue;
+
+			uint32_t rawValue = *(uint32_t*)(base + pointerValue * 0xC);
 			uint32_t objectType = rawValue & VAR_MASK;
 
-			return objectType;
+			return (VarType)objectType;
 		}
 		
 		return var->type;
 	}
 
-	const char* Scr_GetTypeName(int type)
+	const char* Scr_GetTypeName(VarType type)
 	{
 		const char** var_typename = (const char**)(0x005ca6f8);
 
-		if (type >= 0 && type < 19)
+		if (type >= VarType::Undefined && type < VarType::DeadObject)
 		{
-			return var_typename[type];
+			return var_typename[ (int)type ];
 		}
 
 		return "";

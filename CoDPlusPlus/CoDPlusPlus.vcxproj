@@ -16,6 +16,7 @@
     <ClCompile Include="src\Engine\Async\HttpResult\HttpResult.cpp" />
     <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\MemoryMapping.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\ScrVar\ScrVar.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Core.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\CodeCallbacks.cpp" />
     <ClCompile Include="src\Hook\Detours\Game\Fixes.cpp" />
@@ -55,6 +56,8 @@
     <ClInclude Include="src\Engine\MapBindings\MapBindings.h" />
     <ClInclude Include="src\Engine\Async\HttpResult\HttpResult.h" />
     <ClInclude Include="src\Engine\Async\Task\Task.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\ScrVar.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\VarType.h" />
     <ClInclude Include="src\Structs\Engine\cmd.h" />
     <ClInclude Include="src\Structs\Engine\input.h" />
     <ClInclude Include="src\Structs\Engine\level_locals.h" />

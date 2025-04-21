@@ -40,6 +40,7 @@
     <ClCompile Include="vendor\zydis\Zydis.c" />
     <ClCompile Include="src\Engine\Mappings\FileSystemMapping.cpp" />
     <ClCompile Include="src\Engine\Mappings\MemoryMapping.cpp" />
+    <ClCompile Include="src\Engine\ScriptLayer\Gsc\ScrVar\ScrVar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Engine\CoDUO.h" />
@@ -82,5 +83,7 @@
     <ClInclude Include="src\Utils\String\String.h" />
     <ClInclude Include="vendor\zydis\include\Zydis\Zydis.h" />
     <ClInclude Include="src\Structs\q_shared.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\ScrVar.h" />
+    <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\VarType.h" />
   </ItemGroup>
 </Project>

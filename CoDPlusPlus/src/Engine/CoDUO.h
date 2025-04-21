@@ -48,8 +48,8 @@ namespace CoDUO /* GscMapping.cpp */
 	int32_t Scr_GetNumParam();
 	int32_t Scr_GetType(int param);
 	int32_t Scr_GetPointerType(int index);
-	int32_t Scr_GetVarType(VariableValue* var);
-	const char* Scr_GetTypeName(int type);
+	VarType Scr_GetVarType(VariableValue* var);
+	const char* Scr_GetTypeName(VarType type);
 
 	int32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
