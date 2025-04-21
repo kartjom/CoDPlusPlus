@@ -43,4 +43,22 @@ namespace Hook::Detour
 			ret
 		}
 	}
+
+	// This can randomly throw access violation during map change
+    int __cdecl hkFUN_00421510()
+    {
+        __try
+        {
+			float* param_1 = (float*)FUN_00421510Hook.CapturedContext.ecx;
+			int* param_2 = (int*)FUN_00421510Hook.CapturedContext.eax;
+
+            FUN_00421510Hook.SetECX(param_1);
+            FUN_00421510Hook.SetEAX(param_2);
+            return FUN_00421510Hook.Invoke();
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+			return 0;
+        }
+    }
 }

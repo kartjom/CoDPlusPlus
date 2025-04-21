@@ -27,6 +27,9 @@ namespace CoDUO
 			// Core functionality
 			Scr_ExecThreadHook.Inject(0x0048f3e0, hkScr_ExecThread);
 			SV_MapHook.Inject(0x00457650, hkSV_Map);
+
+			// Fixes
+			FUN_00421510Hook.Inject(0x00421510, hkFUN_00421510);
 		}
 
 		AddConsoleCommands();

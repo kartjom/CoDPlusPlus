@@ -80,6 +80,9 @@ namespace Hook::Detour /* Fixes.cpp */
 
 	inline DetourHook VEH_UnlinkPlayerFixHook;
 	void VEH_UnlinkPlayerFix_n() noexcept;
+
+	int __cdecl hkFUN_00421510();
+	inline TrampolineHookFrom<hkFUN_00421510> FUN_00421510Hook;
 }
 
 namespace Hook::Detour /* Utility.cpp */
