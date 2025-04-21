@@ -76,7 +76,7 @@ namespace Hook::Detour
 			qboolean gsc_console;
 
 			int length = gsc_text.length();
-			if (gsc_text[0] == 0x14 && gsc_text[length - 1] == 0x15)
+			if (gsc_text[0] == '\x14' && gsc_text[length - 1] == '\x15')
 			{
 				gsc_text[length - 1] = 0; // remove end character
 
@@ -84,7 +84,7 @@ namespace Hook::Detour
 				gsc_text.erase(0, 1); // skip first character
 				gsc_console = qfalse;
 			}
-			else if (gsc_text[0] == 0x15)
+			else if (gsc_text[0] == '\x15')
 			{
 				gsc_text.erase(0, 1);
 				gsc_console = qfalse;
