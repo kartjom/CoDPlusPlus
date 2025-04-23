@@ -109,8 +109,8 @@ namespace DevGui::Server::Helper
 			DrawCallbackInfo(OnPlayerMelee);
 			DrawCallbackInfo(OnPlayerSay);
 			DrawCallbackInfo(OnPlayerVote);
-			DrawCallbackInfo(OnPlayerInactivity);
 			DrawCallbackInfo(OnPlayerVoteCall);
+			DrawCallbackInfo(OnPlayerInactivity);
 			DrawCallbackInfo(OnProjectileBounce);
 			DrawCallbackInfo(OnProjectileExplode);
 
