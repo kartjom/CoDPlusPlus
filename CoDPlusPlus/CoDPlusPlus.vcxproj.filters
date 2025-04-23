@@ -85,5 +85,9 @@
     <ClInclude Include="src\Structs\q_shared.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\ScrVar.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\ScrVar\VarType.h" />
+    <ClInclude Include="src\Utils\DevGui\Client.h" />
+    <ClInclude Include="src\Utils\DevGui\SharedState.h" />
+    <ClInclude Include="src\Utils\DevGui\Debug.h" />
+    <ClInclude Include="src\Utils\DevGui\Server.h" />
   </ItemGroup>
 </Project>

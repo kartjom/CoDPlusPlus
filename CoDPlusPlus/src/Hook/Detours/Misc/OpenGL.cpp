@@ -20,9 +20,9 @@ namespace Hook::Detour
 			}
 			ImGuiManager::EndFrame(hDc, o_WglContext);
 		}
-		catch (...)
+		catch (const std::exception& e)
 		{
-			std::println("[wglSwapBuffers] - Exception");
+			std::println("[GLimp_EndFrame] - Exception: {}", e.what());
 		}
 
 		GLimp_EndFrameHook.Invoke();

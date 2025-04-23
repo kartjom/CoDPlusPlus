@@ -1,8 +1,8 @@
-#ifdef CLIENT
+﻿#ifdef CLIENT
 #pragma once
 
-#include <Windows.h>
-#include "imgui_internal.h"
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 namespace ImGuiManager
 {
@@ -11,16 +11,6 @@ namespace ImGuiManager
 
     inline bool IsInitialized = false;
     inline bool InteractiveMode = false;
-
-    inline struct {
-        float fov = 80.f;
-        bool force_fov = false;
-
-        bool show_console;
-
-        bool draw_gentity = false;
-        bool draw_gentity_window = false;
-    } DevGuiState = {};
 
     void Initialize(HDC hDc);
 

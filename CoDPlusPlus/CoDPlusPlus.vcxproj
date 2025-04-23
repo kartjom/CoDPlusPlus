@@ -63,6 +63,10 @@
     <ClInclude Include="src\Structs\Engine\level_locals.h" />
     <ClInclude Include="src\Structs\q_shared.h" />
     <ClInclude Include="src\Structs\Engine\server.h" />
+    <ClInclude Include="src\Utils\DevGui\Client.h" />
+    <ClInclude Include="src\Utils\DevGui\Debug.h" />
+    <ClInclude Include="src\Utils\DevGui\Server.h" />
+    <ClInclude Include="src\Utils\DevGui\SharedState.h" />
     <ClInclude Include="src\Utils\Network\HttpClient.h" />
     <ClInclude Include="src\Engine\CoDUO.h" />
     <ClInclude Include="src\Engine\ScriptLayer\Gsc\GscExtensions.h" />
