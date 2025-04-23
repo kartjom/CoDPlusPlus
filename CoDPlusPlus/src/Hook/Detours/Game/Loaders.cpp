@@ -31,7 +31,7 @@ namespace Hook::Detour
 			CodeCallback.OnPlayerSay = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerSay");
 			CodeCallback.OnPlayerVote = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerVote");
 			CodeCallback.OnPlayerInactivity = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerInactivity");
-			CodeCallback.OnVoteCalled = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnVoteCalled");
+			CodeCallback.OnPlayerVoteCalled = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnPlayerVoteCalled");
 			CodeCallback.OnProjectileBounce = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileBounce");
 			CodeCallback.OnProjectileExplode = Scr_GetFunctionHandle(_codplusplus, "CodeCallback_OnProjectileExplode");
 		}

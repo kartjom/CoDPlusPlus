@@ -237,7 +237,7 @@ namespace Hook::Detour
 		// TODO: add remaining checks or completely replace the function
 		// For now this is better than previous crashing detour
 
-		if (CodeCallback.OnVoteCalled && Cmd_Argc() >= 2 && ent && ent->client)
+		if (CodeCallback.OnPlayerVoteCalled && Cmd_Argc() >= 2 && ent && ent->client)
 		{
 			Scr_MakeArray();
 			for (int i = 2; i < Cmd_Argc(); i++)
@@ -248,7 +248,7 @@ namespace Hook::Detour
 
 			Scr_AddString(Cmd_Argv(1)); // Vote Type
 			Scr_AddEntity(ent);
-			ScrVar ret_val = Scr_RunScript(CodeCallback.OnVoteCalled, 3);
+			ScrVar ret_val = Scr_RunScript(CodeCallback.OnPlayerVoteCalled, 3);
 
 			if (ret_val.IsNumber() && ret_val.GetNumber<qboolean>() == qfalse)
 			{
