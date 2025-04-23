@@ -12,7 +12,7 @@ namespace CoDUO::Gsc
 		uint32_t OnPlayerSay;			//	 ePlayer, sText, iMode, bConsole
 		uint32_t OnPlayerVote;			//	 ePlayer, bVote
 		uint32_t OnPlayerInactivity;	//	 ePlayer
-		uint32_t OnPlayerVoteCalled;	//	 ePlayer, sVoteType, aVoteInfo
+		uint32_t OnPlayerVoteCall;		//	 ePlayer, sVoteType, aVoteInfo
 
 		uint32_t OnProjectileBounce;	//	 eProjectile
 		uint32_t OnProjectileExplode;	//	 eProjectile
