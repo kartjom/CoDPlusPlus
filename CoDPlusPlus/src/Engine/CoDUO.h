@@ -46,11 +46,12 @@ namespace CoDUO /* GscMapping.cpp */
 	ScrVar Scr_RunScript(int32_t scriptHandle, uint32_t argc);
 
 	int32_t Scr_GetNumParam();
-	int32_t Scr_GetType(int param);
-	int32_t Scr_GetPointerType(int index);
+	VarType Scr_GetType(int param);
+	VarType Scr_GetPointerType(int index);
 	VarType Scr_GetVarType(VariableValue* var);
 	const char* Scr_GetTypeName(VarType type);
 
+	VariableValue* Scr_GetValue(int32_t param);
 	int32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
 	void Scr_GetVector(int param, void* destination);
@@ -58,6 +59,7 @@ namespace CoDUO /* GscMapping.cpp */
 	const char* Scr_GetString(int param);
 	int32_t Scr_GetConstString(int param);
 	gentity_t* Scr_GetEntity(int param);
+	gentity_t* Scr_GetVarEntity(VariableValue* var);
 	int32_t Scr_GetFunction(int param);
 
 	void Scr_AddUndefined();

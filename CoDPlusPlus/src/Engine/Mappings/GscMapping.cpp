@@ -52,7 +52,7 @@ namespace CoDUO
 		}
 	}
 
-	int32_t Scr_GetType(int param)
+	VarType Scr_GetType(int param)
 	{
 		_asm
 		{
@@ -64,7 +64,7 @@ namespace CoDUO
 		}
 	}
 
-	int32_t Scr_GetPointerType(int index)
+	VarType Scr_GetPointerType(int index)
 	{
 		_asm
 		{
@@ -78,6 +78,9 @@ namespace CoDUO
 
 	VarType Scr_GetVarType(VariableValue* var)
 	{
+		if (!var)
+			return VarType::Undefined;
+
 		if (var->type == VarType::Object)
 		{
 			constexpr int VAR_MASK = 0x1F;
@@ -100,10 +103,16 @@ namespace CoDUO
 
 		if (type >= VarType::Undefined && type < VarType::DeadObject)
 		{
-			return var_typename[ (int)type ];
+			return var_typename[(int)type];
 		}
 
 		return "";
+	}
+
+	VariableValue* Scr_GetValue(int32_t param)
+	{
+		VariableValue*& scrVmPub_top = *(VariableValue**)(0x00b6ac90);
+		return &scrVmPub_top[-param];
 	}
 
 	int32_t Scr_GetInt(int param)
@@ -176,11 +185,29 @@ namespace CoDUO
 			push param
 			mov esi, param
 			mov eax, uo_game_mp_x86
-			add eax, 0x4E1E0
+			add eax, 0x0004E1E0
 			call eax
 
 			add esp, 0x4
 		}
+	}
+
+	gentity_t* Scr_GetVarEntity(VariableValue* var)
+	{
+		if (var && Scr_GetVarType(var) == VarType::Entity)
+		{
+			uint16_t index = (uint16_t)var->pointerValue;
+			uint32_t offset = index * 0xC;
+			uint8_t* tableBase = (uint8_t*)(0x00AA6B6A);
+			uint16_t entityNum = *(uint16_t*)(tableBase + offset);
+
+			if (entityNum >= 0 && entityNum <= WORLDSPAWN)
+			{
+				return g_entities + entityNum;
+			}
+		}
+
+		return nullptr;
 	}
 
 	int32_t Scr_GetFunction(int param)

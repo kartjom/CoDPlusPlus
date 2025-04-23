@@ -255,15 +255,29 @@ namespace ImGuiManager
 						break;
 					case VarType::Vector:
 					{
-						auto& vec = scr_var.GetVectorRef();
+						const vec3_t& vec = scr_var.GetVectorRef();
 						ImGui::Text("%s (%.2f %.2f %.2f)", typeName, vec.x, vec.y, vec.z);
 						break;
 					}
 					case VarType::Float:
 						ImGui::Text("%s %.2f", typeName, scr_var.GetNumber<float>());
 						break;
+					case VarType::Integer:
+						ImGui::Text("%s %d", typeName, scr_var.GetNumber<int>());
+						break;
+					case VarType::Entity:
+					{
+						gentity_t* ent = scr_var.GetEntity();
+						const char* name = nullptr;
+						if (ent) {
+							name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
+						}
+
+						ImGui::Text("%s %s", typeName, name);
+						break;
+					}
 					default:
-						ImGui::Text("%s %d", typeName, scr_var.GetNumber<int32_t>());
+						ImGui::Text("%s %d", typeName, scr_var.GetNumber<int>());
 					}
 
 					ImGui::Spacing();

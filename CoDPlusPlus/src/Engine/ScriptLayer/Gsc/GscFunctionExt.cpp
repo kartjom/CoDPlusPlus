@@ -132,87 +132,63 @@ namespace CoDUO::Gsc
 
 		for (int i = 1; i < argc; i++)
 		{
-			int type = Scr_GetType(i);
-			switch ((VarType)type)
+			ScrVar scr_var = ScrVar::From( Scr_GetValue(i) );
+			const char* typeName = scr_var.GetTypeName();
+
+			switch (scr_var.GetType())
 			{
 				case VarType::Undefined:
 				{
-					store.push_back("undefined");
+					store.push_back(typeName);
 					continue;
 				}
 				case VarType::String:
 				case VarType::LocalizedString:
 				{
-					const char* str = Scr_GetString(i);
+					const std::string& str = scr_var.GetStringRef();
 					store.push_back(str);
 					continue;
 				}
 				case VarType::Vector:
 				{
-					vec3_t vec = Scr_GetVector(i);
-					store.push_back(fmt::format("({:.2f} {:.2f} {:.2f})", vec.x, vec.y, vec.z));
+					const vec3_t& value = scr_var.GetVectorRef();
+					store.push_back(fmt::format("({:.2f} {:.2f} {:.2f})", value.x, value.y, value.z));
 					continue;
 				}
 				case VarType::Float:
 				{
-					float single = Scr_GetFloat(i);
-					store.push_back(single);
+					float value = scr_var.GetNumber<float>();
+					store.push_back(value);
 					continue;
 				}
 				case VarType::Integer:
 				{
-					int integer = Scr_GetInt(i);
-					store.push_back(integer);
+					int value = scr_var.GetNumber<int>();
+					store.push_back(value);
 					continue;
 				}
-				case VarType::Object:
+				case VarType::Entity:
 				{
-					int ptrType = Scr_GetPointerType(i);
-					switch ((VarType)ptrType)
-					{
-						case VarType::Entity:
-						{
-							gentity_t* ent = Scr_GetEntity(i);
-							const char* name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
-							store.push_back(name);
-							continue;
-						}
-						case VarType::Struct:
-						{
-							store.push_back("<struct>");
-							continue;
-						}
-						case VarType::Array:
-						{
-							store.push_back("<array>");
-							continue;
-						}
-						default:
-						{
-							std::println("Scr_Format: Unhandled pointer type {}", ptrType);
-							store.push_back(fmt::format("<ptr_type {}>", ptrType));
-						}
+					gentity_t* ent = scr_var.GetEntity();
+					const char* name = nullptr;
+					if (ent) {
+						name = ent->client ? ent->client->name : SL_ConvertToString(ent->classname);
 					}
 
-					continue;
-				}
-				case VarType::Function:
-				{
-					int func = Scr_GetFunction(i);
-					store.push_back(fmt::format("<function {}>", func));
+					store.push_back(name ? name : "<null>");
 					continue;
 				}
 				default:
 				{
-					std::println("Scr_Format: Unhandled type {}", type);
-					store.push_back(fmt::format("<var_type {}>", type));
+					int value = scr_var.GetNumber<int>();
+					store.push_back(fmt::format("<{} {}>", typeName, value));
 				}
 			}
 		}
 
 		std::string str = fmt::vformat(format, store);
 
-		Scr_AddString(str.c_str());
+		Scr_AddString( str.c_str() );
 	}
 
 	void Scr_String_ToUpper()

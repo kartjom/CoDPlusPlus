@@ -8,12 +8,6 @@
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
-
-namespace Hook::Detour
-{
-	ScrVar ConvertVariableValue(VariableValue* var);
-}
-
 namespace Hook::Detour
 {
 	uint16_t __cdecl hkScr_ExecThread(int32_t scriptHandle, uint32_t argc)
@@ -36,7 +30,7 @@ namespace Hook::Detour
 		uint16_t callback = VM_Execute(scrVarPub_levelId, scrVarPub_programBuffer + scriptHandle, argc);
 
 		// Capture the return value before it's disposed
-		Scr_InternalReturnValue = ConvertVariableValue(scrVmPub_top);
+		Scr_InternalReturnValue = ScrVar::From(scrVmPub_top);
 
 		switch (scrVmPub_top->type)
 		{
@@ -80,42 +74,5 @@ namespace Hook::Detour
 		}
 
 		SV_MapHook.Invoke();
-	}
-}
-
-namespace Hook::Detour
-{
-	ScrVar ConvertVariableValue(VariableValue* var)
-	{
-		ScrVar scrVar;
-
-		VarType type = Scr_GetVarType(var);
-		switch (type)
-		{
-		case VarType::Undefined:
-			scrVar.SetUndefined();
-			break;
-		case VarType::String:
-		case VarType::LocalizedString:
-		{
-			const char* str = SL_ConvertToString(var->stringValue);
-			bool localized = type == VarType::LocalizedString;
-			scrVar.SetString(str ? str : "", localized);
-			break;
-		}
-		case VarType::Vector:
-			scrVar.SetVector(*var->vectorValue);
-			break;
-		case VarType::Float:
-			scrVar.SetFloat(var->floatValue);
-			break;
-		case VarType::Integer:
-			scrVar.SetInt(var->intValue);
-			break;
-		default:
-			scrVar.SetInternal(var->intValue, type);
-		}
-
-		return scrVar;
 	}
 }
