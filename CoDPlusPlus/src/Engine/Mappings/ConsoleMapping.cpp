@@ -24,34 +24,22 @@ namespace CoDUO
 		_asm
 		{
 			mov eax, text
+
 			mov esi, 0x0042bc10
 			call esi
 		}
 	}
 
-	void Cmd_AddCommand(const char* cmd_name, void* function)
+	void __cdecl Cmd_AddCommand(const char* cmd_name, void* function)
 	{
-		_asm
-		{
-			push function
-			push cmd_name
-			mov eax, 0x0042C3B0
-			call eax
-
-			add esp, 0x8
-		}
+		auto Cmd_AddCommand_f = (decltype(Cmd_AddCommand)*)(0x0042c3b0);
+		Cmd_AddCommand_f(cmd_name, function);
 	}
 
-	void Cmd_RemoveCommand(const char* cmd_name)
+	void __cdecl Cmd_RemoveCommand(const char* cmd_name)
 	{
-		_asm
-		{
-			push cmd_name
-			mov eax, 0x0042c4a0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Cmd_RemoveCommand_f = (decltype(Cmd_RemoveCommand)*)(0x0042c4a0);
+		Cmd_RemoveCommand_f(cmd_name);
 	}
 
 	bool Cmd_HasCommand(const char* cmd_name)
@@ -69,43 +57,21 @@ namespace CoDUO
 		return false;
 	}
 
-	cvar_t* Cvar_FindVar(const char* var_name)
+	cvar_t* __cdecl Cvar_FindVar(const char* var_name)
 	{
-		_asm
-		{
-			push var_name
-			mov eax, 0x0043D8F0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Cvar_FindVar_f = (decltype(Cvar_FindVar)*)(0x0043d8f0);
+		return Cvar_FindVar_f(var_name);
 	}
 
-	cvar_t* Cvar_Get(const char* var_name, const char* var_value, int flags)
+	cvar_t* __cdecl Cvar_Get(const char* var_name, const char* var_value, int flags)
 	{
-		_asm
-		{
-			push flags
-			push var_value
-			push var_name
-			mov eax, 0x0043D9E0
-			call eax
-
-			add esp, 0xC
-		}
+		auto Cvar_Get_f = (decltype(Cvar_Get)*)(0x0043d9e0);
+		return Cvar_Get_f(var_name, var_value, flags);
 	}
 
-	cvar_t* Cvar_Set(const char* var_name, const char* value, uint32_t force)
+	cvar_t* __cdecl Cvar_Set(const char* var_name, const char* value, uint32_t force)
 	{
-		_asm
-		{
-			push force
-			push value
-			push var_name
-			mov eax, 0x0043DC50
-			call eax
-
-			add esp, 0xC
-		}
+		auto Cvar_Set_f = (decltype(Cvar_Set)*)(0x0043dc50);
+		return Cvar_Set_f(var_name, value, force);
 	}
 }

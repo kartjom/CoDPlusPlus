@@ -8,6 +8,13 @@
 #define WORLDSPAWN 1022
 #define NO_GENTITY 1023
 
+enum class_num_t
+{
+	CLASS_NUM_ENTITY,
+	CLASS_NUM_HUDELEM,
+	CLASS_NUM_VEHICLENODE,
+};
+
 enum entityType_t
 {
 	ET_GENERAL = 0,

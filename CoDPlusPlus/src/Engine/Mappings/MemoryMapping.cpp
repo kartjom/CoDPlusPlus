@@ -7,20 +7,15 @@ namespace CoDUO
 		_asm
 		{
 			mov ecx, vectorValue
+
 			mov edx, 0x004841c0
 			call edx
 		}
 	}
 
-	void RemoveRefToObject(uint32_t id)
+	void __cdecl RemoveRefToObject(uint32_t id)
 	{
-		_asm
-		{
-			push id
-			mov eax, 0x00484100
-			call eax
-
-			add esp, 0x4
-		}
+		auto RemoveRefToObject_f = (decltype(RemoveRefToObject)*)(0x00484100);
+		RemoveRefToObject_f(id);
 	}
 }

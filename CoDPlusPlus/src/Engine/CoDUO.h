@@ -12,9 +12,9 @@
 #include <Engine/ScriptLayer/Gsc/GscExtensions.h>
 #include <wtypes.h>
 
-typedef char* (__cdecl* syscall_t)(int32_t, ...);
-typedef char* (__cdecl* va_t)(const char*, ...);
-typedef void (__cdecl* Com_Printf_t)(const char*, ...);
+typedef char*(__cdecl* syscall_t)(int32_t, ...);
+typedef char*(__cdecl* va_t)(const char*, ...);
+typedef void(__cdecl* Com_Printf_t)(const char*, ...);
 
 namespace CoDUO /* CoDUOMP */
 {
@@ -54,7 +54,6 @@ namespace CoDUO /* GscMapping.cpp */
 	VariableValue* Scr_GetValue(int32_t param);
 	int32_t Scr_GetInt(int param);
 	float Scr_GetFloat(int param);
-	void Scr_GetVector(int param, void* destination);
 	vec3_t Scr_GetVector(int param);
 	const char* Scr_GetString(int param);
 	int32_t Scr_GetConstString(int param);
@@ -69,8 +68,9 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_AddVector(float* value);
 	void Scr_AddString(const char* string);
 	void Scr_AddConstString(int32_t index);
-	void Scr_AddEntityNum(int index);
+	void Scr_AddEntityNum(int32_t index, class_num_t classNum);
 	void Scr_AddEntity(gentity_t* entity);
+	void Scr_AddClient(gclient_t* client);
 	void Scr_MakeArray();
 	void Scr_AddArray();
 	void Scr_AddArrayStringIndexed(int32_t str_index);
@@ -112,8 +112,8 @@ namespace CoDUO /* StringUtilsMapping.cpp */
 {
 	char* CopyString(const char* input);
 	int32_t G_NewString(const char* string);
-	const char* G_EntityTypeString(int32_t eType);
-	unsigned int SL_GetString(const char* value, int user);
+	const char* G_EntityTypeString(entityType_t eType);
+	uint32_t SL_GetString(const char* value, int32_t user);
 	const char* SL_ConvertToString(uint32_t index);
 	void SL_RemoveRefToString(uint16_t index);
 
@@ -136,8 +136,8 @@ namespace CoDUO /* PlayerMapping.cpp */
 	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
 	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
 
-	void trap_GetUserinfo(int num, char* buffer, int bufferSize);
-	void trap_SetUserinfo(int num, const char* buffer);
+	void SV_GetUserinfo(int index, char* buffer, int bufferSize);
+	void SV_SetUserinfo(int index, const char* val);
 
 	std::string NET_AdrToString(netadr_t adr);
 

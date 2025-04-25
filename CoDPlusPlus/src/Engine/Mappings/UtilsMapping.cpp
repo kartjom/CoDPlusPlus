@@ -35,7 +35,6 @@ namespace CoDUO
 		_asm
 		{
 			push spread
-
 			mov edi, forward
 			mov esi, out_vec
 
@@ -80,7 +79,6 @@ namespace CoDUO
 		_asm
 		{
 			push fullyAiming
-
 			mov eax, time
 			mov edx, weaponIndex
 			mov ecx, client
@@ -119,14 +117,10 @@ namespace CoDUO
 		if (currentLength != 0)
 		{
 			float scale = newLength / currentLength;
-			direction.x *= scale;
-			direction.y *= scale;
-			direction.z *= scale;
+			direction = direction * scale;
 
 			// Update the end point of the ray
-			end.x = start.x + direction.x;
-			end.y = start.y + direction.y;
-			end.z = start.z + direction.z;
+			end = start + direction;
 		}
 	}
 

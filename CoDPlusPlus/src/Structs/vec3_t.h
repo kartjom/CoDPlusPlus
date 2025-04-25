@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <glm/vec3.hpp>
 
 #define VectorClear( a )              ( ( a )[0] = ( a )[1] = ( a )[2] = 0 )
@@ -31,7 +31,7 @@ struct vec3_t
 		: x(x), y(y), z(z)
 	{}
 
-	operator float* ()
+	operator float*()
 	{
 		return &x;
 	}

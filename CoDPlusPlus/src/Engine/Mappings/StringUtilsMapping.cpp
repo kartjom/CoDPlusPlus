@@ -7,6 +7,7 @@ namespace CoDUO
 		_asm
 		{
 			mov ebx, input
+
 			mov eax, 0x00435560
 			call eax
 		}
@@ -17,13 +18,14 @@ namespace CoDUO
 		_asm
 		{
 			mov edi, string
+
 			mov eax, uo_game_mp_x86
 			add eax, 0x0004dbc0
 			call eax
 		}
 	}
 
-	const char* G_EntityTypeString(int32_t eType)
+	const char* G_EntityTypeString(entityType_t eType)
 	{
 		switch (eType)
 		{
@@ -48,29 +50,16 @@ namespace CoDUO
 		return "ET_UNKNOWN";
 	}
 
-	unsigned int SL_GetString(const char* value, int user)
+	uint32_t __cdecl SL_GetString(const char* value, int32_t user)
 	{
-		_asm
-		{
-			push user
-			push value
-			mov eax, 0x004828e0
-			call eax
-
-			add esp, 0x8
-		}
+		auto SL_GetString_f = (decltype(SL_GetString)*)(0x004828e0);
+		return SL_GetString_f(value, user);
 	}
 
-	const char* SL_ConvertToString(uint32_t index)
+	const char* __cdecl SL_ConvertToString(uint32_t index)
 	{
-		_asm
-		{
-			push index
-			mov eax, 0x00482290
-			call eax
-
-			add esp, 0x4
-		}
+		auto SL_ConvertToString_f = (decltype(SL_ConvertToString)*)(0x00482290);
+		return SL_ConvertToString_f(index);
 	}
 
 	void SL_RemoveRefToString(uint16_t index)
@@ -79,21 +68,16 @@ namespace CoDUO
 		{
 			xor eax, eax
 			mov ax, index
+
 			mov ecx, 0x00482b00
 			call ecx
 		}
 	}
 
-	void Z_Free(void* mem)
+	void __cdecl Z_Free(void* mem)
 	{
-		_asm
-		{
-			push mem
-			mov eax, 0x0056d9cf
-			call eax
-
-			add esp, 0x4
-		}
+		auto Z_Free_f = (decltype(Z_Free)*)(0x0056d9cf);
+		Z_Free_f(mem);
 	}
 
 	const char* Info_ValueForKey(const char* buffer, const char* key)
@@ -113,10 +97,9 @@ namespace CoDUO
 	{
 		_asm
 		{
-			mov edx, buffer
 			push value
-			push buffer
 			mov ecx, key
+			push buffer
 
 			mov eax, uo_game_mp_x86
 			add eax, 0x00058560

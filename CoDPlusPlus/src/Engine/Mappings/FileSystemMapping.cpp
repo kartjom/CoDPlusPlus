@@ -2,17 +2,9 @@
 
 namespace CoDUO
 {
-	int FS_ReadFile(const char* qpath, void** buffer)
+	int __cdecl FS_ReadFile(const char* qpath, void** buffer)
 	{
-		_asm
-		{
-			push buffer
-			push qpath
-
-			mov eax, 0x0042e600
-			call eax
-
-			add esp, 0x8
-		}
+		auto FS_ReadFile_f = (decltype(FS_ReadFile)*)(0x0042e600);
+		return FS_ReadFile_f(qpath, buffer);
 	}
 }

@@ -20,6 +20,7 @@ namespace CoDUO
 		_asm
 		{
 			mov esi, name
+
 			mov eax, uo_game_mp_x86
 			add eax, 0x00011010
 			call eax

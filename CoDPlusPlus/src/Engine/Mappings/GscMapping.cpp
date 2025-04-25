@@ -2,28 +2,16 @@
 
 namespace CoDUO
 {
-	int32_t Scr_LoadScript(const char* file)
+	int32_t __cdecl Scr_LoadScript(const char* file)
 	{
-		_asm
-		{
-			push[file]
-			mov eax, [file]
-			mov edi, 0x00480150
-			call edi
-			add esp, 0x4
-		}
+		auto Scr_LoadScript_f = (decltype(Scr_LoadScript)*)(0x00480150);
+		return Scr_LoadScript_f(file);
 	}
 
-	int32_t Scr_GetFunctionHandle(const char* file, const char* method)
+	int32_t __cdecl Scr_GetFunctionHandle(const char* file, const char* method)
 	{
-		_asm
-		{
-			push[method]
-			push[file]
-			mov eax, 0x0047FE50
-			call eax
-			add esp, 0x8
-		}
+		auto Scr_GetFunctionHandle_f = (decltype(Scr_GetFunctionHandle)*)(0x0047fe50);
+		return Scr_GetFunctionHandle_f(file, method);
 	}
 
 	ScrVar Scr_RunScript(int32_t scriptHandle, uint32_t argc)
@@ -43,37 +31,22 @@ namespace CoDUO
 
 namespace CoDUO
 {
-	int32_t Scr_GetNumParam()
+	int32_t __cdecl Scr_GetNumParam()
 	{
-		_asm
-		{
-			mov eax, 0x00490640
-			call eax
-		}
+		auto Scr_GetNumParam_f = (decltype(Scr_GetNumParam)*)(0x00490640);
+		return Scr_GetNumParam_f();
 	}
 
-	VarType Scr_GetType(int param)
+	VarType __cdecl Scr_GetType(int param)
 	{
-		_asm
-		{
-			push param
-			mov eax, 0x00490530
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetType_f = (decltype(Scr_GetType)*)(0x00490530);
+		return Scr_GetType_f(param);
 	}
 
-	VarType Scr_GetPointerType(int index)
+	VarType __cdecl Scr_GetPointerType(int index)
 	{
-		_asm
-		{
-			push index
-			mov eax, 0x004905a0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetPointerType_f = (decltype(Scr_GetPointerType)*)(0x004905a0);
+		return Scr_GetPointerType_f(index);
 	}
 
 	VarType Scr_GetVarType(VariableValue* var)
@@ -115,64 +88,36 @@ namespace CoDUO
 		return &scrVmPub_top[-param];
 	}
 
-	int32_t Scr_GetInt(int param)
+	int32_t __cdecl Scr_GetInt(int param)
 	{
-		_asm
-		{
-			push param
-			mov eax, 0x0048FC00
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetInt_f = (decltype(Scr_GetInt)*)(0x0048fc00);
+		return Scr_GetInt_f(param);
 	}
 
-	float Scr_GetFloat(int param)
+	float __cdecl Scr_GetFloat(int param)
 	{
-		_asm
-		{
-			push param
-			mov eax, 0x0048FF00
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetFloat_f = (decltype(Scr_GetFloat)*)(0x0048ff00);
+		return Scr_GetFloat_f(param);
 	}
 
-	void Scr_GetVector(int param, void* destination)
+	vec3_t __cdecl Scr_GetVector(int param)
 	{
-		_asm
-		{
-			push destination
-			push param
-			mov eax, 0x004902A0
-			call eax
+		typedef void(__cdecl* Scr_GetVector_t)(int param, float* destination);
+		Scr_GetVector_t Scr_GetVector_f = (Scr_GetVector_t)(0x004902a0);
 
-			add esp, 0x8
-		}
-	}
-
-	vec3_t Scr_GetVector(int param)
-	{
 		vec3_t vec;
-		Scr_GetVector(param, &vec);
+		Scr_GetVector_f(param, vec);
 
 		return vec;
 	}
 
-	int32_t Scr_GetConstString(int param)
+	int32_t __cdecl Scr_GetConstString(int param)
 	{
-		_asm
-		{
-			push param
-			mov eax, 0x0048FFA0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetConstString_f = (decltype(Scr_GetConstString)*)(0x0048ffa0);
+		return Scr_GetConstString_f(param);
 	}
 
-	const char* Scr_GetString(int param)
+	const char* __cdecl Scr_GetString(int param)
 	{
 		int str_id = Scr_GetConstString(param);
 		return SL_ConvertToString(str_id);
@@ -182,13 +127,11 @@ namespace CoDUO
 	{
 		_asm
 		{
-			push param
-			mov esi, param
-			mov eax, uo_game_mp_x86
-			add eax, 0x0004E1E0
-			call eax
+			mov ecx, param
 
-			add esp, 0x4
+			mov eax, uo_game_mp_x86
+			add eax, 0x0004e1e0
+			call eax
 		}
 	}
 
@@ -198,7 +141,7 @@ namespace CoDUO
 		{
 			uint16_t index = (uint16_t)var->pointerValue;
 			uint32_t offset = index * 0xC;
-			uint8_t* tableBase = (uint8_t*)(0x00AA6B6A);
+			uint8_t* tableBase = (uint8_t*)(0x00aa6b6a);
 			uint16_t entityNum = *(uint16_t*)(tableBase + offset);
 
 			if (entityNum >= 0 && entityNum <= WORLDSPAWN)
@@ -210,147 +153,88 @@ namespace CoDUO
 		return nullptr;
 	}
 
-	int32_t Scr_GetFunction(int param)
+	int32_t __cdecl Scr_GetFunction(int param)
 	{
-		_asm
-		{
-			push param
-			mov eax, 0x00490370
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_GetFunction_f = (decltype(Scr_GetFunction)*)(0x00490370);
+		return Scr_GetFunction_f(param);
 	}
 }
 
 namespace CoDUO
 {
-	void Scr_AddUndefined()
+	void __cdecl Scr_AddUndefined()
 	{
-		_asm
-		{
-			mov eax, 0x004906d0
-			call eax
-		}
+		auto Scr_AddUndefined_f = (decltype(Scr_AddUndefined)*)(0x004906d0);
+		Scr_AddUndefined_f();
 	}
 
-	void Scr_AddBool(qboolean value)
+	void __cdecl Scr_AddBool(qboolean value)
 	{
-		_asm
-		{
-			push value
-			mov eax, 0x00490650
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddBool_f = (decltype(Scr_AddBool)*)(0x00490650);
+		Scr_AddBool_f(value);
 	}
 
-	void Scr_AddInt(int value)
+	void __cdecl Scr_AddInt(int value)
 	{
-		_asm
-		{
-			push value
-			mov eax, 0x00490670
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddInt_f = (decltype(Scr_AddInt)*)(0x00490670);
+		Scr_AddInt_f(value);
 	}
 
-	void Scr_AddFloat(float value)
+	void __cdecl Scr_AddFloat(float value)
 	{
-		_asm
-		{
-			push value
-			mov eax, 0x00490690
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddFloat_f = (decltype(Scr_AddFloat)*)(0x00490690);
+		Scr_AddFloat_f(value);
 	}
 
-	void Scr_AddVector(float* value)
+	void __cdecl Scr_AddVector(float* value)
 	{
-		_asm
-		{
-			push value
-			mov eax, 0x004908C0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddVector_f = (decltype(Scr_AddVector)*)(0x004908c0);
+		Scr_AddVector_f(value);
 	}
 
-	void Scr_AddString(const char* string)
+	void __cdecl Scr_AddString(const char* string)
 	{
-		_asm
-		{
-			push[string]
-			mov eax, 0x004907F0
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddString_f = (decltype(Scr_AddString)*)(0x004907f0);
+		Scr_AddString_f(string);
 	}
 
-	void Scr_AddConstString(int32_t index)
+	void __cdecl Scr_AddConstString(int32_t index)
 	{
-		_asm
-		{
-			push index
-			mov eax, 0x00490890
-			call eax
-
-			add esp, 0x4
-		}
+		auto Scr_AddConstString_f = (decltype(Scr_AddConstString)*)(0x00490890);
+		Scr_AddConstString_f(index);
 	}
 
-	void Scr_AddEntityNum(int index)
+	void __cdecl Scr_AddEntityNum(int32_t index, class_num_t classNum)
 	{
-		_asm
-		{
-			push 0x0
-			push index
-			mov eax, 0x00490720
-			call eax
-
-			add esp, 0x8
-		}
+		auto Scr_AddEntityNum_f = (decltype(Scr_AddEntityNum)*)(0x00490720);
+		Scr_AddEntityNum_f(index, classNum);
 	}
 
-	void Scr_AddEntity(gentity_t* entity)
+	void __cdecl Scr_AddEntity(gentity_t* entity)
 	{
-		Scr_AddEntityNum(entity->number);
+		Scr_AddEntityNum(entity->number, CLASS_NUM_ENTITY);
 	}
 
-	void Scr_MakeArray()
+	void __cdecl Scr_AddClient(gclient_t* client)
 	{
-		_asm
-		{
-			mov eax, 0x00490910
-			call eax
-		}
+		Scr_AddEntityNum(client->clientNum, CLASS_NUM_ENTITY);
 	}
 
-	void Scr_AddArray()
+	void __cdecl Scr_MakeArray()
 	{
-		_asm
-		{
-			mov eax, 0x00490960
-			call eax
-		}
+		auto Scr_MakeArray_f = (decltype(Scr_MakeArray)*)(0x00490910);
+		Scr_MakeArray_f();
 	}
 
-	void Scr_AddArrayStringIndexed(int32_t str_index)
+	void __cdecl Scr_AddArray()
 	{
-		_asm
-		{
-			push str_index
-			mov eax, 0x004909E0
-			call eax
+		auto Scr_AddArray_f = (decltype(Scr_AddArray)*)(0x00490960);
+		Scr_AddArray_f();
+	}
 
-			add esp, 0x4
-		}
+	void __cdecl Scr_AddArrayStringIndexed(int32_t str_index)
+	{
+		auto Scr_AddArrayStringIndexed_f = (decltype(Scr_AddArrayStringIndexed)*)(0x004909e0);
+		Scr_AddArrayStringIndexed_f(str_index);
 	}
 }

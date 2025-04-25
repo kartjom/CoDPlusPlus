@@ -13,13 +13,12 @@ namespace CoDUO::Gsc
 		if (str && ent && ent->client)
 		{
 			char buf[MAX_STRING_CHARS];
-			trap_GetUserinfo(entNum, buf, sizeof(buf));
+			SV_GetUserinfo(entNum, buf, sizeof(buf));
 
 			Info_SetValueForKey(buf, "name", str);
-			trap_SetUserinfo(entNum, buf);
+			SV_SetUserinfo(entNum, buf);
 
-			memcpy(ent->client->name, str, 32);
-			ent->client->name[31] = '\0';
+			snprintf(ent->client->name, 32, str);
 		}
 	}
 
@@ -106,7 +105,7 @@ namespace CoDUO::Gsc
 
 			if (tr.entityNum >= 0 && tr.entityNum <= WORLDSPAWN)
 			{
-				Scr_AddEntityNum(tr.entityNum);
+				Scr_AddEntityNum(tr.entityNum, CLASS_NUM_ENTITY);
 			}
 			else
 			{

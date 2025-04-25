@@ -9,6 +9,7 @@ namespace CoDUO
 		{
 			mov esi, destination
 			mov edi, ent
+
 			mov eax, uo_game_mp_x86
 			add eax, 0x000563b0
 			call eax
@@ -60,30 +61,30 @@ namespace CoDUO
 		}
 	}
 
-	void trap_GetUserinfo(int num, char* buffer, int bufferSize)
+	void SV_GetUserinfo(int index, char* buffer, int bufferSize)
 	{
 		_asm
 		{
-			push bufferSize
-			push buffer
-			push num
-			push 0x21
-			call syscall
+			mov eax, index
+			mov ebx, buffer
+			mov edi, bufferSize
 
-			add esp, 0x10
+			mov esi, 0x0045f0d0
+			call esi
 		}
 	}
 
-	void trap_SetUserinfo(int num, const char* buffer)
+	void SV_SetUserinfo(int index, const char* val)
 	{
 		_asm
 		{
-			push buffer
-			push num
-			push 0x22
-			call syscall
+			mov eax, index
+			push val
 
-			add esp, 0xC
+			mov esi, 0x0045f040
+			call esi
+
+			add esp, 0x4
 		}
 	}
 
@@ -118,6 +119,15 @@ namespace CoDUO
 
 	void SV_GameDropClient(int clientNum, const char* reason)
 	{
-		syscall(0x1a, clientNum, reason);
+		_asm
+		{
+			mov eax, clientNum
+			push reason
+
+			mov esi, 0x0045c830
+			call esi
+
+			add esp, 0x4
+		}
 	}
 }

@@ -63,7 +63,10 @@ gentity_t* ScrVar::GetEntity() const
 
 ScrVar ScrVar::From(VariableValue* var)
 {
-	ScrVar scrVar;
+	ScrVar scrVar{};
+
+	if (!var)
+		return scrVar;
 
 	VarType type = Scr_GetVarType(var);
 	switch (type)

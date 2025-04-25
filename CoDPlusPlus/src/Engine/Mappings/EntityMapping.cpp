@@ -1,18 +1,11 @@
-#include <Engine/CoDUO.h>
+﻿#include <Engine/CoDUO.h>
 
 namespace CoDUO
 {
-	void G_FreeEntity(gentity_t* ent)
+	void __cdecl G_FreeEntity(gentity_t* ent)
 	{
-		_asm
-		{
-			push ent
-			mov eax, uo_game_mp_x86
-			add eax, 0x00053130
-			call eax
-
-			add esp, 0x4
-		}
+		auto G_FreeEntity_f = (decltype(G_FreeEntity)*)(uo_game_mp_x86 + 0x00053130);
+		G_FreeEntity_f(ent);
 	}
 
 	void G_DeleteEntity(gentity_t* ent)
@@ -49,6 +42,7 @@ namespace CoDUO
 		_asm
 		{
 			mov edi, ent
+
 			mov eax, 0x00467050
 			call eax
 		}

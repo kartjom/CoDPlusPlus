@@ -53,7 +53,7 @@ namespace Hook::Detour
 
 			if (trace.entityNum >= 0 && trace.entityNum <= WORLDSPAWN)
 			{
-				Scr_AddEntityNum(trace.entityNum);
+				Scr_AddEntityNum(trace.entityNum, CLASS_NUM_ENTITY);
 			}
 			else
 			{
@@ -102,7 +102,7 @@ namespace Hook::Detour
 
 			if ( ret_val.IsString() )
 			{
-				auto str = ret_val.GetStringRef();
+				const std::string& str = ret_val.GetStringRef();
 
 				if (str.empty())
 					return; // don't display message
@@ -143,7 +143,7 @@ namespace Hook::Detour
 				// Allow script to override inactivity penalty
 				if (CodeCallback.OnPlayerInactivity && client)
 				{
-					Scr_AddEntityNum(client->clientNum);
+					Scr_AddClient(client);
 					ScrVar ret_val = Scr_RunScript(CodeCallback.OnPlayerInactivity, 1);
 
 					// We check if script returned 'true'
