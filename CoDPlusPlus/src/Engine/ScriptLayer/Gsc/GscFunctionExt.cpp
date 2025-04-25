@@ -167,6 +167,12 @@ namespace CoDUO::Gsc
 					store.push_back(value);
 					continue;
 				}
+				case VarType::Function:
+				{
+					int value = scr_var.GetFunction();
+					store.push_back(fmt::format("<{} {}>", typeName, value));
+					continue;
+				}
 				case VarType::Entity:
 				{
 					gentity_t* ent = scr_var.GetEntity();

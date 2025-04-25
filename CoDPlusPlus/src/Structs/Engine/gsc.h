@@ -15,7 +15,7 @@ struct VariableValue
 {
 	union
 	{
-		int intValue;
+		int32_t intValue;
 		float floatValue;
 		uint32_t stringValue;
 		vec3_t* vectorValue;

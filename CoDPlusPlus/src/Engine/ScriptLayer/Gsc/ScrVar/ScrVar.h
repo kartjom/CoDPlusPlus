@@ -20,6 +20,7 @@ public:
 	void SetString(const char* value, bool localized);
 	void SetVector(const vec3_t& value);
 	void SetEntity(gentity_t* ent);
+	void SetFunction(int32_t value);
 	void SetInternal(int32_t value, VarType type);
 
 	VarType GetType() const;
@@ -30,6 +31,7 @@ public:
 	bool IsString() const;
 	bool IsVector() const;
 	bool IsEntity() const;
+	bool IsFunction() const;
 
 	std::string GetString() const;
 	const std::string& GetStringRef() const;
@@ -38,6 +40,7 @@ public:
 	const vec3_t& GetVectorRef() const;
 
 	gentity_t* GetEntity() const;
+	int32_t GetFunction() const;
 
 	template<typename T>
 		requires (std::is_same_v<T, int32_t> || std::is_same_v<T, float>)
