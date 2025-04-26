@@ -1,5 +1,6 @@
 ﻿#include <Engine/CoDUO.h>
 #include <Hook/Detours.h>
+#include <print>
 
 using namespace CoDUO;
 using namespace CoDUO::Gsc;
@@ -30,21 +31,45 @@ namespace Hook::Detour
 		}
 	}
 
-	_declspec(naked) void VEH_UnlinkPlayerFix_n() noexcept
+	// Prevents 'VEH_UnlinkPlayer: Player is not using a vehicle' script error
+	qboolean __cdecl hkVEH_UnlinkPlayer(int param_1)
 	{
-		// Disables 'VEH_UnlinkPlayer: Player is not using a vehicle' script error
-		_asm
+		gentity_t* player = (gentity_t*)VEH_UnlinkPlayerHook.CapturedContext.eax;
+
+		// Player is not using vehicle
+		if ((player->client->eFlags & 0x100000U) == 0)
 		{
-			pop edi
-			pop esi
-			mov eax, 0 // return value
-			pop ebx
-			add esp, 0x10
-			ret
+			std::println("VEH_UnlinkPlayer: Trying to prevent script error for - {}", player->client->name);
+
+			// Simulate player sitting in vehicle
+			player->client->eFlags |= 0x100000U;
+
+			// Check if our current vehicle is valid
+			if (g_entities[player->ownerNum].eType != ET_VEHICLE)
+			{
+				// If not, try to retrieve last used vehicle
+				if (g_entities[player->otherEntityNum].eType == ET_VEHICLE)
+				{
+					player->ownerNum = player->otherEntityNum;
+					std::println("VEH_UnlinkPlayer: Retrieved last used vehicle - {}", player->ownerNum);
+				}
+				else
+				{
+					player->client->eFlags &= ~0x100000U;
+					player->otherEntityNum = 0;
+					player->ownerNum = 1023;
+
+					std::println("VEH_UnlinkPlayer: Could not unlink {} - preventing crash; vehicle may still be active", player->client->name);
+					return 1;
+				}
+			}
 		}
+
+		VEH_UnlinkPlayerHook.SetEAX(player);
+		return VEH_UnlinkPlayerHook.Invoke(param_1);
 	}
 
-	// This can randomly throw access violation during map change
+	// Prevents crash from random access violation during map change - temp solution
     int __cdecl hkFUN_00421510()
     {
         __try

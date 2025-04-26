@@ -78,8 +78,8 @@ namespace Hook::Detour /* Fixes.cpp */
 	inline DetourHook VehicleCrashFixHook;
 	void VehicleCrashFix_n() noexcept;
 
-	inline DetourHook VEH_UnlinkPlayerFixHook;
-	void VEH_UnlinkPlayerFix_n() noexcept;
+	qboolean __cdecl hkVEH_UnlinkPlayer(int);
+	inline TrampolineHookFrom<hkVEH_UnlinkPlayer> VEH_UnlinkPlayerHook;
 
 	int __cdecl hkFUN_00421510();
 	inline TrampolineHookFrom<hkFUN_00421510> FUN_00421510Hook;

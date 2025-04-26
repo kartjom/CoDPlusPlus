@@ -75,7 +75,7 @@ namespace CoDUO
 
 			// Fixes
 			VehicleCrashFixHook.Inject(uo_game_mp_x86 + 0x0001b482, VehicleCrashFix_n);
-			VEH_UnlinkPlayerFixHook.Inject(uo_game_mp_x86 + 0x0004804a, VEH_UnlinkPlayerFix_n);
+			VEH_UnlinkPlayerHook.Inject(uo_game_mp_x86 + 0x00048030, hkVEH_UnlinkPlayer);
 
 			// Utility
 			// G_RunFrameHook.Inject(uo_game_mp_x86 + 0x0002cf40, hkG_RunFrame);
@@ -115,7 +115,7 @@ namespace CoDUO
 			G_ExplodeMissileHook.Dispose();
 			G_ExplodeSmokeHook.Dispose();
 			VehicleCrashFixHook.Dispose();
-			VEH_UnlinkPlayerFixHook.Dispose();
+			VEH_UnlinkPlayerHook.Dispose();
 			// G_RunFrameHook.Dispose();
 		}
 
