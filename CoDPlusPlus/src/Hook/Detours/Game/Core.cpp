@@ -75,4 +75,15 @@ namespace Hook::Detour
 
 		SV_MapHook.Invoke();
 	}
+
+	void __cdecl hkSV_AuthorizeIpPacket(netadr_t from)
+	{
+		if (sv_cracked->integer == qtrue)
+		{
+			const char* s = Cmd_ReplaceArgv(2, "accept");
+			const char* r = Cmd_ReplaceArgv(3, "KEY_IS_GOOD");
+		}
+
+		SV_AuthorizeIpPacketHook.Invoke(from);
+	}
 }

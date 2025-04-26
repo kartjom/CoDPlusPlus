@@ -27,11 +27,13 @@ namespace CoDUO
 			// Core functionality
 			Scr_ExecThreadHook.Inject(0x0048f3e0, hkScr_ExecThread);
 			SV_MapHook.Inject(0x00457650, hkSV_Map);
+			SV_AuthorizeIpPacketHook.Inject(0x00459590, hkSV_AuthorizeIpPacket);
 
 			// Fixes
 			FUN_00421510Hook.Inject(0x00421510, hkFUN_00421510);
 		}
 
+		AddCvars();
 		AddConsoleCommands();
 
 		std::println("[CoDPlusPlus] - Core Initialized");
@@ -132,6 +134,11 @@ namespace CoDUO
 
 		gsc_commands.clear();
 		gsc_clientcommands.clear();
+	}
+
+	void AddCvars()
+	{
+		sv_cracked = Cvar_Get("sv_cracked", "1", CVAR_ARCHIVE);
 	}
 
 	void AddConsoleCommands()

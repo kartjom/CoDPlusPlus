@@ -5,6 +5,7 @@
 #include <Structs/q_shared.h>
 #include <Structs/Engine/gentity.h>
 #include <Structs/Engine/trace.h>
+#include <Structs/Engine/server.h>
 
 namespace Hook::Patch
 {
@@ -20,6 +21,9 @@ namespace Hook::Detour /* Core.cpp */
 
 	void __cdecl hkSV_Map();
 	inline TrampolineHookFrom<hkSV_Map> SV_MapHook;
+
+	void __cdecl hkSV_AuthorizeIpPacket(netadr_t);
+	inline TrampolineHookFrom<hkSV_AuthorizeIpPacket> SV_AuthorizeIpPacketHook;
 }
 
 namespace Hook::Detour /* Loaders.cpp */

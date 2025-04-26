@@ -8,15 +8,23 @@ namespace CoDUO
 		return cmd_argc;
 	}
 
+	const char** cmd_argv = (const char**)(0x00964dc0);
 	const char* Cmd_Argv(int arg)
 	{
-		const char** cmd_argv = (const char**)(0x00964dc0);
 		if (arg >= Cmd_Argc())
 		{
 			return "";
 		}
 
 		return cmd_argv[arg];
+	}
+
+	const char* Cmd_ReplaceArgv(int arg, const char* value)
+	{
+		const char* original = Cmd_Argv(arg);
+		cmd_argv[arg] = value;
+
+		return original;
 	}
 
 	void Cbuf_AddText(const char* text)

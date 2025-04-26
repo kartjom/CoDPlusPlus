@@ -39,6 +39,11 @@ namespace CoDUO /* uo_game_mp_x86 */
 	inline cvarTable_t* gameCvarTable = nullptr;
 }
 
+namespace CoDUO /* Cvars */
+{
+	inline cvar_t* sv_cracked;
+}
+
 namespace CoDUO /* GscMapping.cpp */
 {
 	int32_t Scr_LoadScript(const char* file);
@@ -89,6 +94,7 @@ namespace CoDUO /* CvarMapping.cpp */
 {
 	int Cmd_Argc();
 	const char* Cmd_Argv(int arg);
+	const char* Cmd_ReplaceArgv(int arg, const char* value);
 
 	void Cbuf_AddText(const char* text);
 	void Cmd_AddCommand(const char* cmd_name, void* function);
@@ -171,6 +177,7 @@ namespace CoDUO
 {
 	void BaseInitialize();
 	void AddConsoleCommands();
+	void AddCvars();
 
 	void OnServerInitialize();
 	void OnServerShutdown();
