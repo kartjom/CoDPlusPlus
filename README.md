@@ -8,6 +8,7 @@
   <li>Many new Gsc functions and methods</li>
   <li>Ability to create new client and console commands via Gsc</li>
   <li>Asynchronous HTTP requests</li>
+  <li>Cracked server support</li>
   <li>Map Bindings</li>
   <li>Client-side ImGui integration</li>
   <li>Few crash and exploit fixes on the engine level</li>
