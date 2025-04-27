@@ -74,7 +74,7 @@ namespace CoDUO
 	{
 		const char** var_typename = (const char**)(0x005ca6f8);
 
-		if (type >= VarType::Undefined && type < VarType::DeadObject)
+		if (type >= VarType::Undefined && type <= VarType::DeadObject)
 		{
 			return var_typename[(int)type];
 		}
