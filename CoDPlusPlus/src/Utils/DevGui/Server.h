@@ -183,7 +183,7 @@ namespace DevGui::Server::Helper
 
 	void ActiveAsyncTasksTab()
 	{
-		using namespace CoDUO::Gsc::Async;
+		using namespace Threading::Async;
 
 		if (ImGui::TreeNode("Active Async Tasks"))
 		{

@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #include <Engine/Async/Task/Task.h>
 
-namespace CoDUO::Gsc::Async
+namespace Threading::Async
 {
 	struct HttpResult : public Task
 	{

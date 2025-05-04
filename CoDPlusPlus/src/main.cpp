@@ -8,9 +8,7 @@
 #include <Hook/Detours.h>
 #include <Hook/Hook.h>
 
-using namespace Utils;
 using namespace CoDUO;
-using namespace CoDUO::Gsc::Async;
 
 BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 {
@@ -29,8 +27,8 @@ BOOL WINAPI DllMain(HINSTANCE hModule, DWORD dwReason, LPVOID lpReserved)
 			OpenGLHelper::InjectDetours();
 		#endif
 
-		TaskManager::InitializeGarbageCollector();
-		ThreadPool.Initialize();
+		Threading::Async::TaskManager::InitializeGarbageCollector();
+		Threading::ThreadPool.Initialize();
 
 		MapBindings::ReloadMapBindings();
 		CoDUO::BaseInitialize();

@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <mutex>
 #include <memory>
 #include <unordered_map>
 
-namespace CoDUO::Gsc::Async
+namespace Threading::Async
 {
 	using TaskList = std::unordered_map<int, std::shared_ptr<struct Task>>;
 
@@ -39,7 +39,7 @@ namespace CoDUO::Gsc::Async
 	};
 }
 
-namespace CoDUO::Gsc::Async::TaskManager
+namespace Threading::Async::TaskManager
 {
 	void InitializeGarbageCollector();
 }

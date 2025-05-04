@@ -9,9 +9,9 @@
 #include <fmt/args.h>
 #include <print>
 
-using namespace Utils;
+using namespace Threading;
+using namespace Threading::Async;
 using namespace CoDUO;
-using namespace CoDUO::Gsc::Async;
 
 namespace CoDUO::Gsc
 {

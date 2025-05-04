@@ -1,7 +1,7 @@
-#include "HttpResult.h"
+﻿#include "HttpResult.h"
 #include <Engine/CoDUO.h>
 
-namespace CoDUO::Gsc::Async
+namespace Threading::Async
 {
 	HttpResult::HttpResult()
 	{
@@ -10,6 +10,8 @@ namespace CoDUO::Gsc::Async
 
 	void HttpResult::PushGscData()
 	{
+		using namespace CoDUO;
+
 		Scr_AddInt(this->StatusCode);
 		Scr_AddArrayStringIndexed(SL_GetString("status", 1));
 

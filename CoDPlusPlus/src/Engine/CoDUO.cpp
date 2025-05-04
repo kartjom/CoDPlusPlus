@@ -7,9 +7,9 @@
 #include <Utils/ThreadPool/ThreadPool.h>
 #include <print>
 
-using namespace Utils;
+using namespace Threading;
+using namespace Threading::Async;
 using namespace CoDUO::Gsc;
-using namespace CoDUO::Gsc::Async;
 
 namespace CoDUO
 {

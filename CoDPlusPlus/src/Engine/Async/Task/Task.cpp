@@ -2,7 +2,7 @@
 #include <chrono>
 #include <print>
 
-namespace CoDUO::Gsc::Async
+namespace Threading::Async
 {
 	void Task::Initialize()
 	{
@@ -37,7 +37,7 @@ namespace CoDUO::Gsc::Async
 	}
 }
 
-namespace CoDUO::Gsc::Async::TaskManager
+namespace Threading::Async::TaskManager
 {
 	void InitializeGarbageCollector()
 	{

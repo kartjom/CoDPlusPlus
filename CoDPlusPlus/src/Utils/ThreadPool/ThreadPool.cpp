@@ -1,6 +1,6 @@
 ﻿#include "ThreadPool.h"
 
-namespace Utils
+namespace Threading
 {
     ThreadPool::ThreadPool()
     {

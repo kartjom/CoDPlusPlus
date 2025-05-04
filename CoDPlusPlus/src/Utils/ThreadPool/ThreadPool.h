@@ -6,10 +6,9 @@
 #include <thread>
 #include <functional>
 #include <print>
-#include <thread>
 #include <memory>
 
-namespace Utils
+namespace Threading
 {
     struct TaskContext
     {
