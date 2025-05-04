@@ -43,9 +43,9 @@ namespace CoDUO::Gsc
 		if (ent && ent->client)
 		{
 			vec3_t vieworigin;
-			G_GetPlayerViewOrigin(ent, vieworigin);
+			G_GetPlayerViewOrigin(ent, &vieworigin);
 
-			Scr_AddVector(vieworigin);
+			Scr_AddVector(&vieworigin);
 		}
 		else
 		{
@@ -58,7 +58,7 @@ namespace CoDUO::Gsc
 		gentity_t* ent = g_entities + entNum;
 		if (ent && ent->client)
 		{
-			Scr_AddVector(ent->client->viewangles);
+			Scr_AddVector(&ent->client->viewangles);
 		}
 		else
 		{
@@ -73,9 +73,9 @@ namespace CoDUO::Gsc
 		{
 			vec3_t viewangles(ent->client->viewangles2.x , ent->client->viewangles2.y , ent->client->viewangles.z);
 			vec3_t viewdir;
-			AngleVectors(viewangles, viewdir, NULL, NULL);
+			AngleVectors(&viewangles, &viewdir, nullptr, nullptr);
 
-			Scr_AddVector(viewdir);
+			Scr_AddVector(&viewdir);
 		}
 		else
 		{
@@ -100,7 +100,7 @@ namespace CoDUO::Gsc
 			Scr_AddFloat(tr.fraction);
 			Scr_AddArrayStringIndexed(SL_GetString("fraction", 1));
 
-			Scr_AddVector(tr.endpos);
+			Scr_AddVector(&tr.endpos);
 			Scr_AddArrayStringIndexed(SL_GetString("position", 1));
 
 			if (tr.entityNum >= 0 && tr.entityNum <= WORLDSPAWN)
@@ -115,7 +115,7 @@ namespace CoDUO::Gsc
 
 			if (tr.fraction < 1.0f)
 			{
-				Scr_AddVector(tr.normal);
+				Scr_AddVector(&tr.normal);
 				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
 				const char* surfaceType = trace_GetSurfaceType(tr.surfaceFlags);
@@ -124,8 +124,8 @@ namespace CoDUO::Gsc
 			}
 			else
 			{
-				vec3_t normal;
-				Scr_AddVector(normal);
+				static vec3_t empty_normal;
+				Scr_AddVector(&empty_normal);
 				Scr_AddArrayStringIndexed(SL_GetString("normal", 1));
 
 				Scr_AddString("default");

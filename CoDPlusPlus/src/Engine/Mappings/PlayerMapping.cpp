@@ -3,7 +3,7 @@
 
 namespace CoDUO
 {
-	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination)
+	void G_GetPlayerViewOrigin(gentity_t* ent, vec3_t* destination)
 	{
 		_asm
 		{

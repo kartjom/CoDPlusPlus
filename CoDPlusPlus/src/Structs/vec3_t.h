@@ -31,11 +31,6 @@ struct vec3_t
 		: x(x), y(y), z(z)
 	{}
 
-	operator float*()
-	{
-		return &x;
-	}
-
 	operator glm::vec3()
 	{
 		return glm::vec3(x, y, z);
@@ -57,5 +52,17 @@ struct vec3_t
 	vec3_t operator/(const float& rhs) const
 	{
 		return vec3_t(x / rhs, y / rhs, z / rhs);
+	}
+
+	float& operator[](size_t index)
+	{
+		assert(index < 3 && "vec3_t index out of range");
+		return (&x)[index];
+	}
+
+	const float& operator[](size_t index) const
+	{
+		assert(index < 3 && "vec3_t index out of range");
+		return (&x)[index];
 	}
 };

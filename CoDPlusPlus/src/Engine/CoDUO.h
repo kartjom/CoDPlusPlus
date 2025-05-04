@@ -70,7 +70,7 @@ namespace CoDUO /* GscMapping.cpp */
 	void Scr_AddBool(qboolean value);
 	void Scr_AddInt(int value);
 	void Scr_AddFloat(float value);
-	void Scr_AddVector(float* value);
+	void Scr_AddVector(vec3_t* value);
 	void Scr_AddString(const char* string);
 	void Scr_AddConstString(int32_t index);
 	void Scr_AddEntityNum(int32_t index, class_num_t classNum);
@@ -137,7 +137,7 @@ namespace CoDUO /* MemoryMapping.cpp */
 
 namespace CoDUO /* PlayerMapping.cpp */
 {
-	void G_GetPlayerViewOrigin(gentity_t* ent, float* destination);
+	void G_GetPlayerViewOrigin(gentity_t* ent, vec3_t* destination);
 
 	weaponslot_t BG_GetWeaponSlotInfo(gentity_t* player, int32_t weaponIndex);
 	void BG_SetPlayerSlotAmmo(gentity_t* player, int32_t weaponIndex, int32_t clip, int32_t reserve);
@@ -154,18 +154,17 @@ namespace CoDUO /* PlayerMapping.cpp */
 namespace CoDUO /* UtilsMapping.cpp */
 {
 	void trap_Trace(trace_t* trace, vec3_t* start, vec3_t* end, int passEntityNum, int contentMask);
-
-	void AngleVectors(float* angles, float* forward, float* right, float* up);
-	void Bullet_Endpos(float spread, float* forward, float* out_vec);
-
-	float BG_GetAimSpread(gentity_t* ent);
-	void SetRayLength(vec3_t& start, vec3_t& end, float newLength);
-
-	trace_t G_GetEyeTrace(gentity_t* player, float range, float spread);
-
 	const char* trace_GetSurfaceType(int32_t surfaceFlags);
 	const char* trace_GetHitPartName(uint16_t partName);
 	const char* trace_GetHitLocationString(uint16_t partGroup);
+
+	void AngleVectors(vec3_t* angles, vec3_t* forward, vec3_t* right, vec3_t* up);
+	void Bullet_Endpos(float spread, vec3_t* forward, vec3_t* out_vec);
+
+	trace_t G_GetEyeTrace(gentity_t* player, float range, float spread);
+
+	float BG_GetAimSpread(gentity_t* ent);
+	void SetRayLength(const vec3_t& start, vec3_t& end, float newLength);
 }
 
 namespace CoDUO /* FileSystemMapping.cpp */

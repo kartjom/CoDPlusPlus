@@ -4,18 +4,38 @@
 #include <math.h>
 #include <random>
 
-namespace CoDUO
+namespace CoDUO /* Trace */
 {
 	void trap_Trace(trace_t* trace, vec3_t* start, vec3_t* end, int passEntityNum, int contentMask)
 	{
 		int bulletPriorityMap = uo_game_mp_x86 + 0x0008699c;
 		syscall(0x2e, trace, start, end, passEntityNum, contentMask, bulletPriorityMap);
 	}
+
+	const char* trace_GetSurfaceType(int32_t surfaceFlags)
+	{
+		const char* surfType = syscall(0x44, surfaceFlags >> 0x14 & 0x1f);
+		return surfType != nullptr ? surfType : "";
+	}
+
+	const char* trace_GetHitPartName(uint16_t partName)
+	{
+		const char* hitPartStr = SL_ConvertToString(partName);
+		return hitPartStr != nullptr ? hitPartStr : "";
+	}
+
+	const char* trace_GetHitLocationString(uint16_t partGroup)
+	{
+		uint16_t* G_GetHitLocationString = (uint16_t*)(uo_game_mp_x86 + 0x000a9af0);
+
+		const char* hitLocStr = SL_ConvertToString(G_GetHitLocationString[partGroup]);
+		return hitLocStr != nullptr ? hitLocStr : "";
+	}
 }
 
-namespace CoDUO
+namespace CoDUO /* Helpers */
 {
-	void AngleVectors(float* angles, float* forward, float* right, float* up)
+	void AngleVectors(vec3_t* angles, vec3_t* forward, vec3_t* right, vec3_t* up)
 	{
 		_asm
 		{
@@ -30,7 +50,7 @@ namespace CoDUO
 		}
 	}
 
-	void Bullet_Endpos(float spread, float* forward, float* out_vec)
+	void Bullet_Endpos(float spread, vec3_t* forward, vec3_t* out_vec)
 	{
 		_asm
 		{
@@ -55,13 +75,13 @@ namespace CoDUO
 			float trace_spread = spread != std::numeric_limits<float>::lowest() ? spread : BG_GetAimSpread(player);
 
 			vec3_t vec[4];
-			G_GetPlayerViewOrigin(player, vec[3]);
+			G_GetPlayerViewOrigin(player, &vec[3]);
 
 			vec3_t viewangles = { player->client->viewangles2.x , player->client->viewangles2.y , player->client->viewangles.z };
-			AngleVectors(viewangles, vec[0], vec[1], vec[2]);
+			AngleVectors(&viewangles, &vec[0], &vec[1], &vec[2]);
 
 			vec3_t end;
-			Bullet_Endpos(trace_spread, vec[0], end);
+			Bullet_Endpos(trace_spread, &vec[0], &end);
 
 			if (range != std::numeric_limits<float>::lowest())
 			{
@@ -108,9 +128,9 @@ namespace CoDUO
 		return 0;
 	}
 
-	void SetRayLength(vec3_t& start, vec3_t& end, float newLength)
+	void SetRayLength(const vec3_t& start, vec3_t& end, float newLength)
 	{
-		vec3_t direction = { end.x - start.x, end.y - start.y, end.z - start.z };
+		vec3_t direction(end.x - start.x, end.y - start.y, end.z - start.z);
 		float currentLength = std::sqrt(direction.x * direction.x + direction.y * direction.y + direction.z * direction.z);
 
 		// If the current length is not zero, scale the direction vector to the new length
@@ -122,25 +142,5 @@ namespace CoDUO
 			// Update the end point of the ray
 			end = start + direction;
 		}
-	}
-
-	const char* trace_GetSurfaceType(int32_t surfaceFlags)
-	{
-		const char* surfType = syscall(0x44, surfaceFlags >> 0x14 & 0x1f);
-		return surfType != nullptr ? surfType : "";
-	}
-
-	const char* trace_GetHitPartName(uint16_t partName)
-	{
-		const char* hitPartStr = SL_ConvertToString(partName);
-		return hitPartStr != nullptr ? hitPartStr : "";
-	}
-
-	const char* trace_GetHitLocationString(uint16_t partGroup)
-	{
-		uint16_t* G_GetHitLocationString = (uint16_t*)(uo_game_mp_x86 + 0x000a9af0);
-
-		const char* hitLocStr = SL_ConvertToString(G_GetHitLocationString[partGroup]);
-		return hitLocStr != nullptr ? hitLocStr : "";
 	}
 }

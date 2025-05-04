@@ -1,6 +1,6 @@
 ﻿#include <Engine/CoDUO.h>
 
-namespace CoDUO
+namespace CoDUO /* Core */
 {
 	int32_t __cdecl Scr_LoadScript(const char* file)
 	{
@@ -29,7 +29,7 @@ namespace CoDUO
 	}
 }
 
-namespace CoDUO
+namespace CoDUO /* Script getters */
 {
 	int32_t __cdecl Scr_GetNumParam()
 	{
@@ -102,11 +102,11 @@ namespace CoDUO
 
 	vec3_t __cdecl Scr_GetVector(int param)
 	{
-		typedef void(__cdecl* Scr_GetVector_t)(int param, float* destination);
+		typedef void(__cdecl* Scr_GetVector_t)(int param, vec3_t* destination);
 		Scr_GetVector_t Scr_GetVector_f = (Scr_GetVector_t)(0x004902a0);
 
 		vec3_t vec;
-		Scr_GetVector_f(param, vec);
+		Scr_GetVector_f(param, &vec);
 
 		return vec;
 	}
@@ -160,7 +160,7 @@ namespace CoDUO
 	}
 }
 
-namespace CoDUO
+namespace CoDUO /* Script setters */
 {
 	void __cdecl Scr_AddUndefined()
 	{
@@ -186,7 +186,7 @@ namespace CoDUO
 		Scr_AddFloat_f(value);
 	}
 
-	void __cdecl Scr_AddVector(float* value)
+	void __cdecl Scr_AddVector(vec3_t* value)
 	{
 		auto Scr_AddVector_f = (decltype(Scr_AddVector)*)(0x004908c0);
 		Scr_AddVector_f(value);
