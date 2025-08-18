@@ -150,7 +150,7 @@ namespace Hook::Detour
 					if (ret_val.IsNumber() && ret_val.GetNumber<qboolean>() == qtrue)
 					{
 						// Reset inactivity time
-						client->inactivityTime = client->inactivityTime = level->time + g_inactivity->integer * 1000;
+						client->inactivityTime = level->time + g_inactivity->integer * 1000;
 						client->inactivityWarning = qfalse;
 
 						return qtrue; // Don't drop the client
